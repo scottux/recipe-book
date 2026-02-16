@@ -13,9 +13,15 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { readFileSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Read package.json for version
+const packageJson = JSON.parse(
+  readFileSync(path.join(__dirname, '../../package.json'), 'utf8')
+);
 
 /**
  * Custom format to redact sensitive data
@@ -57,7 +63,7 @@ const logger = winston.createLogger({
   defaultMeta: {
     service: 'recipe-book-api',
     environment: process.env.NODE_ENV || 'development',
-    version: require('../../package.json').version,
+    version: packageJson.version,
   },
   transports: [],
 });

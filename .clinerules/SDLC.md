@@ -1,18 +1,8 @@
-# Software Development Lifecycle (SDLC) Template
+# Software Development Lifecycle (SDLC)
 
-**Version**: 1.2  
-**Last Updated**: February 15, 2026  
-**Purpose**: Generic SDLC template for software development teams
+## Recipe Book Project SDLC Documentation
 
----
-
-## How to Use This Template
-
-1. **Copy this file** to your project's `/docs` directory as `SDLC.md`
-2. **Replace placeholders** (e.g., `[PROJECT NAME]`, `[TEAM NAME]`) with your project details
-3. **Customize sections** to match your team's specific needs
-4. **Remove this "How to Use" section** after customization
-5. **Update version and dates** as you refine your process
+This document outlines the Software Development Lifecycle process used throughout the Recipe Book project, particularly during the successful V2.0 development cycle.
 
 ---
 
@@ -25,7 +15,6 @@
 5. [Tools & Technologies](#tools--technologies)
 6. [Success Metrics](#success-metrics)
 7. [Lessons Learned](#lessons-learned)
-8. [Retrospectives & Tech Debt Management](#retrospectives--tech-debt-management)
 
 ---
 
@@ -33,7 +22,7 @@
 
 ### SDLC Model: Iterative & Incremental
 
-The `[PROJECT NAME]` project follows an **Iterative and Incremental** development model, where each major version is broken down into phases, and each phase follows a complete development cycle.
+The Recipe Book project follows an **Iterative and Incremental** development model, where each major version is broken down into phases, and each phase follows a complete development cycle.
 
 ### Key Characteristics
 
@@ -45,12 +34,11 @@ The `[PROJECT NAME]` project follows an **Iterative and Incremental** developmen
 
 ### Development Cycle Timeline
 
-_Customize based on your project history:_
-
 - **V1.0**: Initial Release (Core Features)
-- **V1.1**: [Feature Set Name]
-- **V1.2**: [Feature Set Name]
-- **V2.0**: [Major Release Name]
+- **V1.1**: Security & Performance
+- **V1.2**: Testing & Quality
+- **V1.3**: E2E Testing
+- **V2.0**: Multi-User Platform (5 major phases)
 
 ---
 
@@ -91,13 +79,15 @@ Our SDLC consists of **7 key phases**, each critical to delivering high-quality 
 - Break down into manageable phases
 - Estimate effort and timeline
 
-**Example**:
+**Example (V2.0)**:
 ```
-Goal: [Your project goal]
+Goal: Transform into multi-user platform
 Phases identified:
-  - Phase 1: [Feature Name] (REQ-XXX)
-  - Phase 2: [Feature Name] (REQ-XXX)
-  - Phase 3: [Feature Name] (REQ-XXX)
+  - Phase 1: Authentication (REQ-009)
+  - Phase 2: Collections (REQ-010)
+  - Phase 3: Meal Planning (REQ-011)
+  - Phase 4: Shopping Lists (REQ-012)
+  - Phase 5: Export System (REQ-013)
 ```
 
 **Deliverables**:
@@ -119,7 +109,7 @@ Phases identified:
 - Document API contracts
 - Create data models
 
-**Document Structure** (REQ-XXX.md):
+**Example Structure** (REQ-XXX.md):
 ```markdown
 # REQ-XXX: Feature Name
 
@@ -143,7 +133,7 @@ Phases identified:
 ```
 
 **Deliverables**:
-- REQ-XXX.md documents
+- REQ-009.md through REQ-013.md
 - API specifications
 - Data model diagrams
 - UI mockups (when applicable)
@@ -169,25 +159,27 @@ Phases identified:
 - Plan integration points
 - Consider scalability
 
-**Design Template**:
+**Example (Authentication System)**:
 ```
 Database Design:
-  - [Model 1] with [validation/relationships]
-  - [Model 2] with [constraints]
+  - User model with bcrypt hashing
+  - JWT token strategy
+  - Owner references on all resources
 
 API Design:
-  - [HTTP METHOD] /api/[endpoint]
-  - [HTTP METHOD] /api/[endpoint]
+  - POST /api/auth/register
+  - POST /api/auth/login
+  - POST /api/auth/refresh
   
 Frontend Design:
-  - [Context/State management approach]
-  - [Route structure]
-  - [Component hierarchy]
+  - AuthContext for global state
+  - ProtectedRoute wrapper
+  - Login/Register pages
   
 Security Design:
-  - [Authentication approach]
-  - [Authorization approach]
-  - [Data protection measures]
+  - JWT middleware for protected routes
+  - Owner validation on CRUD operations
+  - Password exclusion from responses
 ```
 
 **Deliverables**:
@@ -224,7 +216,7 @@ Security Design:
    a. Create database models
    b. Implement controllers
    c. Set up routes
-   d. Test with API client
+   d. Test with API client (Postman)
 
 2. Frontend Second Approach:
    a. Create API service methods
@@ -238,9 +230,28 @@ Security Design:
    c. Refine user experience
 ```
 
+**Example (Collection System)**:
+```javascript
+Backend:
+  ✅ models/Collection.js - Schema with validation
+  ✅ controllers/collectionController.js - CRUD logic
+  ✅ routes/collections.js - API endpoints
+  
+Frontend:
+  ✅ services/api.js - collectionAPI methods
+  ✅ components/CollectionsPage.jsx - List view
+  ✅ components/CollectionDetail.jsx - Detail view
+  
+Integration:
+  ✅ Test create collection
+  ✅ Test add/remove recipes
+  ✅ Test reordering
+  ✅ Test deletion
+```
+
 **Best Practices**:
 - ✅ Write clean, readable code
-- ✅ Follow coding standards (linters)
+- ✅ Follow coding standards (ESLint/Prettier)
 - ✅ Add comments for complex logic
 - ✅ Handle errors gracefully
 - ✅ Commit frequently with clear messages
@@ -277,17 +288,80 @@ Unit Tests (60%)
 - Fast execution
 - High coverage
 
+**Example**:
+```javascript
+// Backend: Model tests
+describe('Recipe Model', () => {
+  it('should create recipe with valid data', async () => {
+    const recipe = new Recipe({ title: 'Test', ... });
+    await recipe.save();
+    expect(recipe.title).toBe('Test');
+  });
+});
+
+// Frontend: Component tests
+describe('RecipeList', () => {
+  it('should render loading state', () => {
+    render(<RecipeList />);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+});
+```
+
 #### 2. Integration Tests
 - Test feature workflows
-- Use test database (or in-memory)
+- Use real database (MongoDB Memory Server)
 - Test API contracts
 - Verify data flow
 
+**Example**:
+```javascript
+describe('Authentication Flow', () => {
+  it('should register, login, and access protected route', async () => {
+    // Register user
+    const registerRes = await request(app)
+      .post('/api/auth/register')
+      .send({ username: 'test', ... });
+    
+    // Login
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ username: 'test', ... });
+    
+    // Access protected route
+    const recipesRes = await request(app)
+      .get('/api/recipes')
+      .set('Authorization', `Bearer ${loginRes.body.token}`);
+    
+    expect(recipesRes.status).toBe(200);
+  });
+});
+```
+
 #### 3. E2E Tests
 - Test complete user workflows
-- Use real browser
+- Use real browser (Playwright)
 - Test UI interactions
 - Verify end-to-end functionality
+
+**Example**:
+```javascript
+test('create and view recipe', async ({ page }) => {
+  // Navigate to add recipe page
+  await page.goto('/add');
+  
+  // Fill form
+  await page.fill('[name="title"]', 'Test Recipe');
+  await page.fill('[name="ingredients[0].item"]', 'Flour');
+  
+  // Submit
+  await page.click('button[type="submit"]');
+  
+  // Verify redirect and display
+  await expect(page).toHaveURL(/\/recipe\/.+/);
+  await expect(page.locator('h1')).toContainText('Test Recipe');
+});
+```
 
 **Test Execution**:
 ```bash
@@ -315,6 +389,212 @@ npm run test:coverage
 
 ---
 
+### Phase 5.5: UX Review & Design System Compliance 🎨
+
+**Objective**: Ensure visual consistency, accessibility, and adherence to design system
+
+**Review Focus Areas**:
+
+#### 1. Design System Compliance
+**Cookbook Theme Standards**:
+- [ ] Color palette consistency (cookbook brown, aged paper, cream)
+- [ ] Typography (font-display for headings, font-body for text)
+- [ ] Spacing follows design system (consistent margins/padding)
+- [ ] Border styles (aged paper borders, shadows)
+- [ ] Component styling matches established patterns
+
+**Color Usage Checklist**:
+```css
+✅ Primary Text: text-cookbook-darkbrown
+✅ Secondary Text: text-cookbook-accent
+✅ Backgrounds: bg-cookbook-paper, bg-cookbook-cream
+✅ Borders: border-cookbook-aged
+✅ Hover States: hover:text-cookbook-accent
+✅ Focus Rings: focus:ring-cookbook-accent
+✅ Shadows: shadow-cookbook, shadow-card
+```
+
+#### 2. Component Library Standards
+**Reusable Patterns**:
+- [ ] Buttons follow standard styles (primary, secondary, danger)
+- [ ] Form inputs use consistent styling
+- [ ] Modals match standard modal template
+- [ ] Cards use cookbook card design
+- [ ] Loading states use consistent spinners
+- [ ] Error messages follow standard format
+
+**Standard Components Inventory**:
+```javascript
+// Buttons
+- Primary: bg-cookbook-accent text-white hover:bg-cookbook-darkbrown
+- Secondary: border-2 border-cookbook-aged hover:bg-cookbook-cream
+- Danger: bg-red-600 text-white hover:bg-red-700
+
+// Inputs
+- Standard: border-2 border-cookbook-aged focus:ring-2 focus:ring-cookbook-accent
+
+// Cards
+- Standard: bg-cookbook-paper border-2 border-cookbook-aged shadow-card
+
+// Modals
+- Standard: bg-cookbook-paper border-2 border-cookbook-aged shadow-cookbook
+```
+
+#### 3. Visual Consistency Review
+**Cross-Page Consistency**:
+- [ ] Navigation elements match across pages
+- [ ] Page headers follow consistent style
+- [ ] List layouts are uniform
+- [ ] Detail pages use consistent structure
+- [ ] Empty states follow same pattern
+- [ ] Loading states are consistent
+
+**Typography Consistency**:
+- [ ] Headings use font-display
+- [ ] Body text uses font-body
+- [ ] Font sizes follow hierarchy (text-4xl → text-3xl → text-2xl → text-xl → text-lg)
+- [ ] Font weights are consistent (font-bold for headings, font-medium for emphasis)
+
+#### 4. Accessibility (a11y) Review
+**WCAG 2.1 AA Compliance**:
+- [ ] Color contrast ratios meet standards (4.5:1 for text)
+- [ ] Interactive elements have visible focus states
+- [ ] Form labels properly associated with inputs
+- [ ] ARIA labels for icon-only buttons
+- [ ] Keyboard navigation works throughout
+- [ ] Screen reader compatibility verified
+- [ ] Alt text for images
+- [ ] Semantic HTML structure
+
+**Accessibility Checklist**:
+```javascript
+// Focus States
+✅ All interactive elements have visible focus:ring
+
+// Labels
+✅ All form inputs have associated <label>
+✅ Icon buttons have aria-label
+
+// Keyboard Navigation
+✅ Tab order is logical
+✅ Escape closes modals
+✅ Enter submits forms
+
+// Screen Reader
+✅ Page titles are descriptive
+✅ Loading states announced
+✅ Error messages announced
+```
+
+#### 5. Theme Application Audit
+**Check for Theme Violations**:
+- [ ] No hardcoded blue colors (legacy theme)
+- [ ] No gray-500 text (use cookbook-accent instead)
+- [ ] No blue-600 buttons (use cookbook-accent)
+- [ ] No blue focus rings (use cookbook-accent)
+- [ ] Consistent use of cookbook shadows
+
+**Common Theme Issues to Fix**:
+```css
+❌ Bad: text-blue-600, bg-blue-500, border-blue-200
+✅ Good: text-cookbook-accent, bg-cookbook-accent, border-cookbook-aged
+
+❌ Bad: text-gray-500, text-gray-600, text-gray-700
+✅ Good: text-cookbook-accent, text-cookbook-darkbrown
+
+❌ Bad: focus:ring-blue-500
+✅ Good: focus:ring-cookbook-accent
+
+❌ Bad: shadow-md, shadow-lg
+✅ Good: shadow-card, shadow-cookbook
+```
+
+#### 6. Responsive Design Review
+**Mobile-First Checklist**:
+- [ ] Mobile layout (< 640px) works without horizontal scroll
+- [ ] Touch targets are at least 44x44 pixels
+- [ ] Text is readable on small screens (min 16px)
+- [ ] Navigation works on mobile
+- [ ] Modals adapt to screen size
+- [ ] Tables are responsive or scrollable
+
+**Breakpoint Testing**:
+```
+✅ Mobile: 375px, 414px (iPhone sizes)
+✅ Tablet: 768px, 1024px (iPad sizes)
+✅ Desktop: 1280px, 1920px (common monitors)
+```
+
+#### 7. User Experience Patterns
+**Interaction Patterns**:
+- [ ] Loading states for async operations
+- [ ] Error handling with clear messages
+- [ ] Success feedback for actions
+- [ ] Confirmation dialogs for destructive actions
+- [ ] Disabled states for invalid actions
+- [ ] Empty states with helpful guidance
+
+**Error Handling Pattern**:
+```javascript
+// Standard Error Display
+<div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg font-body">
+  {errorMessage}
+</div>
+
+// Standard Loading State
+<div className="flex justify-center py-12">
+  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cookbook-accent"></div>
+</div>
+```
+
+**UX Review Deliverables**:
+- UX Review Report (issues identified)
+- Design system compliance scorecard
+- Accessibility audit results
+- List of required fixes (critical vs. nice-to-have)
+- Updated component library documentation
+
+**UX Review Template**:
+```markdown
+# UX Review: Version X.Y
+
+## Design System Compliance
+- Color Palette: ✅ Pass / ❌ Issues Found
+- Typography: ✅ Pass / ❌ Issues Found
+- Component Library: ✅ Pass / ❌ Issues Found
+
+## Accessibility Score: XX/100
+- Color Contrast: ✅ Pass
+- Keyboard Navigation: ✅ Pass
+- Screen Reader: ⚠️ Minor Issues
+- ARIA Labels: ❌ Issues Found
+
+## Visual Consistency: ⭐⭐⭐⭐⭐
+- Cross-page consistency: Excellent
+- Typography consistency: Excellent
+- Component reuse: Excellent
+
+## Issues Identified
+### Critical
+1. [Issue description and fix]
+
+### Minor
+1. [Issue description and suggestion]
+
+## Recommendations
+- [Suggestions for improvement]
+```
+
+**Best Practices**:
+- ✅ Perform UX review before code review
+- ✅ Use browser DevTools for accessibility testing
+- ✅ Test on multiple screen sizes
+- ✅ Verify keyboard navigation
+- ✅ Check against design system documentation
+- ✅ Document any approved exceptions
+
+---
+
 ### Phase 6: Code Review & Refinement 🔍
 
 **Objective**: Ensure code quality and identify improvements
@@ -323,11 +603,11 @@ npm run test:coverage
 
 #### 1. Automated Checks (CI/CD)
 ```yaml
-# Example CI/CD Pipeline
+# GitHub Actions Pipeline
 jobs:
   lint:
-    - Run linter
-    - Run formatter check
+    - Run ESLint
+    - Run Prettier check
     
   test:
     - Run unit tests
@@ -335,12 +615,12 @@ jobs:
     - Generate coverage report
     
   build:
-    - Build application
-    - Check for build errors
+    - Build backend
+    - Build frontend
     
   security:
+    - npm audit
     - Dependency scanning
-    - Security audit
 ```
 
 #### 2. Manual Code Review
@@ -367,17 +647,23 @@ jobs:
 ## Quality Metrics
 - Architecture: ⭐⭐⭐⭐⭐
 - Security: ⭐⭐⭐⭐⭐
-- Testing: ⭐⭐⭐⭐⭐
-- Performance: ⭐⭐⭐⭐⭐
+- Testing: ⭐⭐⭐⭐
+- Performance: ⭐⭐⭐⭐
 
 ## Issues Identified
-### Critical: [List or "None"]
-### Minor: [List or "None"]
+### Critical: None
+### Minor: [List]
 
 ## Recommendations
 [Suggestions for current version]
 [Plans for future versions]
 ```
+
+**Example Reviews**:
+- CODE_REVIEW_V1.1.md
+- CODE_REVIEW_V1.2.md
+- CODE_REVIEW_V1.3.md
+- CODE_REVIEW_V2.0.md
 
 #### 3. Refinement
 Based on review findings:
@@ -407,26 +693,42 @@ The project follows **Semantic Versioning (SEMVER)** with the format `MAJOR.MINO
 ```
 MAJOR.MINOR.PATCH
   │     │     │
-  │     │     └─── Bug fixes, small improvements
-  │     └─────────── New features, backwards-compatible
-  └───────────────── Breaking changes, platform expansions
+  │     │     └─── Bug fixes, small improvements (e.g., 2.1.1, 2.1.2)
+  │     └─────────── New features, backwards-compatible (e.g., 2.1.0, 2.2.0)
+  └───────────────── Breaking changes, platform expansions (e.g., 3.0.0)
 ```
 
 **Version Guidelines**:
 
 - **Major (X.0.0)**: Use for breaking changes or significant platform expansions
+  - Examples: V3.0.0 (mobile app, major architecture changes)
   - Requires migration guide
   - May break backwards compatibility
 
 - **Minor (X.Y.0)**: Use for substantial feature sets that are backwards-compatible
+  - Examples: V2.1.0 (password reset system), V2.2.0 (cloud integration)
   - Adds significant new functionality
   - Maintains backwards compatibility
   - Requires comprehensive testing and documentation
 
 - **Patch (X.Y.Z)**: Use for smaller features, improvements, and bug fixes
+  - Examples: V2.1.1 (account management UI), V2.1.2 (import from backup)
   - Quick iterations on existing functionality
   - Bug fixes and minor enhancements
   - Lower documentation overhead
+
+**Example Version Progression**:
+```
+V2.0.0 → V2.1.0 → V2.1.1 → V2.1.2 → V2.1.3 → V2.2.0 → V3.0.0
+  │        │        │        │        │        │        │
+  │        │        │        │        │        │        └─ Major: Mobile app
+  │        │        │        │        │        └────────── Minor: Cloud features
+  │        │        │        │        └─────────────────── Patch: Performance
+  │        │        │        └──────────────────────────── Patch: Import feature
+  │        │        └───────────────────────────────────── Patch: Account UI
+  │        └────────────────────────────────────────────── Minor: Password reset
+  └─────────────────────────────────────────────────────── Major: Multi-user
+```
 
 **Release Checklist**:
 
@@ -487,13 +789,13 @@ npm version major|minor|patch
 npm run build
 
 # 4. Tag release
-git tag -a vX.Y.Z -m "Version X.Y.Z: [Release Name]"
+git tag -a v2.0.0 -m "Version 2.0.0: Multi-User Platform"
 
 # 5. Push
 git push origin main --tags
 
 # 6. Deploy (production)
-# [Your deployment-specific steps]
+# [Deployment-specific steps]
 ```
 
 #### 5. Post-Release
@@ -509,7 +811,7 @@ git push origin main --tags
 - ✅ Rollback plan ready
 - ✅ Monitor after deployment
 - ✅ Communicate with stakeholders
-- ✅ Update all package files consistently
+- ✅ Update all package.json files consistently
 - ✅ Tag releases in version control
 
 ---
@@ -541,40 +843,38 @@ git push origin main --tags
 #### 5. Security-First
 - Validate all inputs
 - Protect sensitive data
-- Follow security best practices
+- Follow OWASP guidelines
 
 #### 6. Performance Awareness
 - Profile before optimizing
 - Use caching strategically
-- Optimize database queries
+- Index database queries
 
 ---
 
 ## Tools & Technologies
 
-_Customize this section based on your tech stack:_
-
 ### Development Tools
-- **IDE**: [Your IDE]
-- **Version Control**: [Git + Platform]
-- **Package Manager**: [npm/yarn/pnpm]
-- **Linting**: [ESLint/other]
-- **Formatting**: [Prettier/other]
+- **IDE**: Visual Studio Code
+- **Version Control**: Git + GitHub
+- **Package Manager**: npm
+- **Linting**: ESLint
+- **Formatting**: Prettier
 
 ### Testing Tools
-- **Unit Testing**: [Jest/Vitest/Mocha]
-- **Integration Testing**: [Supertest/other]
-- **E2E Testing**: [Playwright/Cypress/Selenium]
-- **Coverage**: [Coverage tool]
+- **Unit Testing**: Jest (backend), Vitest (frontend)
+- **Integration Testing**: Supertest, MongoDB Memory Server
+- **E2E Testing**: Playwright
+- **Coverage**: nyc, c8
 
 ### CI/CD
-- **Pipeline**: [GitHub Actions/Jenkins/CircleCI]
-- **Workflows**: Lint, Test, Build, Security
+- **Pipeline**: GitHub Actions
+- **Workflows**: Lint, Test, Build, Security, Integration
 
 ### Documentation
-- **Format**: Markdown
-- **Code Docs**: [JSDoc/TypeDoc/other]
-- **Diagrams**: [Mermaid/PlantUML/draw.io]
+- **Markdown**: All documentation
+- **JSDoc**: Inline code documentation
+- **Diagrams**: Mermaid (when needed)
 
 ---
 
@@ -582,22 +882,20 @@ _Customize this section based on your tech stack:_
 
 ### Quantitative Metrics
 
-_Customize targets based on your project:_
-
 #### Code Quality
-- **Test Coverage**: [Target: 80%+]
+- **Test Coverage**: 85% (target: 80%+)
 - **Linting Errors**: 0
 - **Security Vulnerabilities**: 0 high/critical
 
 #### Performance
-- **Page Load**: [Target: < 500ms]
-- **API Response**: [Target: < 200ms avg]
-- **Build Time**: [Target: < X minutes]
+- **Page Load**: < 500ms
+- **API Response**: < 200ms (avg)
+- **Build Time**: < 2 minutes
 
 #### Development Velocity
-- **Features per Release**: [Your target]
-- **Bug Rate**: [Target: < 5%]
-- **Deployment Frequency**: [Your cadence]
+- **Features per Release**: 5 major (V2.0)
+- **Bug Rate**: < 5%
+- **Deployment Frequency**: Weekly (during development)
 
 ### Qualitative Metrics
 
@@ -620,51 +918,74 @@ _Customize targets based on your project:_
 
 ## Lessons Learned
 
-_Update this section as your project progresses_
-
 ### What Worked Well ✅
 
-1. **[Practice/Process Name]**
-   - [Why it worked]
-   - [Impact on project]
-   - [Recommendation]
+1. **Requirements Documentation First**
+   - Clear specifications prevented scope creep
+   - Acceptance criteria made testing straightforward
+   - REQ documents served as contracts
 
-2. **[Practice/Process Name]**
-   - [Why it worked]
-   - [Impact on project]
-   - [Recommendation]
+2. **Incremental Phases**
+   - Smaller chunks were easier to manage
+   - Each phase could be tested independently
+   - Reduced risk of large-scale failures
+
+3. **Comprehensive Testing**
+   - Unit tests caught bugs early
+   - Integration tests verified workflows
+   - E2E tests ensured user experience
+
+4. **Regular Code Reviews**
+   - Maintained code quality
+   - Shared knowledge across team
+   - Identified issues before production
+
+5. **Automated CI/CD**
+   - Fast feedback on issues
+   - Consistent quality checks
+   - Automated deployment readiness
 
 ### Challenges & Solutions 💡
 
-#### Challenge 1: [Challenge Name]
-**Problem**: [Description]
+#### Challenge 1: Test Coverage
+**Problem**: Initial coverage was low (~40%)
 **Solution**: 
-- [Solution step 1]
-- [Solution step 2]
-**Result**: [Outcome]
+- Added comprehensive test suites (V1.2, V1.3)
+- Made testing part of definition of done
+- Achieved 85% coverage by V2.0
 
-#### Challenge 2: [Challenge Name]
-**Problem**: [Description]
-**Solution**: 
-- [Solution step 1]
-- [Solution step 2]
-**Result**: [Outcome]
+#### Challenge 2: Documentation Drift
+**Problem**: Docs getting out of sync with code
+**Solution**:
+- Made doc updates part of PR checklist
+- Automated some doc generation
+- Regular documentation reviews
+
+#### Challenge 3: Security Concerns
+**Problem**: Initial auth implementation gaps
+**Solution**:
+- Comprehensive security review
+- JWT best practices implementation
+- Owner validation on all operations
 
 ### Continuous Improvement 🔄
 
-#### For Next Version
+#### For Next Version (V2.1+)
 
 **Process Improvements**:
-- [Improvement 1]
-- [Improvement 2]
+- Add performance testing phase
+- Implement automated security scanning
+- Add user acceptance testing
 
 **Technical Improvements**:
-- [Improvement 1]
-- [Improvement 2]
+- Increase test coverage to 90%+
+- Add more integration tests
+- Implement load testing
 
 **Documentation Improvements**:
-- [Improvement 1]
-- [Improvement 2]
+- Add architecture diagrams
+- Create video tutorials
+- Improve API documentation
 
 ---
 
@@ -745,7 +1066,7 @@ After every **3-5 releases** (or quarterly), conduct a retrospective to review:
    - Review security vulnerabilities
 
 3. **Roadmap Alignment**
-   - Review the project roadmap
+   - Review the [ROADMAP.md](../ROADMAP.md)
    - Reprioritize features based on learnings
    - Add newly discovered requirements
    - Remove or defer low-value items
@@ -758,22 +1079,28 @@ After every **3-5 releases** (or quarterly), conduct a retrospective to review:
 ```markdown
 ## Tech Debt Log (Example)
 
-### [Version] Retrospective - [Date]
+### V2.1.5 Retrospective - Feb 2026
 
 **Identified Issues:**
-1. [Issue description]
-   - Priority: [High/Medium/Low]
-   - Effort: [High/Medium/Low or time estimate]
-   - Plan: [How to address it]
+1. Integration test authentication setup (22 failing tests)
+   - Priority: High
+   - Effort: Medium (2-3 days)
+   - Plan: Create shared test auth helper
 
-2. [Issue description]
-   - Priority: [High/Medium/Low]
-   - Effort: [High/Medium/Low or time estimate]
-   - Plan: [How to address it]
+2. Dependency vulnerabilities (nodemailer, happy-dom)
+   - Priority: Medium  
+   - Effort: Low (breaking changes to review)
+   - Plan: Upgrade in V2.2.0
+
+3. Mongoose duplicate index warning
+   - Priority: Low
+   - Effort: Low (30 minutes)
+   - Plan: Remove duplicate index definition
 
 **Process Improvements:**
-1. [Improvement 1]
-2. [Improvement 2]
+1. Add pre-commit hooks for linting
+2. Automated security scanning in CI/CD
+3. Test coverage requirement enforcement
 ```
 
 ### Retrospective Schedule
@@ -790,31 +1117,27 @@ After every **3-5 releases** (or quarterly), conduct a retrospective to review:
 # Retrospective: Version X.Y - [Date]
 
 ## Attendees
-- [Team member names]
+- [Team members]
 
 ## What Went Well 🎉
 - [Success 1]
 - [Success 2]
-- [Success 3]
 
 ## What Could Be Improved 💭
 - [Challenge 1]
 - [Challenge 2]
-- [Challenge 3]
 
 ## Action Items 📋
 - [ ] [Action 1 - Owner - Due Date]
 - [ ] [Action 2 - Owner - Due Date]
-- [ ] [Action 3 - Owner - Due Date]
 
 ## Tech Debt Identified 🔧
 - [Issue 1 - Priority - Effort Estimate]
 - [Issue 2 - Priority - Effort Estimate]
-- [Issue 3 - Priority - Effort Estimate]
 
 ## Roadmap Updates 🗺️
 - [Update 1: Added/Removed/Reprioritized]
-- [Update 2: Added/Removed/Reprioritized]
+- [Update 2]
 
 ## Metrics Review 📊
 - Test Coverage: X%
@@ -858,9 +1181,9 @@ After every **3-5 releases** (or quarterly), conduct a retrospective to review:
 
 ## Conclusion
 
-The `[PROJECT NAME]` project demonstrates that a well-defined SDLC process leads to:
+The Recipe Book project demonstrates that a well-defined SDLC process leads to:
 
-✅ **Higher Quality**: Strong test coverage, minimal critical issues  
+✅ **Higher Quality**: 85% test coverage, zero critical issues  
 ✅ **Faster Development**: Clear process reduces confusion  
 ✅ **Better Maintainability**: Good documentation and clean code  
 ✅ **Reduced Risk**: Testing and reviews catch issues early  
@@ -881,22 +1204,20 @@ The `[PROJECT NAME]` project demonstrates that a well-defined SDLC process leads
 
 ## References
 
-_Update with your project-specific references:_
-
-- **Requirements**: [Path to requirements directory]
-- **Code Reviews**: [Path to review documents]
+- **Requirements**: `/recipe-book/reqs/` directory
+- **Code Reviews**: `CODE_REVIEW_V*.md` files
 - **Changelog**: `CHANGELOG.md`
-- **API Docs**: [Path to API documentation]
-- **Testing Guide**: [Path to testing documentation]
+- **API Docs**: `/recipe-book/docs/api/`
+- **Testing Guide**: `/recipe-book/backend/TESTING.md`
 
 ---
 
 **Document Version**: 1.2  
 **Last Updated**: February 15, 2026  
-**Maintained By**: `[TEAM NAME]`  
-**Next Review**: `[After VERSIONAFTER VX.Y release]`
+**Maintained By**: Development Team  
+**Next Review**: After V2.2 release
 
 **Changelog**:
-- **V1.2** (Feb 15, 2026): Added Retrospectives & Tech Debt Management section
+- **V1.2** (Feb 15, 2026): Added Retro and Planning sessions
 - **V1.1** (Feb 15, 2026): Added semantic versioning strategy section
-- **V1.0** (Feb 15, 2026): Initial SDLC template creation
+- **V1.0** (Feb 15, 2026): Initial SDLC documentation

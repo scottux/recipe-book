@@ -2,7 +2,7 @@
 
 React-based web application for the Recipe Book platform.
 
-**Version:** 2.1.4
+**Version:** 2.1.5
 
 ## Overview
 
@@ -616,6 +616,6 @@ MIT - see [LICENSE](../LICENSE)
 
 ---
 
-**Version:** 2.1.4  
+**Version:** 2.1.5  
 **Last Updated:** February 2026  
 **Status:** ✅ Production Ready

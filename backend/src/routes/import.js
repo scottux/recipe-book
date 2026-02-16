@@ -1,6 +1,6 @@
 import express from 'express';
 import { importBackup } from '../controllers/importController.js';
-import auth from '../middleware/auth.js';
+import { authenticate } from '../middleware/auth.js';
 import { importLimiter } from '../middleware/uploadLimiter.js';
 
 const router = express.Router();
@@ -13,6 +13,6 @@ const router = express.Router();
  *          mode: 'merge' | 'replace' (optional, default: 'merge')
  *          password: string (required if mode='replace')
  */
-router.post('/backup', auth, importLimiter, importBackup);
+router.post('/backup', authenticate, importLimiter, importBackup);
 
 export default router;

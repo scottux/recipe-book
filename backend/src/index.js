@@ -254,4 +254,10 @@ process.on('uncaughtException', (error) => {
 // START APPLICATION
 // ============================================================================
 
-initializeApp();
+// Only start the server if not imported as a module (for testing)
+if (process.env.NODE_ENV !== 'test') {
+  initializeApp();
+}
+
+// Export app for testing
+export default app;
