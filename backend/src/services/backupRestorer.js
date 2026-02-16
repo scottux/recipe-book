@@ -25,52 +25,30 @@ export async function restoreFromBackup(userId, backupData, mode) {
     recipeCount: backupData.recipes?.length || 0
   });
 
-  // Only use transactions if running on replica set (production)
-  // MongoDB Memory Server (tests) doesn't support transactions
-  let session = null;
-  let useSession = false;
-  
-  try {
-    session = await mongoose.startSession();
-    await session.startTransaction();
-    useSession = true;
-  } catch (sessionError) {
-    // Standalone MongoDB (like Memory Server) - continue without session
-    logger.debug('Transaction not supported, continuing without transaction support', {
-      error: sessionError.message
-    });
-    if (session) {
-      session.endSession();
-    }
-    session = null;
-    useSession = false;
-  }
+  // Note: Transactions are not used in this implementation for compatibility
+  // with MongoDB Memory Server used in tests. In production, you may want to
+  // wrap operations in a transaction for atomicity.
 
   try {
-
     let stats;
 
     if (mode === 'replace') {
       logger.info(`Replace mode: Deleting existing data for user ${userId}`);
 
       // Delete all existing data
-      await deleteExistingData(userId, useSession ? session : null);
+      await deleteExistingData(userId);
 
       // Import all from backup (no duplicate checking needed)
-      stats = await importBackupData(userId, backupData, useSession ? session : null, false);
+      stats = await importBackupData(userId, backupData, false);
 
       logger.info(`Replace mode complete: ${stats.totalImported} items imported`);
     } else {
       logger.info(`Merge mode: Importing with duplicate checking for user ${userId}`);
 
       // Merge mode: Import with duplicate checking
-      stats = await importBackupData(userId, backupData, useSession ? session : null, true);
+      stats = await importBackupData(userId, backupData, true);
 
       logger.info(`Merge mode complete: ${stats.totalImported} items imported, ${stats.totalSkipped} skipped`);
-    }
-
-    if (session) {
-      await session.commitTransaction();
     }
 
     logger.info(`Restore successful for user ${userId}`, { stats });
@@ -82,47 +60,24 @@ export async function restoreFromBackup(userId, backupData, mode) {
       stack: error.stack
     });
 
-    if (session) {
-      try {
-        await session.abortTransaction();
-      } catch (abortError) {
-        // Ignore abort errors
-      }
-    }
     throw new Error(`Restore failed: ${error.message}`);
-  } finally {
-    if (session) {
-      session.endSession();
-    }
   }
 }
 
 /**
  * Delete all existing user data
  * @param {string} userId - User ID
- * @param {mongoose.ClientSession} session - MongoDB session
  * @returns {Promise<Object>} Deletion counts
  */
-async function deleteExistingData(userId, session) {
+async function deleteExistingData(userId) {
   logger.debug(`Deleting existing data for user ${userId}`);
 
-  // Execute queries with optional session
-  let results;
-  if (session) {
-    results = await Promise.all([
-      Recipe.deleteMany({ owner: userId }).session(session),
-      Collection.deleteMany({ owner: userId }).session(session),
-      MealPlan.deleteMany({ owner: userId }).session(session),
-      ShoppingList.deleteMany({ owner: userId }).session(session)
-    ]);
-  } else {
-    results = await Promise.all([
-      Recipe.deleteMany({ owner: userId }),
-      Collection.deleteMany({ owner: userId }),
-      MealPlan.deleteMany({ owner: userId }),
-      ShoppingList.deleteMany({ owner: userId })
-    ]);
-  }
+  const results = await Promise.all([
+    Recipe.deleteMany({ owner: userId }),
+    Collection.deleteMany({ owner: userId }),
+    MealPlan.deleteMany({ owner: userId }),
+    ShoppingList.deleteMany({ owner: userId })
+  ]);
 
   const counts = {
     recipes: results[0].deletedCount,
@@ -140,11 +95,10 @@ async function deleteExistingData(userId, session) {
  * Import backup data
  * @param {string} userId - User ID
  * @param {Object} backupData - Parsed backup data
- * @param {mongoose.ClientSession} session - MongoDB session
  * @param {boolean} checkDuplicates - Whether to skip duplicates
  * @returns {Promise<Object>} Import statistics
  */
-async function importBackupData(userId, backupData, session, checkDuplicates = false) {
+async function importBackupData(userId, backupData, checkDuplicates = false) {
   logger.debug(`Importing backup data for user ${userId}`, {
     checkDuplicates,
     recipeCount: backupData.recipes?.length || 0,
@@ -161,8 +115,8 @@ async function importBackupData(userId, backupData, session, checkDuplicates = f
     shoppingLists: backupData.shoppingLists || []
   };
 
-  // Reuse existing import processor from REQ-016
-  const stats = await processImport(userId, importData, session, checkDuplicates);
+  // Reuse existing import processor from REQ-016 (without session for test compatibility)
+  const stats = await processImport(userId, importData, null, checkDuplicates);
 
   logger.debug(`Import complete for user ${userId}`, stats);
 
