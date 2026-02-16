@@ -1204,19 +1204,53 @@ The Recipe Book project demonstrates that a well-defined SDLC process leads to:
 
 ## References
 
-- **Requirements**: `/recipe-book/reqs/` directory
-- **Code Reviews**: `CODE_REVIEW_V*.md` files
-- **Changelog**: `CHANGELOG.md`
-- **API Docs**: `/recipe-book/docs/api/`
-- **Testing Guide**: `/recipe-book/backend/TESTING.md`
+### Documentation Structure
+
+The Recipe Book project uses a structured documentation approach with clear locations for each type of documentation:
+
+| Category | Location | Purpose |
+|----------|----------|---------|
+| **Requirements** | `/reqs/` | REQ-XXX.md documents defining feature requirements and specifications |
+| **Design Documents** | `/docs/.designs/` | Technical design and architecture documents for features |
+| **Code Reviews** | `/docs/.reviews/` | Code and UX review documents (CODE_REVIEW_*.md, UX_REVIEW_*.md) |
+| **API Documentation** | `/docs/api/` | API reference and endpoint documentation |
+| **Feature Guides** | `/docs/features/` | User-facing feature documentation and usage guides |
+| **Changelog** | `CHANGELOG.md` | Release history and version notes (root level) |
+| **Roadmap** | `ROADMAP.md` | Future feature planning and release schedule (root level) |
+| **Testing Guide** | `/backend/TESTING.md` | Testing strategies, execution, and best practices |
+
+### Documentation Flow
+
+Follow this documentation workflow for each new feature:
+
+1. **Planning** → Update `ROADMAP.md` with feature/release plans
+2. **Requirements** → Create `REQ-XXX.md` in `/reqs/`
+3. **Design** → Create design document in `/docs/.designs/`
+4. **Development** → Implement feature (code in `/backend/` and `/frontend/`)
+5. **Testing** → Follow `/backend/TESTING.md` guidelines
+6. **Review** → Create review document in `/docs/.reviews/`
+7. **Release** → Update `CHANGELOG.md` with version details
+
+### Quick Reference
+
+**Starting a new feature?**
+- Check `ROADMAP.md` for priority
+- Write `REQ-XXX.md` in `/reqs/`
+- Create design doc in `/docs/.designs/`
+
+**Completing a feature?**
+- Write review in `/docs/.reviews/`
+- Update `CHANGELOG.md`
+- Update feature docs in `/docs/features/` if user-facing
 
 ---
 
-**Document Version**: 1.1  
-**Last Updated**: February 15, 2026  
+**Document Version**: 1.2  
+**Last Updated**: February 16, 2026  
 **Maintained By**: Development Team  
 **Next Review**: After V2.2 release
 
 **Changelog**:
+- **V1.2** (Feb 16, 2026): Updated documentation structure and references section
 - **V1.1** (Feb 15, 2026): Added semantic versioning strategy section
 - **V1.0** (Feb 15, 2026): Initial SDLC documentation
