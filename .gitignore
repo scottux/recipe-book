@@ -36,3 +36,5 @@ coverage/
 *.tgz
 .npm
 .eslintcache
+
+/backend/temp/
