@@ -280,4 +280,40 @@ export const twoFactorAPI = {
   regenerateBackupCodes: (data) => api.post('/auth/2fa/backup-codes', data)
 };
 
+export const cloudBackupAPI = {
+  // Get connection status
+  getStatus: () => api.get('/cloud/status'),
+  
+  // Dropbox OAuth
+  initiateDropboxAuth: () => api.get('/cloud/dropbox/auth'),
+  
+  // Google Drive OAuth
+  initiateGoogleAuth: () => api.get('/cloud/google/auth'),
+  
+  // Disconnect provider
+  disconnect: () => api.post('/cloud/disconnect'),
+  
+  // Create manual backup
+  createBackup: () => api.post('/cloud/backup'),
+  
+  // List backups
+  listBackups: (limit = 10) => api.get('/cloud/backups', { params: { limit } }),
+  
+  // Delete backup
+  deleteBackup: (id) => api.delete(`/cloud/backups/${id}`),
+  
+  // Preview backup
+  previewBackup: (backupId) => api.get(`/cloud/backups/${backupId}/preview`),
+  
+  // Restore from backup
+  restoreBackup: (backupId, mode, password) => 
+    api.post('/cloud/restore', { backupId, mode, password }),
+  
+  // Get schedule
+  getSchedule: () => api.get('/cloud/schedule'),
+  
+  // Update schedule
+  updateSchedule: (data) => api.put('/cloud/schedule', data)
+};
+
 export default api;

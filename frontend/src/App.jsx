@@ -18,6 +18,7 @@ import EmailVerificationPage from './components/auth/EmailVerificationPage';
 import AccountSettingsPage from './components/auth/AccountSettingsPage';
 import TwoFactorSetupPage from './components/auth/TwoFactorSetupPage';
 import TwoFactorVerifyPage from './components/auth/TwoFactorVerifyPage';
+import CloudBackupPage from './components/auth/CloudBackupPage';
 import ImportPage from './components/ImportPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import VerificationBanner from './components/VerificationBanner';
@@ -267,6 +268,7 @@ function AppContent() {
               <Route path="/shopping-lists" element={<ShoppingListsPage />} />
               <Route path="/shopping-lists/:id" element={<ShoppingListDetail />} />
               <Route path="/account" element={<AccountSettingsPage />} />
+              <Route path="/cloud-backup" element={<CloudBackupPage />} />
               <Route path="/import-backup" element={<ImportPage />} />
               {/* Redirect old routes to new unified page */}
               <Route path="/search" element={<Navigate to="/add?tab=discover" replace />} />

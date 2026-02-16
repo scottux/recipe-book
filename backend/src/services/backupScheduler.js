@@ -9,6 +9,7 @@ import cron from 'node-cron';
 import User from '../models/User.js';
 import { generateBackupFile, cleanupBackupFile } from './backupGenerator.js';
 import dropboxService from './cloudProviders/dropboxService.js';
+import googleDriveService from './cloudProviders/googleDrive.js';
 import { sendBackupFailureEmail } from './emailService.js';
 import logger from '../config/logger.js';
 
@@ -119,8 +120,7 @@ class BackupScheduler {
       if (user.cloudBackup.provider === 'dropbox') {
         uploadResult = await dropboxService.uploadBackup(user, backupFilePath, 'automatic');
       } else if (user.cloudBackup.provider === 'google_drive') {
-        // Google Drive - coming in Week 5
-        throw new Error('Google Drive not yet implemented');
+        uploadResult = await googleDriveService.uploadBackup(user, backupFilePath);
       } else {
         throw new Error('Unknown provider');
       }
@@ -237,8 +237,7 @@ class BackupScheduler {
       if (user.cloudBackup.provider === 'dropbox') {
         backups = await dropboxService.listBackups(user, 100);
       } else if (user.cloudBackup.provider === 'google_drive') {
-        // Google Drive - coming in Week 5
-        return;
+        backups = await googleDriveService.listBackups(user, 100);
       }
 
       // If we have more than max, delete oldest
@@ -251,6 +250,8 @@ class BackupScheduler {
           toDelete.map(backup => {
             if (user.cloudBackup.provider === 'dropbox') {
               return dropboxService.deleteBackup(user, backup.id);
+            } else if (user.cloudBackup.provider === 'google_drive') {
+              return googleDriveService.deleteBackup(user, backup.id);
             }
             return Promise.resolve();
           })

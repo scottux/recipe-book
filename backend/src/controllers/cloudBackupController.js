@@ -10,6 +10,7 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
 import User from '../models/User.js';
 import dropboxService from '../services/cloudProviders/dropboxService.js';
+import googleDriveService from '../services/cloudProviders/googleDrive.js';
 import logger from '../config/logger.js';
 import { encryptToken } from '../utils/encryption.js';
 import { getRedisClient } from '../config/redis.js';
@@ -150,6 +151,136 @@ export const handleDropboxCallback = async (req, res) => {
 };
 
 /**
+ * Initiate Google Drive OAuth flow
+ * POST /api/cloud/google/auth
+ */
+export const initiateGoogleAuth = async (req, res) => {
+  try {
+    // Generate CSRF state token
+    const state = crypto.randomBytes(16).toString('hex');
+    
+    // Store state in Redis with user ID (10 minute expiry)
+    if (redisClient && redisClient.isOpen) {
+      await redisClient.setEx(`oauth:state:${state}`, 600, req.user._id.toString());
+    } else {
+      // Fallback: store in memory (development only)
+      global.oauthStates = global.oauthStates || new Map();
+      global.oauthStates.set(state, {
+        userId: req.user._id.toString(),
+        expires: Date.now() + 600000
+      });
+    }
+    
+    // Build Google OAuth URL
+    const authUrl = googleDriveService.generateAuthUrl(state);
+    
+    logger.info(`Google Drive OAuth initiated for user ${req.user._id}`);
+    
+    res.json({
+      success: true,
+      authUrl,
+      state
+    });
+    
+  } catch (error) {
+    logger.error('Failed to initiate Google Drive OAuth:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to initiate authorization. Please try again.'
+    });
+  }
+};
+
+/**
+ * Handle Google Drive OAuth callback
+ * GET /api/cloud/google/callback
+ */
+export const handleGoogleCallback = async (req, res) => {
+  try {
+    const { code, state, error: oauthError } = req.query;
+    
+    // Check for OAuth errors
+    if (oauthError) {
+      logger.warn(`Google Drive OAuth error: ${oauthError}`);
+      return res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=oauth_denied`);
+    }
+    
+    if (!code || !state) {
+      return res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=missing_params`);
+    }
+    
+    // Validate state token
+    let userId;
+    if (redisClient && redisClient.isOpen) {
+      userId = await redisClient.get(`oauth:state:${state}`);
+      if (userId) {
+        await redisClient.del(`oauth:state:${state}`); // Use once
+      }
+    } else {
+      // Fallback: memory
+      const stateData = global.oauthStates?.get(state);
+      if (stateData && stateData.expires > Date.now()) {
+        userId = stateData.userId;
+        global.oauthStates.delete(state);
+      }
+    }
+    
+    if (!userId) {
+      logger.warn('Invalid or expired OAuth state token');
+      return res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=invalid_state`);
+    }
+    
+    // Exchange code for tokens
+    const tokens = await googleDriveService.getTokensFromCode(code);
+    
+    // Get account info
+    const accountInfo = await googleDriveService.getAccountInfo(tokens.access_token);
+    
+    // Update user record
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=user_not_found`);
+    }
+    
+    user.cloudBackup = {
+      provider: 'google_drive',
+      accessToken: encryptToken(tokens.access_token),
+      refreshToken: encryptToken(tokens.refresh_token),
+      tokenExpiry: new Date(tokens.expiry_date),
+      accountEmail: accountInfo.email,
+      accountName: accountInfo.name,
+      accountId: accountInfo.id,
+      schedule: {
+        enabled: false,
+        frequency: 'weekly',
+        time: '02:00',
+        timezone: 'UTC'
+      },
+      retention: {
+        maxBackups: 10,
+        autoCleanup: true
+      },
+      stats: {
+        totalBackups: 0,
+        manualBackups: 0,
+        autoBackups: 0
+      }
+    };
+    
+    await user.save();
+    
+    logger.info(`Google Drive connected successfully for user ${userId}`);
+    
+    // Redirect to success page
+    res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?success=true&provider=google_drive`);
+    
+  } catch (error) {
+    logger.error('Google Drive OAuth callback failed:', error);
+    res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=oauth_failed`);
+  }
+};
+
+/**
  * Get cloud backup status
  * GET /api/cloud/status
  */
@@ -274,9 +405,10 @@ export const createManualBackup = async (req, res) => {
     let uploadResult;
     if (user.cloudBackup.provider === 'dropbox') {
       uploadResult = await dropboxService.uploadBackup(user, backupFilePath, 'manual');
+    } else if (user.cloudBackup.provider === 'google_drive') {
+      uploadResult = await googleDriveService.uploadBackup(user, backupFilePath);
     } else {
-      // Google Drive - coming in Week 5
-      throw new Error('Google Drive not yet implemented');
+      throw new Error('Unknown cloud provider');
     }
     
     // Update user stats
@@ -359,9 +491,8 @@ export const listBackups = async (req, res) => {
     try {
       if (user.cloudBackup.provider === 'dropbox') {
         backups = await dropboxService.listBackups(user, parsedLimit);
-      } else {
-        // Google Drive - coming in Week 5
-        backups = [];
+      } else if (user.cloudBackup.provider === 'google_drive') {
+        backups = await googleDriveService.listBackups(user, parsedLimit);
       }
     } catch (error) {
       // In test/dev environments without real credentials, return empty array
@@ -406,9 +537,10 @@ export const deleteBackup = async (req, res) => {
     // Delete from cloud provider
     if (user.cloudBackup.provider === 'dropbox') {
       await dropboxService.deleteBackup(user, id);
+    } else if (user.cloudBackup.provider === 'google_drive') {
+      await googleDriveService.deleteBackup(user, id);
     } else {
-      // Google Drive - coming in Week 5
-      throw new Error('Google Drive not yet implemented');
+      throw new Error('Unknown cloud provider');
     }
     
     logger.info(`Backup deleted: ${id} for user ${req.user._id}`);
@@ -452,8 +584,10 @@ export const previewBackup = async (req, res) => {
     // Download backup temporarily
     if (user.cloudBackup.provider === 'dropbox') {
       tempFilePath = await dropboxService.downloadBackup(user, backupId);
+    } else if (user.cloudBackup.provider === 'google_drive') {
+      tempFilePath = await googleDriveService.downloadBackup(user, backupId);
     } else {
-      throw new Error('Google Drive not yet implemented');
+      throw new Error('Unknown cloud provider');
     }
     
     // Get preview
@@ -533,8 +667,10 @@ export const restoreBackup = async (req, res) => {
     // Download backup from cloud
     if (user.cloudBackup.provider === 'dropbox') {
       tempFilePath = await dropboxService.downloadBackup(user, backupId);
+    } else if (user.cloudBackup.provider === 'google_drive') {
+      tempFilePath = await googleDriveService.downloadBackup(user, backupId);
     } else {
-      throw new Error('Google Drive not yet implemented');
+      throw new Error('Unknown cloud provider');
     }
     
     // Parse backup

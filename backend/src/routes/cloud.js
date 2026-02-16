@@ -10,6 +10,8 @@ import { createRateLimiter } from '../middleware/rateLimiter.js';
 import {
   initiateDropboxAuth,
   handleDropboxCallback,
+  initiateGoogleAuth,
+  handleGoogleCallback,
   getCloudStatus,
   disconnectProvider,
   createManualBackup,
@@ -59,7 +61,7 @@ router.get('/dropbox/auth', authenticate, oauthLimiter, initiateDropboxAuth);
 router.get('/dropbox/callback', handleDropboxCallback);
 
 // =============================================================================
-// GOOGLE DRIVE OAUTH ENDPOINTS (Coming in Week 5)
+// GOOGLE DRIVE OAUTH ENDPOINTS
 // =============================================================================
 
 /**
@@ -67,21 +69,14 @@ router.get('/dropbox/callback', handleDropboxCallback);
  * @desc    Initiate Google Drive OAuth flow
  * @access  Private (requires authentication)
  */
-router.get('/google/auth', authenticate, oauthLimiter, (req, res) => {
-  res.status(501).json({
-    success: false,
-    message: 'Google Drive integration coming in Week 5!'
-  });
-});
+router.get('/google/auth', authenticate, oauthLimiter, initiateGoogleAuth);
 
 /**
  * @route   GET /api/cloud/google/callback
  * @desc    Handle Google Drive OAuth callback
  * @access  Public (state token validates user)
  */
-router.get('/google/callback', (req, res) => {
-  res.redirect(`${process.env.FRONTEND_URL}/account/cloud-backup?error=not_implemented`);
-});
+router.get('/google/callback', handleGoogleCallback);
 
 // =============================================================================
 // PROVIDER MANAGEMENT ENDPOINTS

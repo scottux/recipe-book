@@ -1438,9 +1438,64 @@ Recipe Book's 2FA implementation **matches industry leaders** (GitHub, Google, A
 
 ---
 
-## [2.2.0-beta] - 2026-02-16
+## [2.2.0] - 2026-02-16
 
-### ☁️ Cloud Backup Integration - Week 4: Automatic Backup Scheduler
+### ☁️ Cloud Backup Integration - Complete Multi-Provider Platform
+
+V2.2.0 completes the cloud backup infrastructure with Google Drive support, automatic scheduling, and enterprise-grade reliability. Users now have flexibility in choosing their preferred cloud storage provider (Dropbox or Google Drive) for automated recipe backups.
+
+### Added
+
+#### Week 5: Google Drive Integration (REQ-022) ✅
+
+**Google Drive Cloud Provider**
+- OAuth2 authentication flow with Google
+- File upload to Google Drive (streaming)
+- Backup listing and filtering from Google Drive
+- File download for restore operations (streaming)
+- File deletion with graceful error handling
+- Automatic token refresh (5-minute buffer)
+- Folder management ("Recipe Book Backups" auto-creation)
+- Account information display (email, name, provider)
+
+**Google Drive Service Features**
+- `googleDrive.js` - Complete Google Drive API v3 integration
+- OAuth2 client management with refresh tokens
+- Streaming uploads/downloads for memory efficiency
+- Token expiry tracking and auto-refresh
+- Provider-specific error handling (401, 403, 404)
+- Comprehensive logging throughout operations
+- ES6 module compatibility
+
+**OAuth2 Integration**
+- Secure authorization URL generation
+- CSRF protection via state tokens
+- Authorization code exchange for tokens
+- Access token + refresh token management
+- Minimal API scopes (`drive.file` only)
+- Offline access for background operations
+
+**Frontend UI Updates**
+- Google Drive connection button with branding
+- Google OAuth callback handling
+- Provider selection (Dropbox / Google Drive)
+- Connection status display for both providers
+- Consistent UI across all cloud providers
+- Provider-specific error messages
+
+**API Endpoints Added**
+- `POST /api/cloud/google/auth` - Initiate Google OAuth
+- `GET /api/cloud/google/callback` - OAuth callback handler
+- All existing cloud endpoints work with Google Drive
+
+**Token Security**
+- AES-256-GCM encryption for stored tokens
+- Automatic refresh before expiration
+- No tokens in logs or error messages
+- Tokens excluded from JSON responses
+- Secure cleanup of expired tokens
+
+#### Week 4: Automatic Backup Scheduler (REQ-021) ✅
 
 This beta release adds automatic cloud backup scheduling, completing the cloud backup infrastructure with enterprise-grade reliability features.
 
