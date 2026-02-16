@@ -346,7 +346,11 @@ const extractServingsFromText = (text, siteAdapter) => {
   }
   
   // Expanded common patterns for better coverage
+  // IMPORTANT: Range patterns must come BEFORE simple number patterns
   const patterns = [
+    /(\d+)\s+to\s+\d+\s+servings?/i,  // "4 to 6 servings" - take first number
+    /(\d+)\s*-\s*\d+\s+(?:servings?|people)/i,  // "4-6 servings" or "4 - 6 people"
+    /(\d+)-\d+\s+servings?/i,  // "4-6 servings" - take first number
     /yields?\s+(\d+)\s+servings?/i,
     /serves?\s+(\d+)(?:\s+(?:people|portions?|persons?))?/i,
     /(\d+)\s+servings?/i,
@@ -354,9 +358,6 @@ const extractServingsFromText = (text, siteAdapter) => {
     /makes?\s+(\d+)\s+(?:servings?|portions?)/i,
     /recipe\s+yields?\s+(\d+)/i,
     /for\s+(\d+)\s+(?:people|persons?)/i,
-    /(\d+)\s+to\s+\d+\s+servings?/i,  // "4 to 6 servings" - take first number
-    /(\d+)\s*-\s*\d+\s+(?:servings?|people)/i,  // "4-6 servings" or "4 - 6 people"
-    /(\d+)-\d+\s+servings?/i,  // "4-6 servings" - take first number
     /portions?:\s*(\d+)/i,
     /yield:\s*(\d+)/i,
   ];

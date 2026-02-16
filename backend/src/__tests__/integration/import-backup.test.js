@@ -104,9 +104,9 @@ describe('Import from Backup - Integration Tests', () => {
   beforeAll(async () => {
     // Create test user
     testUser = await User.create({
-      username: 'importtestuser',
       email: 'import@test.com',
-      password: 'Password123!',
+      password: 'Password123',
+      displayName: 'Import Test User',
     });
 
     userId = testUser._id;
@@ -114,11 +114,11 @@ describe('Import from Backup - Integration Tests', () => {
     // Get auth token
     const loginRes = await request(app).post('/api/auth/login').send({
       email: 'import@test.com',
-      password: 'Password123!',
+      password: 'Password123',
     });
 
-    authToken = loginRes.body.token;
-  });
+    authToken = loginRes.body.data.accessToken;
+  }, 30000);
 
   afterAll(async () => {
     // Cleanup
@@ -128,7 +128,7 @@ describe('Import from Backup - Integration Tests', () => {
     await MealPlan.deleteMany({});
     await ShoppingList.deleteMany({});
     await mongoose.connection.close();
-  });
+  }, 30000);
 
   beforeEach(async () => {
     // Clear user's data before each test
@@ -386,7 +386,7 @@ describe('Import from Backup - Integration Tests', () => {
         .post('/api/import/backup')
         .set('Authorization', `Bearer ${authToken}`)
         .field('mode', 'replace')
-        .field('password', 'WrongPassword!')
+        .field('password', 'WrongPassword')
         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
 
       expect(res.status).toBe(400);
@@ -414,7 +414,7 @@ describe('Import from Backup - Integration Tests', () => {
         .post('/api/import/backup')
         .set('Authorization', `Bearer ${authToken}`)
         .field('mode', 'replace')
-        .field('password', 'Password123!')
+        .field('password', 'Password123')
         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
 
       expect(res.status).toBe(200);

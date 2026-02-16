@@ -14,7 +14,7 @@ describe('Meal Planning API Integration Tests', () => {
     // Create test user and login
     const testUser = {
       email: 'mealplan@test.com',
-      password: 'password123',
+      password: 'Password123',
       displayName: 'Meal Planner',
     };
 
@@ -24,8 +24,8 @@ describe('Meal Planning API Integration Tests', () => {
       .post('/api/auth/login')
       .send({ email: testUser.email, password: testUser.password });
 
-    authToken = loginRes.body.accessToken;
-    userId = loginRes.body.user._id;
+    authToken = loginRes.body.data.accessToken;
+    userId = loginRes.body.data.user.id;
 
     // Create a test recipe
     testRecipe = await Recipe.create({
@@ -38,17 +38,17 @@ describe('Meal Planning API Integration Tests', () => {
       instructions: ['Mix ingredients', 'Bake'],
       owner: userId,
     });
-  });
+  }, 30000);
 
   afterAll(async () => {
     await User.deleteMany({ email: { $regex: /test\.com$/ } });
     await Recipe.deleteMany({ owner: userId });
     await MealPlan.deleteMany({ owner: userId });
-  });
+  }, 30000);
 
   afterEach(async () => {
     await MealPlan.deleteMany({ owner: userId });
-  });
+  }, 30000);
 
   describe('POST /api/meal-plans', () => {
     it('should create a new meal plan', async () => {
@@ -417,7 +417,7 @@ describe('Meal Planning API Integration Tests', () => {
     it('should not allow deleting other users meal plans', async () => {
       const otherUser = await User.create({
         email: 'other@test.com',
-        password: 'password123',
+        password: 'Password123',
         displayName: 'Other User',
       });
 

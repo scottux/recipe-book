@@ -36,7 +36,7 @@ beforeEach(async () => {
     .post('/api/auth/register')
     .send({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password123',
       displayName: 'Test User'
     });
 
@@ -50,8 +50,8 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
-        newPassword: 'newpassword123'
+        currentPassword: 'Password123',
+        newPassword: 'NewPassword123'
       });
 
     expect(res.status).toBe(200);
@@ -63,7 +63,7 @@ describe('Account Management - Update Password', () => {
       .post('/api/auth/login')
       .send({
         email: 'test@example.com',
-        password: 'newpassword123'
+        password: 'NewPassword123'
       });
 
     expect(loginRes.status).toBe(200);
@@ -76,8 +76,8 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
-        newPassword: 'newpassword123'
+        currentPassword: 'Password123',
+        newPassword: 'NewPassword123'
       });
 
     // Try to login with old password
@@ -85,7 +85,7 @@ describe('Account Management - Update Password', () => {
       .post('/api/auth/login')
       .send({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'Password123'
       });
 
     expect(loginRes.status).toBe(401);
@@ -97,8 +97,8 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'wrongpassword',
-        newPassword: 'newpassword123'
+        currentPassword: 'WrongPassword',
+        newPassword: 'NewPassword123'
       });
 
     expect(res.status).toBe(400);
@@ -111,7 +111,7 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
+        currentPassword: 'Password123',
         newPassword: 'short'
       });
 
@@ -125,8 +125,8 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
-        newPassword: 'password123'
+        currentPassword: 'Password123',
+        newPassword: 'Password123'
       });
 
     expect(res.status).toBe(400);
@@ -138,8 +138,8 @@ describe('Account Management - Update Password', () => {
     const res = await request(app)
       .patch('/api/auth/password')
       .send({
-        currentPassword: 'password123',
-        newPassword: 'newpassword123'
+        currentPassword: 'Password123',
+        newPassword: 'NewPassword123'
       });
 
     expect(res.status).toBe(401);
@@ -150,7 +150,7 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123'
+        currentPassword: 'Password123'
       });
 
     expect(res.status).toBe(400);
@@ -163,8 +163,8 @@ describe('Account Management - Update Password', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
-        newPassword: 'newpassword123'
+        currentPassword: 'Password123',
+        newPassword: 'NewPassword123'
       });
 
     // Verify same token still works
@@ -183,7 +183,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     expect(res.status).toBe(200);
@@ -201,7 +201,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     // Try to login
@@ -209,7 +209,7 @@ describe('Account Management - Delete Account', () => {
       .post('/api/auth/login')
       .send({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'Password123'
       });
 
     expect(loginRes.status).toBe(401);
@@ -243,7 +243,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     // Verify recipes are deleted
@@ -270,7 +270,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     // Verify collection is deleted
@@ -298,7 +298,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     // Verify meal plan is deleted
@@ -324,7 +324,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     // Verify shopping list is deleted
@@ -337,7 +337,7 @@ describe('Account Management - Delete Account', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'wrongpassword'
+        password: 'WrongPassword'
       });
 
     expect(res.status).toBe(400);
@@ -353,7 +353,7 @@ describe('Account Management - Delete Account', () => {
     const res = await request(app)
       .delete('/api/auth/account')
       .send({
-        password: 'password123'
+        password: 'Password123'
       });
 
     expect(res.status).toBe(401);
@@ -393,8 +393,8 @@ describe('Account Management - Complete Flow', () => {
       .patch('/api/auth/password')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        currentPassword: 'password123',
-        newPassword: 'newpassword123'
+        currentPassword: 'Password123',
+        newPassword: 'NewPassword123'
       });
 
     expect(passwordRes.status).toBe(200);
@@ -411,7 +411,7 @@ describe('Account Management - Complete Flow', () => {
       .delete('/api/auth/account')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        password: 'newpassword123' // Use new password
+        password: 'NewPassword123' // Use new password
       });
 
     expect(deleteRes.status).toBe(200);
