@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FFF8E7;
+}
+
+@layer components {
+  .recipe-card {
+    @apply bg-cookbook-paper border-2 border-cookbook-aged rounded-xl shadow-card transition-all duration-300;
+    @apply hover:shadow-card-hover hover:-translate-y-1;
+    @apply flex flex-col relative overflow-hidden;
+    background-image: 
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+      repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(139, 90, 60, 0.05) 30px, rgba(139, 90, 60, 0.05) 31px);
+  }
+
+  .cookbook-page {
+    @apply bg-cookbook-paper shadow-cookbook rounded-lg border-2 border-cookbook-aged;
+    background-image: 
+      linear-gradient(to right, rgba(139, 90, 60, 0.1) 0%, transparent 5%, transparent 100%),
+      repeating-linear-gradient(0deg, transparent, transparent 26px, rgba(139, 90, 60, 0.05) 26px, rgba(139, 90, 60, 0.05) 27px);
+  }
+
+  .decorative-divider {
+    @apply border-t-2 border-cookbook-brown my-6;
+    border-style: double;
+  }
+
+  .vintage-badge {
+    @apply inline-block px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-cookbook-aged text-cookbook-darkbrown border border-cookbook-brown;
+  }
+
+  .step-number {
+    @apply flex-shrink-0 w-10 h-10 rounded-full inline-flex items-center justify-center font-bold align-middle text-lg;
+    @apply bg-cookbook-darkbrown text-cookbook-cream shadow-md;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Select arrow spacing fix */
+  select {
+    @apply pr-10;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* Consistent focus styles */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply outline-none ring-2 ring-cookbook-brown/30 border-cookbook-brown;
+  }
+
+  /* Half-star rating support */
+  .star-half {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .star-half::before {
+    content: '★';
+    position: absolute;
+    width: 50%;
+    overflow: hidden;
+  }
+}
+
+/* Print Styles - Index Card Size */
+@media print {
+  @page {
+    size: 5in 7in;
+    margin: 0.25in;
+  }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background-color: white;
+    font-size: 8pt;
+    line-height: 1.2;
+  }
+
+  /* Hide all UI elements and decorations */
+  button,
+  .no-print,
+  nav,
+  header,
+  footer,
+  .action-buttons,
+  .decorative-divider,
+  .recipe-card::before,
+  .recipe-card::after,
+  .vintage-badge,
+  .border-t,
+  .border-b-2 {
+    display: none !important;
+  }
+
+  /* Compact layout */
+  .max-w-6xl,
+  .max-w-4xl,
+  .max-w-2xl,
+  main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .cookbook-page {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    background: white !important;
+    background-image: none !important;
+  }
+
+  /* Simplified header */
+  h1 {
+    font-size: 14pt !important;
+    margin-bottom: 2pt !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+    border-bottom: 1pt solid #333 !important;
+    padding-bottom: 2pt !important;
+  }
+
+  h2 {
+    font-size: 10pt !important;
+    margin-bottom: 3pt !important;
+    margin-top: 6pt !important;
+    font-weight: bold !important;
+  }
+
+  p {
+    font-size: 7pt !important;
+    margin: 1pt 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Simplified meta info - single line */
+  .space-y-4 {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 3pt 0 !important;
+    display: block !important;
+  }
+
+  .grid-cols-2,
+  .grid-cols-4 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6pt !important;
+    font-size: 7pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+
+  .grid-cols-2 > div,
+  .grid-cols-4 > div {
+    flex: 0 0 auto !important;
+    text-align: left !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .text-center {
+    text-align: left !important;
+  }
+
+  .text-xs,
+  .text-sm {
+    font-size: 6pt !important;
+    margin: 0 !important;
+  }
+
+  .text-xl,
+  .text-2xl,
+  .text-lg {
+    font-size: 7pt !important;
+    font-weight: normal !important;
+  }
+
+  /* Hide tags section */
+  .flex-wrap.justify-center {
+    display: none !important;
+  }
+
+  /* Ingredients and instructions side by side */
+  .grid > div:first-child,
+  .grid > div:last-child {
+    display: inline-block !important;
+    width: 48% !important;
+    vertical-align: top !important;
+  }
+
+  ul, ol {
+    margin: 2pt 0 !important;
+    padding-left: 10pt !important;
+  }
+
+  li {
+    font-size: 7pt !important;
+    margin-bottom: 1pt !important;
+    line-height: 1.2 !important;
+  }
+
+  .step-number {
+    width: 14pt !important;
+    height: 14pt !important;
+    font-size: 7pt !important;
+    display: inline-flex !important;
+    background: #000 !important;
+    color: white !important;
+    margin-right: 3pt !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Compact spacing */
+  .space-y-3 > * + *,
+  .space-y-5 > * + * {
+    margin-top: 1pt !important;
+  }
+
+  .gap-3,
+  .gap-4,
+  .gap-6,
+  .gap-8 {
+    gap: 2pt !important;
+  }
+
+  .mb-8,
+  .mb-6,
+  .mb-4,
+  .mb-3,
+  .mb-2 {
+    margin-bottom: 2pt !important;
+  }
+
+  .mt-6,
+  .mt-4,
+  .mt-2,
+  .mt-1 {
+    margin-top: 2pt !important;
+  }
+
+  .p-8,
+  .p-6,
+  .p-5,
+  .p-4 {
+    padding: 0 !important;
+  }
+
+
+  /* Page breaks */
+  .cookbook-page {
+    page-break-inside: avoid;
+  }
+
+  h2 {
+    page-break-after: avoid;
+  }
+
+  /* Remove all rounded corners */
+  * {
+    border-radius: 0 !important;
+  }
+}
