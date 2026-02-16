@@ -162,6 +162,60 @@ export const sendPasswordResetEmail = async ({
 };
 
 /**
+ * Send email verification email to user
+ * 
+ * @param {Object} options - Email options
+ * @param {string} options.to - Recipient email address
+ * @param {string} options.username - User's display name
+ * @param {string} options.verificationUrl - Email verification URL with token
+ * @returns {Promise<Object>} Send result from nodemailer
+ */
+export const sendVerificationEmail = async ({
+  to,
+  username,
+  verificationUrl
+}) => {
+  if (!transporter) {
+    throw new Error('Email service not initialized. Call initializeEmailService() first.');
+  }
+  
+  try {
+    // Load templates
+    const htmlTemplate = await loadTemplate('email-verification');
+    const textTemplate = await loadTextTemplate('email-verification');
+    
+    // Prepare variables
+    const variables = {
+      username,
+      verificationUrl,
+      supportEmail: process.env.SUPPORT_EMAIL || 'support@recipebook.com',
+      appName: process.env.APP_NAME || 'Recipe Book'
+    };
+    
+    // Replace variables in templates
+    const html = replaceVariables(htmlTemplate, variables);
+    const text = textTemplate 
+      ? replaceVariables(textTemplate, variables)
+      : `Welcome to Recipe Book!\n\nHello ${username},\n\nPlease verify your email address by clicking the link below:\n\n${verificationUrl}\n\nThis link will expire in 24 hours.\n\nIf you didn't create an account with Recipe Book, you can safely ignore this email.`;
+    
+    // Send email
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_FROM || '"Recipe Book" <noreply@recipebook.com>',
+      to,
+      subject: 'Verify your email - Recipe Book',
+      text,
+      html
+    });
+    
+    console.log('Verification email sent:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Failed to send verification email:', error);
+    throw error;
+  }
+};
+
+/**
  * Test email service configuration
  * 
  * @returns {Promise<boolean>} True if test successful

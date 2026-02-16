@@ -4,7 +4,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken
 } from '../middleware/auth.js';
-import { sendPasswordResetEmail } from '../services/emailService.js';
+import { sendPasswordResetEmail, sendVerificationEmail } from '../services/emailService.js';
 import { validatePassword, randomDelay } from '../utils/passwordValidator.js';
 
 // Register new user
@@ -52,6 +52,26 @@ export const register = async (req, res) => {
     // Save refresh token to user
     user.refreshTokens.push({ token: refreshToken });
     await user.save();
+
+    // Send verification email (async, don't wait)
+    try {
+      const verificationToken = user.createEmailVerificationToken();
+      await user.save({ validateBeforeSave: false });
+      
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+      
+      await sendVerificationEmail({
+        to: user.email,
+        username: user.displayName,
+        verificationUrl
+      });
+      
+      console.log(`Verification email sent to: ${user.email}`);
+    } catch (emailError) {
+      // Log error but don't fail registration
+      console.error('Failed to send verification email:', emailError);
+    }
 
     res.status(201).json({
       success: true,
@@ -594,6 +614,152 @@ export const validateResetToken = async (req, res) => {
     res.status(500).json({
       valid: false,
       error: 'An error occurred while validating the token.'
+    });
+  }
+};
+
+// Send verification email
+const verificationEmailAttempts = new Map(); // In-memory rate limiting storage
+
+export const sendVerification = async (req, res) => {
+  try {
+    const userId = req.user._id.toString();
+    
+    // Rate limiting: 3 emails per hour per user
+    const now = Date.now();
+    const hourAgo = now - 60 * 60 * 1000;
+    
+    let attempts = verificationEmailAttempts.get(userId) || [];
+    attempts = attempts.filter(time => time > hourAgo);
+    
+    if (attempts.length >= 3) {
+      return res.status(429).json({
+        success: false,
+        error: 'Too many verification email requests. Please try again later.'
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found.'
+      });
+    }
+
+    // Check if already verified
+    if (user.emailVerified) {
+      return res.json({
+        success: true,
+        message: 'Email already verified.'
+      });
+    }
+
+    // Generate and save verification token
+    const verificationToken = user.createEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Build verification URL
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+
+    // Send email
+    try {
+      await sendVerificationEmail({
+        to: user.email,
+        username: user.displayName,
+        verificationUrl
+      });
+      
+      console.log(`Verification email sent to: ${user.email}`);
+      
+      // Add to rate limit attempts
+      attempts.push(now);
+      verificationEmailAttempts.set(userId, attempts);
+      
+      res.json({
+        success: true,
+        message: `Verification email sent to ${user.email}`
+      });
+    } catch (emailError) {
+      // Clear the token if email fails
+      user.emailVerificationToken = null;
+      user.emailVerificationExpires = null;
+      await user.save({ validateBeforeSave: false });
+      
+      console.error('Failed to send verification email:', emailError);
+      
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to send verification email. Please try again later.'
+      });
+    }
+  } catch (error) {
+    console.error('Send verification error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'An error occurred while sending verification email.'
+    });
+  }
+};
+
+// Verify email with token
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        error: 'Verification token is required.'
+      });
+    }
+
+    // Find user by verification token using static method
+    const user = await User.findByVerificationToken(token);
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid or expired verification token.'
+      });
+    }
+
+    // Validate token using instance method
+    const validation = user.validateVerificationToken(token);
+    
+    if (!validation.valid) {
+      let errorMessage = 'Invalid or expired verification token.';
+      if (validation.reason === 'already_verified') {
+        return res.json({
+          success: true,
+          message: 'Email already verified.'
+        });
+      } else if (validation.reason === 'expired') {
+        errorMessage = 'Verification link has expired. Please request a new one.';
+      }
+      
+      return res.status(400).json({
+        success: false,
+        error: errorMessage
+      });
+    }
+
+    // Mark email as verified
+    user.markEmailVerified();
+    await user.save();
+
+    console.log(`Email verified for user: ${user.email}`);
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully.'
+    });
+  } catch (error) {
+    console.error('Verify email error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'An error occurred while verifying your email.'
     });
   }
 };

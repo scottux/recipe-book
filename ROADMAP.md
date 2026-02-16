@@ -171,58 +171,36 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 
 ## 🎯 Next Up: V2.1.5
 
-### V2.1.5 - Performance & Infrastructure (PLANNED)
+### V2.1.5 - Email Verification (IN PROGRESS)
 
 **Priority**: HIGH  
 **Target**: Late February 2026  
-**Focus**: Performance optimizations and production infrastructure
-
-#### Current Phase
-- ⏳ **Phase 1**: Planning & Requirements Documentation (NEXT)
-
-#### Planned Features
-- **Redis Rate Limiting** ⭐ HIGH PRIORITY
-  - Replace in-memory rate limiting with Redis
-  - Support multi-server deployments
-  - Persistent rate limit state
-  - Per-endpoint customization
-  - User-specific limits
-
-- **Performance Optimizations**
-  - Database query optimization audit
-  - Add missing database indexes
-  - Response compression
-  - Static asset CDN configuration
-  - Bundle size optimization
-
-- **Production Infrastructure**
-  - Structured logging (Winston/Bunyan)
-  - Error tracking (Sentry integration)
-  - Health check endpoints
-  - Graceful shutdown handling
-  - Production deployment guide
-
-### V2.1.6 - Email Verification (PLANNED)
-
-**Priority**: MEDIUM  
-**Target**: Mid March 2026  
 **Focus**: Account verification and security
 
-#### Email Features
+#### Current Phase
+- ⏳ **Phase 1**: Requirements Documentation (IN PROGRESS)
+
+#### Planned Features
 - **Email Verification on Registration**
   - Send verification email on signup
-  - Verification token generation
-  - Email verification page
-  - Resend verification email
-  - Unverified user restrictions
+  - Verification token generation (24-hour expiry)
+  - Email verification page with token validation
+  - Resend verification email (rate limited)
+  - Unverified user restrictions (optional)
 
 - **Account Security**
-  - Require email verification for certain features
+  - Verification status tracking
   - Verified badge on user profile
-  - Email change verification
-  - Security alert emails
+  - Email change verification (future)
+  - Security alert emails (future)
 
-**V2.1 Series Progress**: 4 of 6 releases complete (V2.1.0 - V2.1.4)
+- **User Experience**
+  - Non-blocking verification (users can use app)
+  - Gentle reminder banner for unverified users
+  - Easy resend option in account settings
+  - Clear verification instructions
+
+**V2.1 Series Progress**: 4 of 5 releases complete (V2.1.0 - V2.1.4)
 
 ---
 
@@ -545,6 +523,43 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 
 **Estimated Effort**: 6 weeks  
 **Dependencies**: Analytics service, monitoring tools
+
+---
+
+### V2.1.6 - Performance & Infrastructure (DEFERRED to Post-V3.0)
+
+**Priority**: HIGH (for production deployment)  
+**Target**: After V3.0 (Q4 2027)  
+**Focus**: Production-ready infrastructure and performance
+
+**Note**: This release has been deferred to focus on user-facing features first. The infrastructure improvements will be implemented when preparing for production deployment.
+
+#### Planned Features
+- **Redis Rate Limiting**
+  - Replace in-memory rate limiting with Redis
+  - Support multi-server deployments
+  - Persistent rate limit state
+  - Per-endpoint customization
+
+- **OpenTelemetry & Observability**
+  - OpenTelemetry instrumentation
+  - OpenObserve integration (logs, metrics, traces)
+  - Distributed tracing
+  - Performance monitoring dashboards
+
+- **Performance Optimizations**
+  - Database query optimization audit
+  - Add missing database indexes
+  - Frontend code splitting
+  - Bundle size optimization
+
+- **Production Infrastructure**
+  - Structured logging with Winston ✅ (already implemented)
+  - Health check endpoints ✅ (already implemented)
+  - Graceful shutdown ✅ (already implemented)
+  - Production deployment guide
+  - Load balancer configuration
+  - Docker Compose production stack
 
 ---
 

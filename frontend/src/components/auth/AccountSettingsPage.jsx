@@ -21,6 +21,38 @@ function AccountSettingsPage() {
   const [deleteError, setDeleteError] = useState('');
   const [deleteLoading, setDeleteLoading] = useState(false);
 
+  // Email verification state
+  const [verificationMessage, setVerificationMessage] = useState('');
+  const [verificationError, setVerificationError] = useState('');
+  const [verificationLoading, setVerificationLoading] = useState(false);
+
+  const handleResendVerification = async () => {
+    setVerificationMessage('');
+    setVerificationError('');
+    setVerificationLoading(true);
+
+    try {
+      const response = await authAPI.sendVerificationEmail();
+      setVerificationMessage(response.data.message || 'Verification email sent!');
+      
+      // Clear message after 5 seconds
+      setTimeout(() => {
+        setVerificationMessage('');
+      }, 5000);
+    } catch (err) {
+      setVerificationError(
+        err.response?.data?.error || 'Failed to send verification email.'
+      );
+      
+      // Clear error after 5 seconds
+      setTimeout(() => {
+        setVerificationError('');
+      }, 5000);
+    } finally {
+      setVerificationLoading(false);
+    }
+  };
+
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setPasswordError('');
@@ -113,7 +145,65 @@ function AccountSettingsPage() {
             <span className="font-medium">Email:</span>{' '}
             <span>{user?.email || 'N/A'}</span>
           </div>
-          <div className="text-sm text-gray-600">
+          
+          {/* Email Verification Status */}
+          <div className="pt-2">
+            <span className="font-medium">Email Status:</span>{' '}
+            {user?.emailVerified ? (
+              <span className="inline-flex items-center gap-1.5 text-green-700 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Verified
+              </span>
+            ) : (
+              <div className="inline-flex flex-col gap-2 mt-1">
+                <span className="inline-flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-1 rounded-full text-sm font-medium">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  Not Verified
+                </span>
+                
+                {verificationMessage && (
+                  <div className="text-sm p-2 bg-green-50 border border-green-200 rounded text-green-800">
+                    {verificationMessage}
+                  </div>
+                )}
+                
+                {verificationError && (
+                  <div className="text-sm p-2 bg-red-50 border border-red-200 rounded text-red-800">
+                    {verificationError}
+                  </div>
+                )}
+                
+                <button
+                  onClick={handleResendVerification}
+                  disabled={verificationLoading}
+                  className="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {verificationLoading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Resend Verification Email
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+          
+          <div className="text-sm text-gray-600 pt-1">
             Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
           </div>
         </div>

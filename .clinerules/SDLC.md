@@ -1212,12 +1212,11 @@ The Recipe Book project demonstrates that a well-defined SDLC process leads to:
 
 ---
 
-**Document Version**: 1.2  
+**Document Version**: 1.1  
 **Last Updated**: February 15, 2026  
 **Maintained By**: Development Team  
 **Next Review**: After V2.2 release
 
 **Changelog**:
-- **V1.2** (Feb 15, 2026): Added Retro and Planning sessions
 - **V1.1** (Feb 15, 2026): Added semantic versioning strategy section
 - **V1.0** (Feb 15, 2026): Initial SDLC documentation

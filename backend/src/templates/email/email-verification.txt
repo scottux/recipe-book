@@ -1,0 +1,45 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERIFY YOUR EMAIL - RECIPE BOOK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hi {{username}},
+
+Welcome to Recipe Book! 🎉
+
+Please verify your email address to complete your account setup and 
+unlock all features.
+
+
+VERIFY YOUR EMAIL ADDRESS
+─────────────────────────
+
+Click the link below to verify your email:
+
+{{verificationUrl}}
+
+
+EXPIRATION NOTICE
+─────────────────
+
+⏰ This verification link will expire in 24 hours.
+
+
+SECURITY INFORMATION
+────────────────────
+
+Didn't create an account?
+
+If you didn't sign up for Recipe Book, you can safely ignore this 
+email. Your email address will not be added to our system.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Happy Cooking!
+The Recipe Book Team
+
+Questions? Contact us at {{supportEmail}}
+
+© 2026 {{appName}}. All rights reserved.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

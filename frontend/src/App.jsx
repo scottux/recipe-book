@@ -14,9 +14,11 @@ import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './components/auth/ResetPasswordPage';
+import EmailVerificationPage from './components/auth/EmailVerificationPage';
 import AccountSettingsPage from './components/auth/AccountSettingsPage';
 import ImportPage from './components/ImportPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import VerificationBanner from './components/VerificationBanner';
 
 function AppContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,6 +40,9 @@ function AppContent() {
 
   return (
       <div className="min-h-screen bg-cookbook-cream">
+        {/* Verification Banner */}
+        <VerificationBanner />
+        
         {/* Header */}
         <header className="bg-cookbook-paper shadow-md border-b-2 border-cookbook-aged">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -240,6 +245,7 @@ function AppContent() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/verify-email/:token" element={<EmailVerificationPage />} />
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>

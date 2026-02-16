@@ -257,7 +257,10 @@ export const authAPI = {
   validateResetToken: (token) => api.get('/auth/validate-reset-token', { params: { token } }),
   
   // Reset password with token
-  resetPassword: (token, password) => api.post('/auth/reset-password', { token, password })
+  resetPassword: (token, password) => api.post('/auth/reset-password', { token, password }),
+  
+  // Send verification email
+  sendVerificationEmail: () => api.post('/auth/send-verification')
 };
 
 export default api;

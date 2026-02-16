@@ -73,6 +73,21 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
     select: false
+  },
+  // Email Verification Fields
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  emailVerificationToken: {
+    type: String,
+    default: null,
+    select: false  // Don't include by default
+  },
+  emailVerificationExpires: {
+    type: Date,
+    default: null,
+    select: false
   }
 }, {
   timestamps: true
@@ -86,6 +101,12 @@ userSchema.index({
   resetPasswordToken: 1, 
   resetPasswordExpires: 1 
 });
+
+// Sparse index for email verification token lookup
+userSchema.index(
+  { emailVerificationToken: 1 },
+  { sparse: true }
+);
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
@@ -162,6 +183,57 @@ userSchema.methods.markResetTokenUsed = function() {
   this.resetPasswordExpires = null;
 };
 
+// Generate email verification token
+userSchema.methods.createEmailVerificationToken = function() {
+  // Generate 32-byte random token
+  const verificationToken = crypto.randomBytes(32).toString('hex');
+  
+  // Hash for storage (SHA-256)
+  this.emailVerificationToken = crypto
+    .createHash('sha256')
+    .update(verificationToken)
+    .digest('hex');
+    
+  // Set expiration (24 hours from now)
+  this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000;
+  
+  // Return plain token (only time it's available)
+  return verificationToken;
+};
+
+// Validate email verification token
+userSchema.methods.validateVerificationToken = function(token) {
+  // Check if already verified
+  if (this.emailVerified) {
+    return { valid: false, reason: 'already_verified' };
+  }
+  
+  // Hash provided token
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+  
+  // Check if matches stored hash
+  if (this.emailVerificationToken !== hashedToken) {
+    return { valid: false, reason: 'invalid' };
+  }
+  
+  // Check if expired
+  if (Date.now() > this.emailVerificationExpires) {
+    return { valid: false, reason: 'expired' };
+  }
+  
+  return { valid: true };
+};
+
+// Mark email as verified
+userSchema.methods.markEmailVerified = function() {
+  this.emailVerified = true;
+  this.emailVerificationToken = null;
+  this.emailVerificationExpires = null;
+};
+
 // Method to get public profile (exclude sensitive data)
 userSchema.methods.toPublicProfile = function() {
   return {
@@ -171,6 +243,7 @@ userSchema.methods.toPublicProfile = function() {
     avatar: this.avatar,
     preferences: this.preferences,
     isVerified: this.isVerified,
+    emailVerified: this.emailVerified,
     createdAt: this.createdAt
   };
 };
@@ -183,6 +256,8 @@ userSchema.methods.toJSON = function() {
   delete obj.resetPasswordToken;
   delete obj.resetPasswordExpires;
   delete obj.resetPasswordUsedAt;
+  delete obj.emailVerificationToken;
+  delete obj.emailVerificationExpires;
   return obj;
 };
 
@@ -200,9 +275,24 @@ userSchema.statics.findByResetToken = async function(token) {
   }).select('+resetPasswordToken +resetPasswordExpires +resetPasswordUsedAt');
 };
 
+// Static method: Find user by verification token
+userSchema.statics.findByVerificationToken = async function(token) {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+  
+  return this.findOne({
+    emailVerificationToken: hashedToken,
+    emailVerificationExpires: { $gt: Date.now() },
+    emailVerified: false
+  }).select('+emailVerificationToken +emailVerificationExpires');
+};
+
 // Static method: Cleanup expired tokens (for maintenance/cron)
 userSchema.statics.cleanupExpiredTokens = async function() {
-  const result = await this.updateMany(
+  // Cleanup password reset tokens
+  const passwordResetResult = await this.updateMany(
     {
       resetPasswordExpires: { $lt: Date.now() },
       resetPasswordToken: { $ne: null }
@@ -215,7 +305,24 @@ userSchema.statics.cleanupExpiredTokens = async function() {
     }
   );
   
-  return result.modifiedCount;
+  // Cleanup email verification tokens
+  const emailVerificationResult = await this.updateMany(
+    {
+      emailVerificationExpires: { $lt: Date.now() },
+      emailVerificationToken: { $ne: null }
+    },
+    {
+      $set: {
+        emailVerificationToken: null,
+        emailVerificationExpires: null
+      }
+    }
+  );
+  
+  return {
+    passwordResetTokens: passwordResetResult.modifiedCount,
+    emailVerificationTokens: emailVerificationResult.modifiedCount
+  };
 };
 
 const User = mongoose.model('User', userSchema);

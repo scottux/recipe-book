@@ -10,7 +10,9 @@ import {
   deleteAccount,
   forgotPassword,
   validateResetToken,
-  resetPassword
+  resetPassword,
+  sendVerification,
+  verifyEmail
 } from '../controllers/authController.js';
 import { authenticate } from '../middleware/auth.js';
 import { passwordResetRateLimiter } from '../middleware/rateLimiter.js';
@@ -26,6 +28,10 @@ router.post('/refresh', refresh);
 router.post('/forgot-password', passwordResetRateLimiter(), forgotPassword);
 router.get('/validate-reset-token', validateResetToken);
 router.post('/reset-password', resetPassword);
+
+// Email verification routes
+router.get('/verify-email/:token', verifyEmail); // Public - token auth
+router.post('/send-verification', authenticate, sendVerification); // Protected
 
 // Protected routes
 router.post('/logout', authenticate, logout);
