@@ -1,6 +1,6 @@
 {
   "name": "recipe-book",
-  "version": "2.1.2",
+  "version": "2.1.7",
   "description": "Recipe book application - monorepo root",
   "private": true,
   "scripts": {

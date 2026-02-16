@@ -23,7 +23,13 @@ function LoginPage() {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      // Check if 2FA is required
+      if (err.response?.data?.requires2FA) {
+        // Redirect to 2FA verification page with email in state
+        navigate('/2fa/verify', { state: { email, password } });
+      } else {
+        setError(err.response?.data?.error || 'Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -122,7 +128,7 @@ function LoginPage() {
 
           <div className="mt-4 pt-4 border-t-2 border-cookbook-aged">
             <p className="text-xs text-cookbook-brown font-body text-center">
-              Demo: admin@recipebook.local / admin123
+              Demo: admin@recipebook.local / Admin123!
             </p>
           </div>
         </div>

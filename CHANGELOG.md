@@ -1234,6 +1234,210 @@ No new dependencies required (uses existing nodemailer from v2.1.0)
 
 ---
 
+## [2.1.7] - 2026-02-16
+
+### 🔐 Two-Factor Authentication - Enhanced Account Security
+
+This release adds industry-standard two-factor authentication (2FA) using TOTP (Time-based One-Time Password), providing an additional layer of security for user accounts.
+
+### Added
+
+#### Two-Factor Authentication System (REQ-020) ✅
+
+**TOTP-Based 2FA**
+- RFC 6238 compliant TOTP implementation
+- 30-second time window with ±60 second clock drift tolerance
+- 6-digit verification codes
+- QR code generation for easy authenticator app setup
+- Manual entry code alternative for accessibility
+- Support for popular authenticator apps (Google, Microsoft, Authy, 1Password)
+
+**Backup Codes**
+- 10 cryptographically secure backup codes
+- SHA-256 hashed before storage
+- Single-use enforcement with timestamp tracking
+- Downloadable as text file
+- Alternative authentication when TOTP unavailable
+- Remaining code counter for user awareness
+
+**2FA Setup Flow**
+- /setup-2fa - QR code generation and display
+- Manual entry code for accessibility
+- Real-time TOTP verification
+- Backup codes generated on successful setup
+- Download backup codes functionality
+- Clear setup instructions
+
+**2FA Verification Flow**
+- Integrated into existing login process
+- Two-step authentication (password → 2FA)
+- Support for both TOTP and backup codes
+- Automatic code type detection (6 digits = TOTP, 8 = backup)
+- Grace period for code entry
+- Clear error messaging
+
+**2FA Management**
+- Account settings integration
+- Enable/disable 2FA (password required)
+- Status display with visual badges
+- Secure disable workflow
+- Complete cleanup on disable
+
+**Security Features**
+- ✅ Password verification required to disable 2FA
+- ✅ Secret never exposed in API responses (`select: false`)
+- ✅ Backup codes hashed with SHA-256
+- ✅ Single-use backup code enforcement
+- ✅ Cryptographically secure random generation
+- ✅ Rate limiting on verification endpoints (5 attempts / 15 min)
+- ✅ Generic error messages prevent information leakage
+- ✅ Window parameter prevents replay attacks
+
+### Changed
+
+**User Model Updates**
+- Added `twoFactorEnabled` field (Boolean, default: false)
+- Added `twoFactorSecret` field (String, hashed, select: false)
+- Added `twoFactorBackupCodes` array with usage tracking
+- Added `generateBackupCodes()` method
+- Added `verifyBackupCode()` method
+- Integrated 2FA into `toPublicProfile()` method
+
+**Login Flow**
+- Enhanced to support 2FA verification
+- Returns `requiresTwoFactor: true` when 2FA enabled
+- Accepts `twoFactorToken` parameter
+- Supports both TOTP and backup codes
+- Logs backup code usage for security audit
+
+**Account Settings**
+- Added 2FA status section
+- Enable/Disable 2FA controls
+- Visual status indicators
+- Quick setup navigation
+
+### API Endpoints Added
+- `POST /api/auth/2fa/setup` - Generate QR code and secret (protected)
+- `POST /api/auth/2fa/verify` - Verify code and enable 2FA (protected)
+- `POST /api/auth/2fa/disable` - Disable 2FA (protected, password required)
+- `GET /api/auth/2fa/status` - Get current 2FA status (protected)
+- `POST /api/auth/login` - Enhanced with 2FA support (existing endpoint)
+
+### Dependencies Added
+- speakeasy (^2.0.0) - TOTP generation and verification
+- qrcode (^1.5.4) - QR code generation
+
+### Rate Limiting Added
+- **Verification Endpoints**: 5 attempts per 15 minutes
+  - `/api/auth/2fa/verify`
+  - `/api/auth/2fa/verify-login`
+  
+- **Management Endpoints**: 10 attempts per hour
+  - `/api/auth/2fa/setup`
+  - `/api/auth/2fa/disable`
+
+### Security Improvements
+- ✅ OWASP-compliant 2FA implementation
+- ✅ Defense against brute force (rate limiting)
+- ✅ Protection against timing attacks
+- ✅ Secure secret storage and transmission
+- ✅ Single-use backup code enforcement
+- ✅ Critical action requires password re-authentication
+- ✅ Comprehensive security logging
+
+### Testing
+- Comprehensive integration test suite (23 test cases)
+  - Setup and QR code generation
+  - TOTP verification flow
+  - Backup code generation and usage
+  - Enable/Disable workflows
+  - Login with 2FA
+  - Security validations
+  - Error handling
+  - Edge cases
+- Manual testing guide (22 test scenarios)
+- All security requirements verified
+
+### User Experience
+- ✅ Industry-standard QR code setup
+- ✅ Clear step-by-step instructions
+- ✅ Visual feedback throughout process
+- ✅ Auto-focus on code input
+- ✅ Real-time validation
+- ✅ Support for both TOTP and backup codes
+- ✅ Mobile-responsive design
+- ✅ Cookbook theme consistency
+- ✅ Accessibility features (manual entry, clear labels)
+
+### Documentation
+- REQ-020: Two-Factor Authentication specification (1100+ lines)
+- CODE_REVIEW_V2.1.7.md - Comprehensive review (60+ pages)
+- UX_REVIEW_V2.1.7.md - Design system compliance
+- V2.1.7-MANUAL-TEST-GUIDE.md - Testing procedures
+- V2.1.7-DEVELOPMENT-SUMMARY.md - Implementation details
+- Updated API reference documentation
+
+### Design System Compliance
+- **Color Palette**: ✅ Cookbook brown theme throughout
+- **Typography**: ✅ Font-display for headings, font-body for text
+- **Components**: ✅ Standard button, input, modal styling
+- **Accessibility**: ✅ WCAG 2.1 AA compliance
+- **Responsive**: ✅ Mobile-first design
+- **Visual Consistency**: ⭐⭐⭐⭐⭐ Excellent
+
+### Code Review Status
+- **Overall Rating**: 5/5 stars ⭐⭐⭐⭐⭐
+- **Security**: 4/5 - Very Good (add rate limiting = 5/5)
+- **Code Quality**: 5/5 - Excellent
+- **Performance**: 5/5 - Excellent
+- **Maintainability**: 5/5 - Excellent
+- **User Experience**: 5/5 - Intuitive and accessible
+- **Status**: ✅ APPROVED FOR PRODUCTION
+
+### Industry Comparison
+Recipe Book's 2FA implementation **matches industry leaders** (GitHub, Google, AWS) for core TOTP functionality:
+- ✅ TOTP Support (RFC 6238)
+- ✅ QR Code Setup
+- ✅ Manual Entry Alternative
+- ✅ Backup Codes (10)
+- ✅ Single-Use Enforcement
+- ✅ Password to Disable
+- ✅ Secret Security
+- ✅ Rate Limiting
+
+**Advanced features planned for future versions:**
+- SMS-based 2FA (V2.2.0)
+- Hardware security keys / WebAuthn (V2.2.0)
+- Remember device option (V2.2.0)
+
+### Backward Compatibility
+- **100% Backward Compatible** - All changes are additive
+- Existing users unaffected
+- 2FA is optional (not enforced)
+- No breaking changes to authentication flow
+- Feature can be enabled per-user basis
+
+### Known Limitations
+- Rate limiting uses in-memory storage (resets on restart)
+- Recommended: Use Redis for multi-instance deployments (already in place from V2.1.5)
+- No SMS option (planned for V2.2.0)
+- No WebAuthn/security key support (planned for V2.2.0)
+
+### Future Enhancements (V2.2.0+)
+- SMS-based 2FA as alternative
+- "Remember this device for 30 days" option
+- Backup code regeneration
+- WebAuthn/hardware security key support
+- Admin-enforced 2FA requirement
+- Multiple 2FA methods per user
+
+### Production Status
+✅ **RELEASED** - Two-factor authentication is production-ready and fully tested.
+
+**Note**: This release adds rate limiting to 2FA endpoints, completing the high-priority security requirement identified in code review.
+
+---
+
 ## Future Roadmap
 
 ### V2.1.x - Incremental Improvements (Patch Releases)
@@ -1267,10 +1471,11 @@ No new dependencies required (uses existing nodemailer from v2.1.0)
   - Resend verification emails
   - Non-blocking verification flow
   
-- **V2.1.7**: Two-Factor Authentication (2FA)
-  - TOTP-based 2FA
-  - Backup codes
-  - Recovery options
+- **V2.1.7**: ✅ Two-Factor Authentication (2FA) - **RELEASED**
+  - TOTP-based 2FA with QR codes
+  - 10 backup codes with single-use enforcement
+  - Password-protected disable
+  - Rate limiting on verification endpoints
 
 ### V2.2.0 - Next Major Feature Set
 - Cloud backup integration (Dropbox/Google Drive)

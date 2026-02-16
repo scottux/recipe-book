@@ -14,6 +14,7 @@ import { authenticatedLimiter } from './middleware/redisRateLimiter.js';
 // Import routes
 import recipeRoutes from './routes/recipes.js';
 import authRoutes from './routes/auth.js';
+import twoFactorRoutes from './routes/twoFactor.js';
 import collectionRoutes from './routes/collections.js';
 import mealPlanRoutes from './routes/mealPlans.js';
 import shoppingListRoutes from './routes/shoppingLists.js';
@@ -73,6 +74,9 @@ app.use('/api/', authenticatedLimiter);
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// Two-Factor Authentication routes
+app.use('/api/2fa', twoFactorRoutes);
 
 // Protected routes
 app.use('/api/recipes', recipeRoutes);

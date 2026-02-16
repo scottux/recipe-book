@@ -88,6 +88,30 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
     select: false
+  },
+  // Two-Factor Authentication Fields
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false
+  },
+  twoFactorSecret: {
+    type: String,
+    default: null,
+    select: false  // Never include by default
+  },
+  twoFactorBackupCodes: [{
+    code: {
+      type: String,
+      required: true
+    },
+    usedAt: {
+      type: Date,
+      default: null
+    }
+  }],
+  twoFactorVerified: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
@@ -234,6 +258,43 @@ userSchema.methods.markEmailVerified = function() {
   this.emailVerificationExpires = null;
 };
 
+// Two-Factor Authentication Methods
+
+// Generate 2FA backup codes
+userSchema.methods.generateBackupCodes = function() {
+  const codes = [];
+  for (let i = 0; i < 10; i++) {
+    // Generate 8-character alphanumeric code
+    const code = crypto.randomBytes(4).toString('hex').toUpperCase();
+    codes.push({
+      code: crypto.createHash('sha256').update(code).digest('hex'),
+      usedAt: null
+    });
+  }
+  return codes;
+};
+
+// Verify backup code
+userSchema.methods.verifyBackupCode = function(code) {
+  const hashedCode = crypto.createHash('sha256').update(code.toUpperCase()).digest('hex');
+  
+  const backupCode = this.twoFactorBackupCodes.find(
+    bc => bc.code === hashedCode && !bc.usedAt
+  );
+  
+  if (!backupCode) {
+    return { valid: false, remaining: 0 };
+  }
+  
+  // Mark as used
+  backupCode.usedAt = new Date();
+  
+  // Count remaining codes
+  const remaining = this.twoFactorBackupCodes.filter(bc => !bc.usedAt).length;
+  
+  return { valid: true, remaining };
+};
+
 // Method to get public profile (exclude sensitive data)
 userSchema.methods.toPublicProfile = function() {
   return {
@@ -244,6 +305,7 @@ userSchema.methods.toPublicProfile = function() {
     preferences: this.preferences,
     isVerified: this.isVerified,
     emailVerified: this.emailVerified,
+    twoFactorEnabled: this.twoFactorEnabled,
     createdAt: this.createdAt
   };
 };
@@ -258,6 +320,8 @@ userSchema.methods.toJSON = function() {
   delete obj.resetPasswordUsedAt;
   delete obj.emailVerificationToken;
   delete obj.emailVerificationExpires;
+  delete obj.twoFactorSecret;
+  delete obj.twoFactorBackupCodes;
   return obj;
 };
 

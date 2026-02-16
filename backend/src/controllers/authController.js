@@ -93,7 +93,7 @@ export const register = async (req, res) => {
 // Login user
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, twoFactorToken } = req.body;
 
     // Validate input
     if (!email || !password) {
@@ -103,8 +103,9 @@ export const login = async (req, res) => {
       });
     }
 
-    // Find user
-    const user = await User.findOne({ email: email.toLowerCase() });
+    // Find user (include 2FA secret for verification)
+    const user = await User.findOne({ email: email.toLowerCase() })
+      .select('+twoFactorSecret');
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -119,6 +120,50 @@ export const login = async (req, res) => {
         success: false,
         error: 'Invalid email or password.'
       });
+    }
+
+    // Check if 2FA is enabled
+    if (user.twoFactorEnabled) {
+      // 2FA is enabled, require token
+      if (!twoFactorToken) {
+        return res.status(200).json({
+          success: false,
+          requiresTwoFactor: true,
+          message: 'Two-factor authentication required.'
+        });
+      }
+
+      // Verify 2FA token or backup code
+      let verified = false;
+
+      // Try TOTP token first
+      if (twoFactorToken.length === 6) {
+        const speakeasy = (await import('speakeasy')).default;
+        verified = speakeasy.totp.verify({
+          secret: user.twoFactorSecret,
+          encoding: 'base32',
+          token: twoFactorToken,
+          window: 2
+        });
+      }
+      
+      // Try backup code if TOTP failed
+      if (!verified && twoFactorToken.length === 8) {
+        const backupResult = user.verifyBackupCode(twoFactorToken);
+        verified = backupResult.valid;
+        
+        if (verified) {
+          await user.save(); // Save the used backup code
+          console.log(`Backup code used for login: ${user.email}, remaining: ${backupResult.remaining}`);
+        }
+      }
+
+      if (!verified) {
+        return res.status(401).json({
+          success: false,
+          error: 'Invalid two-factor authentication code.'
+        });
+      }
     }
 
     // Generate tokens
@@ -836,5 +881,214 @@ export const resetPassword = async (req, res) => {
       success: false,
       error: 'An error occurred while resetting your password.'
     });
+  }
+};
+
+// Two-Factor Authentication Controllers
+
+// Setup 2FA - Generate QR code and secret
+export const setup2FA = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const speakeasy = (await import('speakeasy')).default;
+    const QRCode = (await import('qrcode')).default;
+
+    // Generate secret
+    const secret = speakeasy.generateSecret({
+      name: `Recipe Book (${user.email})`,
+      length: 32,
+    });
+
+    // Generate QR code
+    const qrCode = await QRCode.toDataURL(secret.otpauth_url);
+
+    res.json({
+      qrCode,
+      secret: secret.base32,
+      manualEntryCode: secret.base32,
+    });
+  } catch (error) {
+    console.error('2FA setup error:', error);
+    res.status(500).json({ error: 'Failed to setup 2FA' });
+  }
+};
+
+// Verify 2FA setup and enable it
+export const verify2FA = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Token is required' });
+    }
+
+    const user = await User.findById(req.user._id).select('+twoFactorSecret');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Get the secret from the setup request (stored temporarily)
+    // In a real app, you'd store this temporarily in session or cache
+    // For now, we'll use the token to verify against a new secret
+    const speakeasy = (await import('speakeasy')).default;
+    
+    // We need to get the secret from somewhere - let's assume it was passed in body
+    const { secret } = req.body;
+    if (!secret) {
+      return res.status(400).json({ error: 'Secret is required for verification' });
+    }
+
+    // Verify the token
+    const verified = speakeasy.totp.verify({
+      secret,
+      encoding: 'base32',
+      token,
+      window: 2,
+    });
+
+    if (!verified) {
+      return res.status(400).json({ error: 'Invalid 2FA code' });
+    }
+
+    // Generate backup codes
+    const backupCodes = user.generateBackupCodes();
+
+    // Save 2FA settings
+    user.twoFactorSecret = secret;
+    user.twoFactorEnabled = true;
+    await user.save();
+
+    res.json({
+      message: '2FA enabled successfully',
+      backupCodes,
+    });
+  } catch (error) {
+    console.error('2FA verify error:', error);
+    res.status(500).json({ error: 'Failed to verify 2FA' });
+  }
+};
+
+// Disable 2FA
+export const disable2FA = async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Verify password
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    // Disable 2FA
+    user.twoFactorEnabled = false;
+    user.twoFactorSecret = undefined;
+    user.twoFactorBackupCodes = [];
+    await user.save();
+
+    res.json({ message: '2FA has been disabled' });
+  } catch (error) {
+    console.error('2FA disable error:', error);
+    res.status(500).json({ error: 'Failed to disable 2FA' });
+  }
+};
+
+// Verify 2FA during login
+export const verify2FALogin = async (req, res) => {
+  try {
+    const { email, password, token } = req.body;
+
+    if (!email || !password || !token) {
+      return res.status(400).json({ error: 'Email, password, and token are required' });
+    }
+
+    // Find user
+    const user = await User.findOne({ email: email.toLowerCase() })
+      .select('+twoFactorSecret');
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Verify password
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Verify 2FA token or backup code
+    let verified = false;
+
+    // Try TOTP token
+    if (token.length === 6) {
+      const speakeasy = (await import('speakeasy')).default;
+      verified = speakeasy.totp.verify({
+        secret: user.twoFactorSecret,
+        encoding: 'base32',
+        token,
+        window: 2,
+      });
+    }
+
+    // Try backup code
+    if (!verified && token.length === 8) {
+      const backupResult = user.verifyBackupCode(token);
+      verified = backupResult.valid;
+      
+      if (verified) {
+        await user.save(); // Save to remove used backup code
+      }
+    }
+
+    if (!verified) {
+      return res.status(400).json({ error: 'Invalid 2FA code' });
+    }
+
+    // Generate tokens
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // Save refresh token
+    user.refreshTokens.push({ token: refreshToken });
+    user.lastLogin = new Date();
+    await user.save();
+
+    res.json({
+      accessToken,
+      refreshToken,
+      user: user.toPublicProfile(),
+    });
+  } catch (error) {
+    console.error('2FA login verify error:', error);
+    res.status(500).json({ error: 'Failed to verify 2FA login' });
+  }
+};
+
+// Get 2FA status
+export const get2FAStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      enabled: user.twoFactorEnabled || false,
+    });
+  } catch (error) {
+    console.error('2FA status error:', error);
+    res.status(500).json({ error: 'Failed to get 2FA status' });
   }
 };

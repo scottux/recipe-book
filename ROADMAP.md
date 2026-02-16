@@ -169,9 +169,100 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 
 ---
 
-## 🎯 Next Up: V2.1.5
+## 🎯 Next Up: V2.1.6
 
-### V2.1.5 - Email Verification (IN PROGRESS)
+### V2.1.6 - Two-Factor Authentication (IN PROGRESS)
+
+**Priority**: HIGH  
+**Target**: Mid-February 2026  
+**Focus**: Account security with two-factor authentication
+
+#### Current Phase
+- ⏳ **Phase 5**: Testing (IN PROGRESS)
+
+#### Planned Features
+- **Two-Factor Authentication (2FA)**
+  - TOTP-based 2FA setup and verification
+  - QR code generation for authenticator apps
+  - Backup codes for account recovery
+  - 2FA verification during login
+  - Enable/disable 2FA in account settings
+
+- **Security Features**
+  - Secure secret generation and storage
+  - Time-based one-time passwords (TOTP)
+  - Backup code single-use validation
+  - Protected setup and verification endpoints
+
+- **User Experience**
+  - Simple 2FA setup flow with QR code
+  - Manual entry option for authenticator apps
+  - Clear backup code display and storage instructions
+  - Seamless 2FA login flow
+  - Easy disable option with password confirmation
+
+**Implementation Status**: ~95% complete, testing in progress
+
+---
+
+### V2.1.7 - Critical Bugfix Release (NEXT)
+
+**Priority**: CRITICAL  
+**Target**: Late February 2026  
+**Focus**: Fix high-priority bugs discovered in V2.1.5-V2.1.6
+
+#### Known Bugs to Fix
+1. **Meal Plan Date Selection Off-by-One** (High)
+   - Date range selection creates plan for one day earlier
+   - Fix timezone/date conversion issue
+
+2. **Meal Plan Missing Recipe Selection** (High)
+   - No recipe list shown when adding meals
+   - Implement recipe selector component
+
+3. **Shopping List Recipe Addition** (High)
+   - Cannot add recipes to shopping lists
+   - Fix recipe-to-list integration
+
+4. **Meal Planning Blue Button** (Medium)
+   - Theme violation - button not using cookbook brown
+   - Apply design system colors
+
+5. **Recipe Detail UI Cramped** (Medium)
+   - Top-right buttons cramped and inconsistent
+   - Redesign action button layout
+
+**Testing Focus**:
+- Manual testing of all meal planning workflows
+- Manual testing of shopping list workflows
+- UX review of fixes
+- Regression testing
+
+**See**: `docs/KNOWN_BUGS_V2.1.md` for full bug tracking
+
+---
+
+### V2.1.8 - Test Infrastructure & Tech Debt
+
+**Priority**: MEDIUM  
+**Target**: Early March 2026  
+**Focus**: Testing improvements and technical debt
+
+#### Planned Work
+- Fix 2FA integration test failures (10 tests)
+- Improve test infrastructure
+- Address accumulating tech debt
+- Dependency security updates
+- Test coverage improvements
+
+---
+
+### V2.1.9 - Email Verification (DEFERRED)
+---
+
+## 🎯 Deferred: V2.1.5
+
+### V2.1.5 - Email Verification (DEFERRED to V2.2)
 
 **Priority**: HIGH  
 **Target**: Late February 2026  
@@ -200,7 +291,9 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
   - Easy resend option in account settings
   - Clear verification instructions
 
-**V2.1 Series Progress**: 4 of 5 releases complete (V2.1.0 - V2.1.4)
+**V2.1 Series Progress**: 4 of 8 releases complete (V2.1.0 - V2.1.4)  
+**In Progress**: V2.1.6 (Two-Factor Auth)  
+**Next Up**: V2.1.7 (Critical Bugfixes)
 
 ---
 
@@ -759,10 +852,14 @@ Features are prioritized using:
 - **Patch versions** (X.Y.Z): As needed
 
 ### Planned Releases
-- **V2.1.3** (Password Reset): February 19, 2026
-- **V2.1.4** (Account Management): February 26, 2026
-- **V2.1.5** (Import Backup): March 5, 2026
-- **V2.1.6** (Quality & Performance): March 19, 2026
+- **V2.1.0** (Password Reset): ✅ February 15, 2026
+- **V2.1.1** (Account Management): ✅ February 15, 2026
+- **V2.1.2** (Import from Backup): ✅ February 15, 2026
+- **V2.1.3** (Critical Bugfixes): ✅ February 15, 2026
+- **V2.1.4** (Production Bugfixes & UI Polish): ✅ February 15, 2026
+- **V2.1.6** (Two-Factor Auth): February 16, 2026
+- **V2.1.7** (Critical Bugfixes): Late February 2026
+- **V2.1.8** (Test Infrastructure): Early March 2026
 - **V2.2**: July 2026
 - **V2.3**: October 2026
 - **V2.4**: January 2027

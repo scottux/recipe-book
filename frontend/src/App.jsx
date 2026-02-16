@@ -16,6 +16,8 @@ import ForgotPasswordPage from './components/auth/ForgotPasswordPage';
 import ResetPasswordPage from './components/auth/ResetPasswordPage';
 import EmailVerificationPage from './components/auth/EmailVerificationPage';
 import AccountSettingsPage from './components/auth/AccountSettingsPage';
+import TwoFactorSetupPage from './components/auth/TwoFactorSetupPage';
+import TwoFactorVerifyPage from './components/auth/TwoFactorVerifyPage';
 import ImportPage from './components/ImportPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import VerificationBanner from './components/VerificationBanner';
@@ -246,8 +248,14 @@ function AppContent() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/verify-email/:token" element={<EmailVerificationPage />} />
+            <Route path="/2fa/verify" element={<TwoFactorVerifyPage />} />
             
             {/* Protected routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/2fa/setup" element={<TwoFactorSetupPage />} />
+            </Route>
+            
+            {/* Other protected routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<RecipeList />} />
               <Route path="/recipe/:id" element={<RecipeDetail />} />

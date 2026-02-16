@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { authAPI, exportAPI } from '../../services/api';
+import { authAPI, exportAPI, twoFactorAPI } from '../../services/api';
 
 function AccountSettingsPage() {
   const { user, logout } = useAuth();
@@ -25,6 +25,30 @@ function AccountSettingsPage() {
   const [verificationMessage, setVerificationMessage] = useState('');
   const [verificationError, setVerificationError] = useState('');
   const [verificationLoading, setVerificationLoading] = useState(false);
+
+  // 2FA state
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [twoFactorLoading, setTwoFactorLoading] = useState(true);
+  const [disablePassword, setDisablePassword] = useState('');
+  const [showDisableModal, setShowDisableModal] = useState(false);
+  const [disableError, setDisableError] = useState('');
+  const [disableLoading, setDisableLoading] = useState(false);
+
+  // Check 2FA status on mount
+  useEffect(() => {
+    const check2FAStatus = async () => {
+      try {
+        const response = await twoFactorAPI.getStatus();
+        setTwoFactorEnabled(response.data.enabled);
+      } catch (err) {
+        console.error('Failed to check 2FA status:', err);
+      } finally {
+        setTwoFactorLoading(false);
+      }
+    };
+
+    check2FAStatus();
+  }, []);
 
   const handleResendVerification = async () => {
     setVerificationMessage('');
@@ -50,6 +74,31 @@ function AccountSettingsPage() {
       }, 5000);
     } finally {
       setVerificationLoading(false);
+    }
+  };
+
+  const handleDisable2FA = async (e) => {
+    e.preventDefault();
+    setDisableError('');
+
+    if (!disablePassword) {
+      setDisableError('Password is required to disable 2FA.');
+      return;
+    }
+
+    setDisableLoading(true);
+
+    try {
+      await twoFactorAPI.disable(disablePassword);
+      setTwoFactorEnabled(false);
+      setShowDisableModal(false);
+      setDisablePassword('');
+    } catch (err) {
+      setDisableError(
+        err.response?.data?.error || 'Failed to disable 2FA. Please try again.'
+      );
+    } finally {
+      setDisableLoading(false);
     }
   };
 
@@ -207,6 +256,72 @@ function AccountSettingsPage() {
             Member since {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
           </div>
         </div>
+      </div>
+
+      {/* Two-Factor Authentication */}
+      <div className="bg-cookbook-paper rounded-lg shadow-lg border-2 border-cookbook-aged p-6 mb-6">
+        <h2 className="text-2xl font-display font-bold text-cookbook-darkbrown mb-4">
+          Two-Factor Authentication
+        </h2>
+        <p className="text-sm text-cookbook-brown font-body mb-4">
+          Add an extra layer of security to your account with 2FA
+        </p>
+
+        {twoFactorLoading ? (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cookbook-accent"></div>
+          </div>
+        ) : (
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              {twoFactorEnabled ? (
+                <span className="text-3xl">🔒</span>
+              ) : (
+                <span className="text-3xl">🔓</span>
+              )}
+            </div>
+            <div className="flex-1">
+              <div className="mb-3">
+                <span className="font-body font-medium text-cookbook-darkbrown">Status:</span>{' '}
+                {twoFactorEnabled ? (
+                  <span className="inline-flex items-center gap-1.5 text-green-700 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Enabled
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-1 rounded-full text-sm font-medium">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    Disabled
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-cookbook-brown font-body mb-4">
+                {twoFactorEnabled
+                  ? 'Two-factor authentication is currently enabled. You will need your authenticator app to sign in.'
+                  : 'Enable two-factor authentication to add an extra layer of security to your account.'}
+              </p>
+              {twoFactorEnabled ? (
+                <button
+                  onClick={() => setShowDisableModal(true)}
+                  className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-body font-medium text-sm"
+                >
+                  Disable 2FA
+                </button>
+              ) : (
+                <Link
+                  to="/2fa/setup"
+                  className="inline-block bg-cookbook-accent text-white py-2 px-4 rounded-lg hover:bg-cookbook-brown transition-colors font-body font-medium text-sm"
+                >
+                  Enable 2FA
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Data Management */}
@@ -381,6 +496,74 @@ function AccountSettingsPage() {
           Delete Account
         </button>
       </div>
+
+      {/* Disable 2FA Confirmation Modal */}
+      {showDisableModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center mb-4">
+              <span className="text-4xl mr-3">🔓</span>
+              <h3 className="text-2xl font-display font-bold text-cookbook-darkbrown">
+                Disable Two-Factor Authentication
+              </h3>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-sm font-body text-gray-700 mb-4">
+                Disabling 2FA will make your account less secure. You will no longer need an
+                authenticator app to sign in.
+              </p>
+
+              {disableError && (
+                <div className="mb-4 p-3 bg-red-50 border-2 border-red-200 rounded-lg">
+                  <p className="text-red-800 text-sm font-body">{disableError}</p>
+                </div>
+              )}
+
+              <form onSubmit={handleDisable2FA}>
+                <label
+                  htmlFor="disablePassword"
+                  className="block text-sm font-medium text-gray-700 font-body mb-2"
+                >
+                  Enter your password to confirm:
+                </label>
+                <input
+                  id="disablePassword"
+                  type="password"
+                  value={disablePassword}
+                  onChange={(e) => setDisablePassword(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:border-transparent font-body mb-4"
+                  placeholder="Enter your password"
+                  autoFocus
+                />
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDisableModal(false);
+                      setDisablePassword('');
+                      setDisableError('');
+                    }}
+                    disabled={disableLoading}
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors font-body font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={disableLoading}
+                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-body font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {disableLoading ? 'Disabling...' : 'Disable 2FA'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete Account Confirmation Modal */}
       {showDeleteModal && (

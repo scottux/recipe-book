@@ -263,4 +263,21 @@ export const authAPI = {
   sendVerificationEmail: () => api.post('/auth/send-verification')
 };
 
+export const twoFactorAPI = {
+  // Get 2FA status
+  getStatus: () => api.get('/auth/2fa/status'),
+  
+  // Setup 2FA (get QR code and secret)
+  setup: () => api.post('/auth/2fa/setup'),
+  
+  // Verify and enable 2FA
+  verify: (data) => api.post('/auth/2fa/verify', data),
+  
+  // Disable 2FA
+  disable: (data) => api.post('/auth/2fa/disable', data),
+  
+  // Regenerate backup codes
+  regenerateBackupCodes: (data) => api.post('/auth/2fa/backup-codes', data)
+};
+
 export default api;

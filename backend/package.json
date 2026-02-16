@@ -1,6 +1,6 @@
 {
   "name": "recipe-book-backend",
-  "version": "2.1.5",
+  "version": "2.1.7",
   "description": "Recipe book backend API",
   "main": "src/index.js",
   "type": "module",
@@ -41,7 +41,9 @@
     "node-cache": "^5.1.2",
     "nodemailer": "^6.10.1",
     "pdfkit": "^0.17.2",
+    "qrcode": "^1.5.4",
     "redis": "^4.6.13",
+    "speakeasy": "^2.0.0",
     "uuid": "^9.0.1",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
