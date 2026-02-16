@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { mealPlanAPI, recipeAPI, exportAPI, shoppingListAPI } from '../services/api';
 import { getLocalDateString, getUTCDateString } from '../utils/dateUtils';
+import RecipeSelectorModal from './RecipeSelectorModal';
 
 export default function MealPlanningPage() {
   const [mealPlans, setMealPlans] = useState([]);
@@ -69,17 +70,14 @@ export default function MealPlanningPage() {
     }
   };
 
-  const handleAddMeal = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    
+  const handleRecipeSelect = async (selectedData) => {
     try {
       const updated = await mealPlanAPI.addMeal(selectedPlan._id, {
         date: selectedDate,
         mealType: selectedMealType,
-        recipeId: formData.get('recipeId'),
-        servings: formData.get('servings') || null,
-        notes: formData.get('notes') || '',
+        recipeId: selectedData.recipeId,
+        servings: selectedData.servings,
+        notes: selectedData.notes,
       });
       setSelectedPlan(updated.data);
       setMealPlans(mealPlans.map(p => p._id === updated.data._id ? updated.data : p));
@@ -437,75 +435,15 @@ export default function MealPlanningPage() {
         </div>
       )}
 
-      {/* Add Meal Modal */}
-      {showAddMealModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-cookbook-paper rounded-lg p-6 max-w-md w-full border-2 border-cookbook-aged shadow-cookbook">
-            <h2 className="text-2xl font-display font-bold text-cookbook-darkbrown mb-4 flex items-center gap-2">
-              <span>{mealTypeIcons[selectedMealType]}</span>
-              Add {selectedMealType?.charAt(0).toUpperCase() + selectedMealType?.slice(1)} Recipe
-            </h2>
-            <form onSubmit={handleAddMeal}>
-              <div className="mb-4">
-                <label className="block text-sm font-body font-medium text-cookbook-darkbrown mb-2">
-                  Recipe
-                </label>
-                <select
-                  name="recipeId"
-                  required
-                  className="border-2 border-cookbook-aged rounded-lg px-4 py-2 w-full font-body focus:ring-2 focus:ring-cookbook-accent focus:border-transparent bg-white"
-                >
-                  <option value="">Select a recipe...</option>
-                  {Array.isArray(recipes) && recipes.map(recipe => (
-                    <option key={recipe._id} value={recipe._id}>
-                      {recipe.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-body font-medium text-cookbook-darkbrown mb-2">
-                  Servings (optional)
-                </label>
-                <input
-                  type="number"
-                  name="servings"
-                  min="1"
-                  className="border-2 border-cookbook-aged rounded-lg px-4 py-2 w-full font-body focus:ring-2 focus:ring-cookbook-accent focus:border-transparent"
-                  placeholder="Leave blank to use recipe default"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-body font-medium text-cookbook-darkbrown mb-2">
-                  Notes (optional)
-                </label>
-                <textarea
-                  name="notes"
-                  className="border-2 border-cookbook-aged rounded-lg px-4 py-2 w-full font-body focus:ring-2 focus:ring-cookbook-accent focus:border-transparent"
-                  rows="2"
-                  placeholder="Any special notes..."
-                  maxLength={500}
-                />
-              </div>
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowAddMealModal(false)}
-                  className="px-6 py-2 text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors rounded-lg font-body font-medium border-2 border-cookbook-aged"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-cookbook-accent text-white px-6 py-2 rounded-lg hover:bg-cookbook-darkbrown transition-colors font-body font-medium shadow-card"
-                >
-                  Add Recipe
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Recipe Selector Modal */}
+      <RecipeSelectorModal
+        isOpen={showAddMealModal}
+        onClose={() => setShowAddMealModal(false)}
+        onSelect={handleRecipeSelect}
+        recipes={recipes}
+        selectedMealType={selectedMealType}
+        selectedDate={selectedDate}
+      />
     </div>
   );
 }
