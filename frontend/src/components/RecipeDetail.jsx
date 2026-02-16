@@ -379,102 +379,111 @@ const RecipeDetail = () => {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="cookbook-page p-8 relative">
-        {/* Action Buttons - Top Right */}
-        <div className="absolute top-4 right-4 flex gap-2 action-buttons no-print">
-          <button
-            onClick={() => setShowShoppingListModal(true)}
-            className="w-10 h-10 rounded-full bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2"
-            title="Add to Shopping List"
-            aria-label="Add to Shopping List"
-          >
-            🛒
-          </button>
-          <button
-            onClick={toggleLock}
-            disabled={togglingLock}
-            className={`w-10 h-10 rounded-full transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-              recipe.isLocked
-                ? 'bg-amber-100 hover:bg-amber-200 text-amber-700 focus:ring-amber-500'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-600 focus:ring-gray-500'
-            } ${togglingLock ? 'opacity-50 cursor-wait' : ''}`}
-            title={recipe.isLocked ? 'Unlock Recipe' : 'Lock Recipe'}
-            aria-label={recipe.isLocked ? 'Unlock Recipe' : 'Lock Recipe'}
-          >
-            {recipe.isLocked ? '🔒' : '🔓'}
-          </button>
-          <button
-            onClick={() => navigate(`/edit/${recipe._id}`)}
-            className="w-10 h-10 rounded-full bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2"
-            title="Edit Recipe"
-            aria-label="Edit Recipe"
-          >
-            🖊️
-          </button>
-          
-          {/* Export Dropdown */}
-          <div className="relative" ref={exportDropdownRef}>
+        {/* Action Buttons - Improved Layout with Better Spacing and Accessibility */}
+        <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-3 action-buttons no-print">
+          {/* Primary Actions Group - With Labels on Desktop */}
+          <div className="flex gap-3">
             <button
-              onClick={() => setExportDropdownOpen(!exportDropdownOpen)}
-              disabled={exporting}
-              className={`w-10 h-10 rounded-full bg-green-100 hover:bg-green-600 text-green-600 hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
-                exporting ? 'opacity-50 cursor-wait' : ''
-              }`}
-              title="Export Recipe"
-              aria-label="Export Recipe"
+              onClick={() => setShowShoppingListModal(true)}
+              className="min-h-[44px] px-4 py-2 bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2 font-body font-medium flex items-center gap-2"
+              title="Add ingredients to shopping list"
+              aria-label="Add recipe ingredients to shopping list"
             >
-              {exporting ? '⏳' : '📥'}
+              <span className="text-lg">🛒</span>
+              <span className="hidden lg:inline">Shopping List</span>
+            </button>
+            <button
+              onClick={() => navigate(`/edit/${recipe._id}`)}
+              className="min-h-[44px] px-4 py-2 bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2 font-body font-medium flex items-center gap-2"
+              title="Edit this recipe"
+              aria-label="Edit recipe"
+            >
+              <span className="text-lg">🖊️</span>
+              <span className="hidden lg:inline">Edit</span>
             </button>
             
-            {exportDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border-2 border-cookbook-aged z-50">
-                <div className="py-1">
-                  <button
-                    onClick={() => handleExport('pdf')}
-                    className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-lg">📄</span>
-                    <span>Export as PDF</span>
-                  </button>
-                  <button
-                    onClick={() => handleExport('json')}
-                    className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-lg">💾</span>
-                    <span>Export as JSON</span>
-                  </button>
-                  <button
-                    onClick={() => handleExport('markdown')}
-                    className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
-                  >
-                    <span className="text-lg">📝</span>
-                    <span>Export as Markdown</span>
-                  </button>
+            {/* Export Dropdown */}
+            <div className="relative" ref={exportDropdownRef}>
+              <button
+                onClick={() => setExportDropdownOpen(!exportDropdownOpen)}
+                disabled={exporting}
+                className={`min-h-[44px] px-4 py-2 bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2 font-body font-medium flex items-center gap-2 ${
+                  exporting ? 'opacity-50 cursor-wait' : ''
+                }`}
+                title="Export recipe in different formats"
+                aria-label="Export recipe"
+              >
+                <span className="text-lg">{exporting ? '⏳' : '📥'}</span>
+                <span className="hidden lg:inline">Export</span>
+              </button>
+              
+              {exportDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border-2 border-cookbook-aged z-50">
+                  <div className="py-1">
+                    <button
+                      onClick={() => handleExport('pdf')}
+                      className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-lg">📄</span>
+                      <span>Export as PDF</span>
+                    </button>
+                    <button
+                      onClick={() => handleExport('json')}
+                      className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-lg">💾</span>
+                      <span>Export as JSON</span>
+                    </button>
+                    <button
+                      onClick={() => handleExport('markdown')}
+                      className="w-full text-left px-4 py-2 text-sm font-body text-cookbook-darkbrown hover:bg-cookbook-cream transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-lg">📝</span>
+                      <span>Export as Markdown</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-          
-          <button
-            onClick={handleDelete}
-            disabled={recipe.isLocked}
-            className={`w-10 h-10 rounded-full transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-              recipe.isLocked
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
-                : 'bg-red-100 hover:bg-red-600 text-red-600 hover:text-white focus:ring-red-500'
-            }`}
-            title={recipe.isLocked ? 'Recipe is locked' : 'Delete Recipe'}
-            aria-label="Delete Recipe"
-          >
-            🗑️
-          </button>
-          <button
-            onClick={() => window.print()}
-            className="w-10 h-10 rounded-full bg-cookbook-aged hover:bg-cookbook-brown text-cookbook-darkbrown hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-brown focus:ring-offset-2"
-            title="Print Recipe"
-            aria-label="Print Recipe"
-          >
-            🖨️
-          </button>
+
+          {/* Secondary Actions Group - Icon Only */}
+          <div className="flex gap-3">
+            <button
+              onClick={toggleLock}
+              disabled={togglingLock}
+              className={`w-11 h-11 rounded-full transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                recipe.isLocked
+                  ? 'bg-amber-100 hover:bg-amber-200 text-amber-700 focus:ring-amber-500'
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-600 focus:ring-gray-500'
+              } ${togglingLock ? 'opacity-50 cursor-wait' : ''}`}
+              title={recipe.isLocked ? 'Unlock recipe to allow editing and deletion' : 'Lock recipe to prevent accidental changes'}
+              aria-label={recipe.isLocked ? 'Unlock recipe' : 'Lock recipe'}
+            >
+              <span className="text-lg">{recipe.isLocked ? '🔒' : '🔓'}</span>
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="w-11 h-11 rounded-full bg-cookbook-aged hover:bg-cookbook-brown text-cookbook-darkbrown hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-brown focus:ring-offset-2"
+              title="Print this recipe"
+              aria-label="Print recipe"
+            >
+              <span className="text-lg">🖨️</span>
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={recipe.isLocked}
+              className={`w-11 h-11 rounded-full transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                recipe.isLocked
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+                  : 'bg-red-100 hover:bg-red-600 text-red-600 hover:text-white focus:ring-red-500'
+              }`}
+              title={recipe.isLocked ? 'Unlock recipe first to delete it' : 'Delete this recipe permanently'}
+              aria-label={recipe.isLocked ? 'Cannot delete locked recipe' : 'Delete recipe'}
+            >
+              <span className="text-lg">🗑️</span>
+            </button>
+          </div>
         </div>
 
         {/* Header */}
