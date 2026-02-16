@@ -11,12 +11,21 @@ import app from '../../index.js';
 import User from '../../models/User.js';
 import { encryptToken, decryptToken } from '../../utils/encryption.js';
 import dropboxService from '../../services/cloudProviders/dropboxService.js';
+import Recipe from '../../models/Recipe.js';
+import { generateBackupFile } from '../../services/backupGenerator.js';
+import fs from 'fs/promises';
 
 let mongoServer;
 let testUser;
 let authToken;
 
 beforeAll(async () => {
+  // Set up test environment variables
+  process.env.CLOUD_TOKEN_ENCRYPTION_KEY = '26e27f93e486a80c3313f043787b369f68e941b9d0f3631dbaf4af80107c1485';
+  process.env.DROPBOX_APP_KEY = 'test_app_key';
+  process.env.DROPBOX_APP_SECRET = 'test_app_secret';
+  process.env.DROPBOX_REDIRECT_URI = 'http://localhost:5000/api/cloud/dropbox/callback';
+  
   // Mock Dropbox service methods to avoid real API calls
   dropboxService.uploadBackup = async (user, localFilePath, type) => {
     return {
@@ -28,7 +37,33 @@ beforeAll(async () => {
   };
   
   dropboxService.listBackups = async (user, limit) => {
-    return [];
+    return [
+      {
+        id: 'id:backup_1',
+        filename: 'recipe-book-manual-backup-2026-02-15T10-00-00.zip',
+        size: 2048,
+        timestamp: '2026-02-15T10:00:00Z',
+        type: 'manual'
+      },
+      {
+        id: 'id:backup_2',
+        filename: 'recipe-book-auto-backup-2026-02-14T02-00-00.zip',
+        size: 1536,
+        timestamp: '2026-02-14T02:00:00Z',
+        type: 'automatic'
+      }
+    ];
+  };
+  
+  dropboxService.downloadBackup = async (user, backupId) => {
+    // Create a real backup file for testing
+    const backupInfo = await generateBackupFile(user._id, 'manual');
+    return backupInfo.path;
+  };
+  
+  dropboxService.deleteBackup = async (user, backupId) => {
+    // Mock delete - just return success
+    return true;
   };
   
   // Start in-memory MongoDB
@@ -263,20 +298,114 @@ describe('Cloud Backup API - Backup Operations', () => {
     });
   });
   
+  describe('GET /api/cloud/backups/:backupId/preview', () => {
+    it('should preview backup contents', async () => {
+      // Create some test recipes first
+      await Recipe.create([
+        {
+          title: 'Test Recipe 1',
+          ingredients: [{ name: 'Ingredient 1', amount: '1 cup' }],
+          instructions: ['Step 1'],
+          owner: testUser._id
+        },
+        {
+          title: 'Test Recipe 2',
+          ingredients: [{ name: 'Ingredient 2', amount: '2 tbsp' }],
+          instructions: ['Step 1'],
+          owner: testUser._id
+        }
+      ]);
+      
+      const res = await request(app)
+        .get('/api/cloud/backups/id:backup_1/preview')
+        .set('Authorization', `Bearer ${authToken}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.preview).toBeDefined();
+      expect(res.body.preview.version).toBe('2.2.0');
+      expect(res.body.preview.exportDate).toBeDefined();
+      expect(res.body.preview.statistics).toBeDefined();
+      expect(res.body.preview.statistics.recipeCount).toBe(2);
+    });
+    
+    it('should require cloud provider connection', async () => {
+      // Disconnect provider
+      await request(app)
+        .post('/api/cloud/disconnect')
+        .set('Authorization', `Bearer ${authToken}`);
+      
+      const res = await request(app)
+        .get('/api/cloud/backups/id:backup_1/preview')
+        .set('Authorization', `Bearer ${authToken}`);
+      
+      expect(res.status).toBe(400);
+      expect(res.body.message).toContain('No cloud provider connected');
+    });
+  });
+  
   describe('POST /api/cloud/restore', () => {
-    it('should return 501 (not implemented)', async () => {
+    beforeEach(async () => {
+      // Clean up any existing recipes first
+      await Recipe.deleteMany({ owner: testUser._id });
+      
+      // Create some test recipes
+      await Recipe.create([
+        {
+          title: 'Existing Recipe',
+          ingredients: [{ name: 'Flour', amount: '2 cups' }],
+          instructions: ['Mix'],
+          owner: testUser._id
+        }
+      ]);
+    });
+    
+    afterEach(async () => {
+      // Clean up recipes
+      await Recipe.deleteMany({ owner: testUser._id });
+    });
+    
+    it('should restore backup in merge mode', async () => {
+      const initialCount = await Recipe.countDocuments({ owner: testUser._id });
+      expect(initialCount).toBe(1);
+      
       const res = await request(app)
         .post('/api/cloud/restore')
         .set('Authorization', `Bearer ${authToken}`)
         .send({
-          backupId: 'id:test123',
+          backupId: 'id:backup_1',
           mode: 'merge',
           password: 'SecurePassword123!'
         });
       
-      expect(res.status).toBe(501);
-      expect(res.body.success).toBe(false);
-      expect(res.body.message).toContain('not yet implemented');
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.statistics).toBeDefined();
+      expect(res.body.message).toContain('Successfully restored');
+      
+      // Recipes should be merged
+      const finalCount = await Recipe.countDocuments({ owner: testUser._id });
+      expect(finalCount).toBeGreaterThanOrEqual(initialCount);
+    });
+    
+    it('should restore backup in replace mode', async () => {
+      const res = await request(app)
+        .post('/api/cloud/restore')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          backupId: 'id:backup_1',
+          mode: 'replace',
+          password: 'SecurePassword123!'
+        });
+      
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.statistics).toBeDefined();
+      
+      // Only backup recipes should exist (not the "Existing Recipe")
+      const recipes = await Recipe.find({ owner: testUser._id });
+      const hasExisting = recipes.some(r => r.title === 'Existing Recipe');
+      expect(hasExisting).toBe(false);
     });
     
     it('should validate required fields', async () => {
@@ -303,6 +432,39 @@ describe('Cloud Backup API - Backup Operations', () => {
       
       expect(res.status).toBe(400);
       expect(res.body.message).toContain('Invalid mode');
+    });
+    
+    it('should reject invalid password', async () => {
+      const res = await request(app)
+        .post('/api/cloud/restore')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          backupId: 'id:backup_1',
+          mode: 'merge',
+          password: 'WrongPassword123!'
+        });
+      
+      expect(res.status).toBe(401);
+      expect(res.body.message).toContain('Invalid password');
+    });
+    
+    it('should require cloud provider connection', async () => {
+      // Disconnect provider
+      await request(app)
+        .post('/api/cloud/disconnect')
+        .set('Authorization', `Bearer ${authToken}`);
+      
+      const res = await request(app)
+        .post('/api/cloud/restore')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          backupId: 'id:backup_1',
+          mode: 'merge',
+          password: 'SecurePassword123!'
+        });
+      
+      expect(res.status).toBe(400);
+      expect(res.body.message).toContain('No cloud provider connected');
     });
   });
 });

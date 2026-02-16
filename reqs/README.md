@@ -15,6 +15,17 @@ This directory contains all feature requirements and specifications for the Reci
 | [REQ-007](REQ-007-web-search.md) | Web Recipe Search | ✅ Implemented | High |
 | [REQ-008](REQ-008-batch-operations.md) | Batch Operations & View Modes | ✅ Implemented | Medium |
 | [REQ-009](REQ-009-add-recipe-page.md) | Unified Add Recipe Page | ✅ Implemented | High |
+| [REQ-009](REQ-009-authentication.md) | User Authentication | ✅ Implemented | High |
+| [REQ-010](REQ-010-collections.md) | Recipe Collections | ✅ Implemented | High |
+| [REQ-011](REQ-011-meal-planning.md) | Meal Planning | ✅ Implemented | High |
+| [REQ-012](REQ-012-shopping-lists.md) | Shopping Lists | ✅ Implemented | High |
+| [REQ-013](REQ-013-export.md) | Export & Backup System | ✅ Implemented | High |
+| [REQ-014](REQ-014-password-reset.md) | Password Reset | ✅ Implemented | High |
+| [REQ-015](REQ-015-account-management.md) | Account Management | ✅ Implemented | High |
+| [REQ-016](REQ-016-import-from-backup.md) | Import from Backup | ✅ Implemented | High |
+| [REQ-017](REQ-017-api-contracts.md) | API Contracts & Standards | ✅ Implemented | High |
+| [REQ-018](REQ-018-performance-infrastructure.md) | Performance & Infrastructure | ✅ Implemented | High |
+| [REQ-021](REQ-021-cloud-backup.md) | Cloud Backup Integration | 🚧 In Progress | High |
 
 ## Requirement Format
 

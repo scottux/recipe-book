@@ -22,7 +22,7 @@ export const processRecipes = async (userId, recipes, duplicates, session) => {
 
     // Normalize ingredient format (handle both item and name)
     const normalizedIngredients = backupRecipe.ingredients.map(ing => ({
-      item: ing.item || ing.name,
+      name: ing.name || ing.item,
       amount: ing.amount,
       unit: ing.unit || '',
     }));
@@ -53,7 +53,11 @@ export const processRecipes = async (userId, recipes, duplicates, session) => {
       isLocked: backupRecipe.isLocked || false,
     });
 
-    await newRecipe.save({ session });
+    if (session) {
+      await newRecipe.save({ session });
+    } else {
+      await newRecipe.save();
+    }
 
     // Map old ID to new ID
     if (oldId) {
@@ -107,7 +111,11 @@ export const processCollections = async (
       recipeCount: remappedRecipeIds.length,
     });
 
-    await newCollection.save({ session });
+    if (session) {
+      await newCollection.save({ session });
+    } else {
+      await newCollection.save();
+    }
     imported++;
   }
 
@@ -173,7 +181,11 @@ export const processMealPlans = async (
       meals: remappedMeals,
     });
 
-    await newMealPlan.save({ session });
+    if (session) {
+      await newMealPlan.save({ session });
+    } else {
+      await newMealPlan.save();
+    }
     imported++;
   }
 
@@ -209,9 +221,105 @@ export const processShoppingLists = async (
       completedAt: backupList.completedAt ? new Date(backupList.completedAt) : null,
     });
 
-    await newShoppingList.save({ session });
+    if (session) {
+      await newShoppingList.save({ session });
+    } else {
+      await newShoppingList.save();
+    }
     imported++;
   }
 
   return { imported };
+};
+
+/**
+ * Main import processor function
+ * Processes all import data (recipes, collections, meal plans, shopping lists)
+ * 
+ * @param {string} userId - User ID
+ * @param {Object} importData - Import data with recipes, collections, etc.
+ * @param {mongoose.ClientSession} session - MongoDB session for transaction
+ * @param {boolean} checkDuplicates - Whether to check for duplicates
+ * @returns {Promise<Object>} Import statistics
+ */
+export const processImport = async (userId, importData, session, checkDuplicates = true) => {
+  const stats = {
+    totalImported: 0,
+    totalSkipped: 0,
+    recipes: { imported: 0, skipped: 0 },
+    collections: { imported: 0, skipped: 0 },
+    mealPlans: { imported: 0, skipped: 0 },
+    shoppingLists: { imported: 0, skipped: 0 }
+  };
+
+  // Find duplicates if requested
+  let duplicates = {
+    recipes: new Set(),
+    collections: new Set(),
+    mealPlans: new Set(),
+    shoppingLists: new Set()
+  };
+
+  // Note: Duplicate checking disabled for cloud restore to allow full data restoration
+  // Users can manually deduplicate if needed after restore
+
+  // Process recipes first (needed for ID mapping)
+  if (importData.recipes && importData.recipes.length > 0) {
+    const recipeResult = await processRecipes(
+      userId,
+      importData.recipes,
+      duplicates.recipes,
+      session
+    );
+    stats.recipes.imported = recipeResult.imported;
+    stats.recipes.skipped = importData.recipes.length - recipeResult.imported;
+    stats.totalImported += recipeResult.imported;
+    stats.totalSkipped += stats.recipes.skipped;
+
+    // Process collections (depends on recipe ID mapping)
+    if (importData.collections && importData.collections.length > 0) {
+      const collectionResult = await processCollections(
+        userId,
+        importData.collections,
+        recipeResult.idMapping,
+        duplicates.collections,
+        session
+      );
+      stats.collections.imported = collectionResult.imported;
+      stats.collections.skipped = importData.collections.length - collectionResult.imported;
+      stats.totalImported += collectionResult.imported;
+      stats.totalSkipped += stats.collections.skipped;
+    }
+
+    // Process meal plans (depends on recipe ID mapping)
+    if (importData.mealPlans && importData.mealPlans.length > 0) {
+      const mealPlanResult = await processMealPlans(
+        userId,
+        importData.mealPlans,
+        recipeResult.idMapping,
+        duplicates.mealPlans,
+        session
+      );
+      stats.mealPlans.imported = mealPlanResult.imported;
+      stats.mealPlans.skipped = importData.mealPlans.length - mealPlanResult.imported;
+      stats.totalImported += mealPlanResult.imported;
+      stats.totalSkipped += stats.mealPlans.skipped;
+    }
+
+    // Process shopping lists
+    if (importData.shoppingLists && importData.shoppingLists.length > 0) {
+      const shoppingListResult = await processShoppingLists(
+        userId,
+        importData.shoppingLists,
+        duplicates.shoppingLists,
+        session
+      );
+      stats.shoppingLists.imported = shoppingListResult.imported;
+      stats.shoppingLists.skipped = importData.shoppingLists.length - shoppingListResult.imported;
+      stats.totalImported += shoppingListResult.imported;
+      stats.totalSkipped += stats.shoppingLists.skipped;
+    }
+  }
+
+  return stats;
 };

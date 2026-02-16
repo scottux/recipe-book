@@ -15,6 +15,7 @@ import {
   createManualBackup,
   listBackups,
   deleteBackup,
+  previewBackup,
   restoreBackup,
   getSchedule,
   updateSchedule
@@ -125,6 +126,13 @@ router.get('/backups', authenticate, listBackups);
  * @access  Private
  */
 router.delete('/backups/:id', authenticate, cloudBackupLimiter, deleteBackup);
+
+/**
+ * @route   GET /api/cloud/backups/:backupId/preview
+ * @desc    Preview backup contents (metadata and statistics)
+ * @access  Private
+ */
+router.get('/backups/:backupId/preview', authenticate, previewBackup);
 
 // =============================================================================
 // RESTORE OPERATIONS ENDPOINTS

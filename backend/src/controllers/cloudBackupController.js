@@ -6,12 +6,16 @@
  */
 
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import fs from 'fs/promises';
 import User from '../models/User.js';
 import dropboxService from '../services/cloudProviders/dropboxService.js';
 import logger from '../config/logger.js';
 import { encryptToken } from '../utils/encryption.js';
 import { getRedisClient } from '../config/redis.js';
 import { generateBackupFile, cleanupBackupFile } from '../services/backupGenerator.js';
+import { parseBackup, getBackupPreview } from '../services/backupParser.js';
+import { restoreFromBackup } from '../services/backupRestorer.js';
 
 const redisClient = getRedisClient();
 
@@ -424,10 +428,67 @@ export const deleteBackup = async (req, res) => {
 };
 
 /**
+ * Preview backup contents
+ * GET /api/cloud/backups/:backupId/preview
+ */
+export const previewBackup = async (req, res) => {
+  let tempFilePath = null;
+  
+  try {
+    const { backupId } = req.params;
+    
+    const user = await User.findById(req.user._id)
+      .select('+cloudBackup.accessToken +cloudBackup.refreshToken');
+    
+    if (!user.cloudBackup || !user.cloudBackup.provider) {
+      return res.status(400).json({
+        success: false,
+        message: 'No cloud provider connected'
+      });
+    }
+    
+    logger.info(`Preview backup requested for user ${req.user._id}: ${backupId}`);
+    
+    // Download backup temporarily
+    if (user.cloudBackup.provider === 'dropbox') {
+      tempFilePath = await dropboxService.downloadBackup(user, backupId);
+    } else {
+      throw new Error('Google Drive not yet implemented');
+    }
+    
+    // Get preview
+    const preview = await getBackupPreview(tempFilePath);
+    
+    res.json({
+      success: true,
+      preview
+    });
+    
+  } catch (error) {
+    logger.error('Preview backup failed:', error);
+    res.status(500).json({
+      success: false,
+      message: `Failed to preview backup: ${error.message}`
+    });
+  } finally {
+    // Cleanup temp file
+    if (tempFilePath) {
+      try {
+        await fs.unlink(tempFilePath);
+      } catch (cleanupError) {
+        logger.error('Failed to cleanup temp file:', cleanupError);
+      }
+    }
+  }
+};
+
+/**
  * Restore from backup
  * POST /api/cloud/restore
  */
 export const restoreBackup = async (req, res) => {
+  let tempFilePath = null;
+  
   try {
     const { backupId, mode, password } = req.body;
     
@@ -446,20 +507,71 @@ export const restoreBackup = async (req, res) => {
       });
     }
     
-    // TODO: Implement restore logic (Week 3)
+    // Get user with password
+    const user = await User.findById(req.user._id)
+      .select('+password +cloudBackup.accessToken +cloudBackup.refreshToken');
+    
+    if (!user.cloudBackup || !user.cloudBackup.provider) {
+      return res.status(400).json({
+        success: false,
+        message: 'No cloud provider connected'
+      });
+    }
+    
+    // Verify password
+    const passwordValid = await bcrypt.compare(password, user.password);
+    if (!passwordValid) {
+      logger.warn(`Invalid password for restore attempt by user ${req.user._id}`);
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid password'
+      });
+    }
+    
     logger.info(`Restore requested for user ${req.user._id}: backup=${backupId}, mode=${mode}`);
     
-    res.status(501).json({
-      success: false,
-      message: 'Restore functionality not yet implemented. Coming in Week 3!'
+    // Download backup from cloud
+    if (user.cloudBackup.provider === 'dropbox') {
+      tempFilePath = await dropboxService.downloadBackup(user, backupId);
+    } else {
+      throw new Error('Google Drive not yet implemented');
+    }
+    
+    // Parse backup
+    const backupData = await parseBackup(tempFilePath);
+    
+    // Restore data (transaction-safe)
+    const statistics = await restoreFromBackup(req.user._id, backupData, mode);
+    
+    logger.info(`Restore successful for user ${req.user._id}`, { statistics });
+    
+    res.json({
+      success: true,
+      statistics,
+      message: `Successfully restored ${statistics.totalImported} items`
     });
     
   } catch (error) {
-    logger.error('Restore failed:', error);
+    logger.error('Restore failed:', {
+      error: error.message,
+      stack: error.stack,
+      userId: req.user._id
+    });
+    
     res.status(500).json({
       success: false,
-      message: 'Restore failed. Please try again later.'
+      message: error.message || 'Failed to restore from backup'
     });
+  } finally {
+    // Cleanup temp file
+    if (tempFilePath) {
+      try {
+        await fs.unlink(tempFilePath);
+        logger.debug(`Cleaned up temp file: ${tempFilePath}`);
+      } catch (cleanupError) {
+        logger.error('Failed to cleanup temp file:', cleanupError);
+      }
+    }
   }
 };
 
