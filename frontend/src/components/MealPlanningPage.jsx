@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { mealPlanAPI, recipeAPI, exportAPI, shoppingListAPI } from '../services/api';
+import { getLocalDateString, getUTCDateString } from '../utils/dateUtils';
 
 export default function MealPlanningPage() {
   const [mealPlans, setMealPlans] = useState([]);
@@ -188,10 +189,15 @@ export default function MealPlanningPage() {
   const getMealsForDateAndType = (date, mealType) => {
     if (!selectedPlan) return null;
     
-    const dateStr = date.toISOString().split('T')[0];
+    // Use LOCAL date string formatting (no timezone conversion)
+    const localDateStr = getLocalDateString(date);
+    
     return selectedPlan.meals.find(m => {
-      const mealDateStr = new Date(m.date).toISOString().split('T')[0];
-      return mealDateStr === dateStr && m.mealType === mealType;
+      // Parse UTC date and extract date components (timezone-safe)
+      const mealDate = new Date(m.date);
+      const mealDateStr = getUTCDateString(mealDate);
+      
+      return mealDateStr === localDateStr && m.mealType === mealType;
     });
   };
 
@@ -255,7 +261,7 @@ export default function MealPlanningPage() {
                 <button
                   onClick={handleGenerateShoppingList}
                   disabled={generatingShoppingList}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-body font-medium flex items-center gap-2"
+                  className="bg-cookbook-accent text-white px-4 py-2 rounded-lg hover:bg-cookbook-darkbrown transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-body font-medium flex items-center gap-2"
                   title="Generate Shopping List"
                 >
                   🛒

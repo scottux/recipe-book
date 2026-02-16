@@ -383,7 +383,7 @@ const RecipeDetail = () => {
         <div className="absolute top-4 right-4 flex gap-2 action-buttons no-print">
           <button
             onClick={() => setShowShoppingListModal(true)}
-            className="w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-600 text-blue-600 hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="w-10 h-10 rounded-full bg-cookbook-accent/10 hover:bg-cookbook-accent text-cookbook-accent hover:text-white transition-all flex items-center justify-center shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cookbook-accent focus:ring-offset-2"
             title="Add to Shopping List"
             aria-label="Add to Shopping List"
           >
