@@ -112,6 +112,124 @@ const userSchema = new mongoose.Schema({
   twoFactorVerified: {
     type: Boolean,
     default: false
+  },
+  // Cloud Backup Configuration
+  cloudBackup: {
+    // Provider Configuration
+    provider: {
+      type: String,
+      enum: ['dropbox', 'google_drive', null],
+      default: null
+    },
+    
+    // Encrypted Tokens (never include in queries by default)
+    accessToken: {
+      type: String,
+      select: false
+    },
+    refreshToken: {
+      type: String,
+      select: false
+    },
+    tokenExpiry: {
+      type: Date,
+      default: null
+    },
+    
+    // Provider Account Info (for display)
+    accountEmail: {
+      type: String,
+      default: null
+    },
+    accountName: {
+      type: String,
+      default: null
+    },
+    accountId: {
+      type: String,
+      default: null
+    },
+    
+    // Backup Schedule Configuration
+    schedule: {
+      enabled: {
+        type: Boolean,
+        default: false
+      },
+      frequency: {
+        type: String,
+        enum: ['daily', 'weekly', 'monthly'],
+        default: 'weekly'
+      },
+      time: {
+        type: String,  // HH:mm format (e.g., '02:00')
+        default: '02:00'
+      },
+      timezone: {
+        type: String,
+        default: 'UTC'
+      },
+      lastBackup: {
+        type: Date,
+        default: null
+      },
+      lastBackupStatus: {
+        type: String,
+        enum: ['success', 'failed', 'in_progress', null],
+        default: null
+      },
+      nextBackup: {
+        type: Date,
+        default: null
+      },
+      failureCount: {
+        type: Number,
+        default: 0,
+        min: 0
+      }
+    },
+    
+    // Retention Policy
+    retention: {
+      maxBackups: {
+        type: Number,
+        default: 10,
+        min: 1,
+        max: 100
+      },
+      autoCleanup: {
+        type: Boolean,
+        default: true
+      }
+    },
+    
+    // Statistics
+    stats: {
+      totalBackups: {
+        type: Number,
+        default: 0,
+        min: 0
+      },
+      manualBackups: {
+        type: Number,
+        default: 0,
+        min: 0
+      },
+      autoBackups: {
+        type: Number,
+        default: 0,
+        min: 0
+      },
+      lastManualBackup: {
+        type: Date,
+        default: null
+      },
+      totalStorageUsed: {
+        type: Number,  // in bytes
+        default: 0,
+        min: 0
+      }
+    }
   }
 }, {
   timestamps: true
@@ -131,6 +249,12 @@ userSchema.index(
   { emailVerificationToken: 1 },
   { sparse: true }
 );
+
+// Index for cloud backup scheduler queries
+userSchema.index({ 
+  'cloudBackup.schedule.enabled': 1,
+  'cloudBackup.schedule.nextBackup': 1 
+});
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
@@ -322,6 +446,11 @@ userSchema.methods.toJSON = function() {
   delete obj.emailVerificationExpires;
   delete obj.twoFactorSecret;
   delete obj.twoFactorBackupCodes;
+  // Never expose cloud backup tokens in JSON
+  if (obj.cloudBackup) {
+    delete obj.cloudBackup.accessToken;
+    delete obj.cloudBackup.refreshToken;
+  }
   return obj;
 };
 

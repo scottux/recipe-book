@@ -20,6 +20,7 @@ import mealPlanRoutes from './routes/mealPlans.js';
 import shoppingListRoutes from './routes/shoppingLists.js';
 import exportRoutes from './routes/export.js';
 import importRoutes from './routes/import.js';
+import cloudRoutes from './routes/cloud.js';
 import healthRoutes from './routes/health.js';
 
 dotenv.config();
@@ -85,6 +86,7 @@ app.use('/api/meal-plans', mealPlanRoutes);
 app.use('/api/shopping-lists', shoppingListRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/import', importRoutes);
+app.use('/api/cloud', cloudRoutes);
 
 // Legacy health check (for backward compatibility)
 app.get('/api/health', (req, res) => {
