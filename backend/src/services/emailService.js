@@ -237,6 +237,80 @@ export const testEmailService = async () => {
 };
 
 /**
+ * Send backup failure notification email
+ * 
+ * @param {Object} options - Email options
+ * @param {string} options.to - Recipient email address
+ * @param {string} options.username - User's display name
+ * @param {string} options.provider - Cloud provider name ('dropbox' or 'google_drive')
+ * @param {Date} options.lastAttempt - Last backup attempt timestamp
+ * @param {number} options.failureCount - Number of consecutive failures
+ * @returns {Promise<Object>} Send result from nodemailer
+ */
+export const sendBackupFailureEmail = async ({
+  to,
+  username,
+  provider,
+  lastAttempt,
+  failureCount
+}) => {
+  if (!transporter) {
+    console.warn('Email service not initialized, skipping backup failure email');
+    return null;
+  }
+  
+  try {
+    // Load templates
+    const htmlTemplate = await loadTemplate('backup-failure');
+    const textTemplate = await loadTextTemplate('backup-failure');
+    
+    // Format provider name
+    const providerName = provider === 'dropbox' ? 'Dropbox' : 'Google Drive';
+    
+    // Format last attempt timestamp
+    const lastAttemptFormatted = new Date(lastAttempt).toLocaleString('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short'
+    });
+    
+    // Prepare variables
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const variables = {
+      username,
+      provider: providerName,
+      lastAttempt: lastAttemptFormatted,
+      failureCount,
+      settingsUrl: `${frontendUrl}/account/cloud-backup`,
+      supportUrl: `${frontendUrl}/support`,
+      supportEmail: process.env.SUPPORT_EMAIL || 'support@recipebook.com',
+      appName: process.env.APP_NAME || 'Recipe Book'
+    };
+    
+    // Replace variables in templates
+    const html = replaceVariables(htmlTemplate, variables);
+    const text = textTemplate 
+      ? replaceVariables(textTemplate, variables)
+      : `Automatic Backups Disabled\n\nHello ${username},\n\nAutomatic cloud backups have been disabled for your Recipe Book account after ${failureCount} consecutive failures.\n\nProvider: ${providerName}\nLast Attempt: ${lastAttemptFormatted}\n\nPlease visit ${variables.settingsUrl} to reconnect your account and re-enable automatic backups.`;
+    
+    // Send email
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_FROM || '"Recipe Book" <noreply@recipebook.com>',
+      to,
+      subject: '⚠️ Automatic Backups Disabled - Recipe Book',
+      text,
+      html
+    });
+    
+    console.log('Backup failure email sent:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Failed to send backup failure email:', error);
+    // Don't throw - we don't want email failures to break the backup process
+    return null;
+  }
+};
+
+/**
  * Send a test email (for development/debugging)
  * 
  * @param {string} to - Recipient email

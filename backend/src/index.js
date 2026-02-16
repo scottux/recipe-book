@@ -10,6 +10,7 @@ import { initializeRedis, closeRedis } from './config/redis.js';
 import logger from './config/logger.js';
 import { requestId, requestLogger, errorLogger } from './middleware/requestLogger.js';
 import { authenticatedLimiter } from './middleware/redisRateLimiter.js';
+import backupScheduler from './services/backupScheduler.js';
 
 // Import routes
 import recipeRoutes from './routes/recipes.js';
@@ -168,6 +169,17 @@ async function initializeApp() {
       });
     }
     
+    // Start backup scheduler
+    logger.info('Starting backup scheduler...');
+    try {
+      backupScheduler.start();
+      logger.info('✓ Backup scheduler started');
+    } catch (error) {
+      logger.warn('Backup scheduler failed to start', {
+        error: error.message,
+      });
+    }
+    
     // Start server
     const server = app.listen(PORT, () => {
       logger.info(`✓ Server running on http://localhost:${PORT}`, {
@@ -211,6 +223,10 @@ function setupGracefulShutdown(server) {
     }, shutdownTimeout);
     
     try {
+      // Stop backup scheduler
+      backupScheduler.stop();
+      logger.info('Backup scheduler stopped');
+      
       // Close Redis connection
       await closeRedis();
       logger.info('Redis connection closed');

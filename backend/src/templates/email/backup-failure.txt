@@ -1,0 +1,44 @@
+⚠️ AUTOMATIC BACKUPS DISABLED - Recipe Book
+
+Hello {{username}},
+
+Automatic cloud backups have been disabled for your Recipe Book account.
+
+This happened because your scheduled backup failed 3 consecutive times. To protect your account from repeated errors, we've temporarily disabled automatic backups.
+
+BACKUP DETAILS:
+----------------------------------
+Provider: {{provider}}
+Last Attempt: {{lastAttempt}}
+Consecutive Failures: {{failureCount}}
+
+COMMON CAUSES:
+----------------------------------
+• Expired Authorization: Your {{provider}} authorization may have expired
+• Storage Full: Your cloud storage may be full
+• Connection Issues: Temporary network or service problems
+• Permission Changes: App permissions may have been revoked
+
+WHAT YOU SHOULD DO:
+----------------------------------
+1. Check Your Cloud Provider: Log into {{provider}} and verify your account status
+2. Reconnect if Needed: Visit your cloud backup settings and reconnect your account
+3. Test a Manual Backup: Try creating a manual backup to verify everything works
+4. Re-enable Automatic Backups: Once issues are resolved, turn automatic backups back on
+
+Go to Cloud Backup Settings:
+{{settingsUrl}}
+
+IMPORTANT: Your recipes are safe! This only affects automatic backups. You can still create manual backups and your data remains in your account.
+
+If you continue experiencing issues, please contact our support team at {{supportEmail}}.
+
+Best regards,
+The {{appName}} Team
+
+----------------------------------
+You're receiving this email because automatic backups failed for your {{appName}} account.
+This is an automated notification to keep you informed about your data security.
+
+Manage Settings: {{settingsUrl}}
+Get Help: {{supportUrl}}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatic Backup Disabled</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+    }
+    .content {
+      background: #FAF7F2;
+      padding: 30px;
+      border: 2px solid #C19A6B;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+    .warning-box {
+      background: #FFF3CD;
+      border: 2px solid #FFC107;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #8B4513;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+    .button:hover {
+      background: #A0522D;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      color: #666;
+      font-size: 14px;
+    }
+    .details {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    .details-item {
+      margin: 8px 0;
+    }
+    .details-label {
+      font-weight: 600;
+      color: #8B4513;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin: 0;">⚠️ Automatic Backups Disabled</h1>
+  </div>
+  
+  <div class="content">
+    <p>Hello {{username}},</p>
+    
+    <div class="warning-box">
+      <strong>Automatic cloud backups have been disabled for your Recipe Book account.</strong>
+    </div>
+    
+    <p>This happened because your scheduled backup failed <strong>3 consecutive times</strong>. To protect your account from repeated errors, we've temporarily disabled automatic backups.</p>
+    
+    <div class="details">
+      <div class="details-item">
+        <span class="details-label">Provider:</span> {{provider}}
+      </div>
+      <div class="details-item">
+        <span class="details-label">Last Attempt:</span> {{lastAttempt}}
+      </div>
+      <div class="details-item">
+        <span class="details-label">Consecutive Failures:</span> {{failureCount}}
+      </div>
+    </div>
+    
+    <h3 style="color: #8B4513;">Common Causes:</h3>
+    <ul>
+      <li><strong>Expired Authorization:</strong> Your {{provider}} authorization may have expired</li>
+      <li><strong>Storage Full:</strong> Your cloud storage may be full</li>
+      <li><strong>Connection Issues:</strong> Temporary network or service problems</li>
+      <li><strong>Permission Changes:</strong> App permissions may have been revoked</li>
+    </ul>
+    
+    <h3 style="color: #8B4513;">What You Should Do:</h3>
+    <ol>
+      <li><strong>Check Your Cloud Provider:</strong> Log into {{provider}} and verify your account status</li>
+      <li><strong>Reconnect if Needed:</strong> Visit your cloud backup settings and reconnect your account</li>
+      <li><strong>Test a Manual Backup:</strong> Try creating a manual backup to verify everything works</li>
+      <li><strong>Re-enable Automatic Backups:</strong> Once issues are resolved, turn automatic backups back on</li>
+    </ol>
+    
+    <div style="text-align: center;">
+      <a href="{{settingsUrl}}" class="button">Go to Cloud Backup Settings</a>
+    </div>
+    
+    <div class="warning-box" style="margin-top: 30px;">
+      <p style="margin: 0;"><strong>Important:</strong> Your recipes are safe! This only affects automatic backups. You can still create manual backups and your data remains in your account.</p>
+    </div>
+    
+    <p>If you continue experiencing issues, please contact our support team at <a href="mailto:{{supportEmail}}" style="color: #8B4513;">{{supportEmail}}</a>.</p>
+    
+    <p style="margin-top: 30px;">
+      Best regards,<br>
+      <strong>The {{appName}} Team</strong>
+    </p>
+  </div>
+  
+  <div class="footer">
+    <p>
+      You're receiving this email because automatic backups failed for your {{appName}} account.<br>
+      This is an automated notification to keep you informed about your data security.
+    </p>
+    <p style="margin-top: 15px;">
+      <a href="{{settingsUrl}}" style="color: #8B4513;">Manage Settings</a> | 
+      <a href="{{supportUrl}}" style="color: #8B4513;">Get Help</a>
+    </p>
+  </div>
+</body>
+</html>
