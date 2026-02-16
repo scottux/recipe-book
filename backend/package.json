@@ -1,6 +1,6 @@
 {
   "name": "recipe-book-backend",
-  "version": "2.1.7",
+  "version": "2.2.0-beta",
   "description": "Recipe book backend API",
   "main": "src/index.js",
   "type": "module",
