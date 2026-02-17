@@ -13,5 +13,8 @@ export default {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   verbose: true,
-  testTimeout: 10000
+  testTimeout: 30000, // Increased from 10000ms to 30000ms for MongoDB operations
+  globalSetup: './src/__tests__/setup/globalSetup.js',
+  globalTeardown: './src/__tests__/setup/globalTeardown.js',
+  maxWorkers: 1 // Run tests serially to avoid MongoDB connection conflicts
 };

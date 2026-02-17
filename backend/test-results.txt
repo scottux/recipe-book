@@ -1,0 +1,2771 @@
+
+> recipe-book-backend@2.2.2 test
+> node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit
+
+✓ MongoDB Memory Server started
+  URI: mongodb://127.0.0.1:27017/?replicaSet=testset
+(node:45947) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.warn
+    Starting the MongoMemoryServer Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:359:17
+      at MongoMemoryServer.start (node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:350:5)
+          at async Promise.all (index 0)
+      at MongoMemoryReplSet.initAllServers (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:494:5)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/meal-planning.test.js:15:5)
+
+  console.warn
+    Starting the MongoMemoryReplSet Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:411:19
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/meal-planning.test.js:15:5)
+
+FAIL src/__tests__/integration/meal-planning.test.js (193.279 s)
+  Meal Planning API Integration Tests
+    POST /api/meal-plans
+      ✕ should create a new meal plan (10005 ms)
+      ✕ should reject meal plans longer than 28 days (10003 ms)
+      ✕ should detect overlapping meal plans (10002 ms)
+      ✕ should require authentication (10002 ms)
+    GET /api/meal-plans
+      ✕ should get all meal plans for authenticated user (10002 ms)
+      ✕ should filter templates when requested (10003 ms)
+    POST /api/meal-plans/:id/meals
+      ✕ should add a meal to the plan (10001 ms)
+      ✕ should reject invalid recipe ID (10003 ms)
+      ✕ should add multiple recipes to same meal (10002 ms)
+    DELETE /api/meal-plans/:id/meals/:mealId
+      ✕ should remove a meal from the plan (10003 ms)
+      ✕ should return 404 for non-existent meal (10001 ms)
+    GET /api/meal-plans/:id/shopping-list
+      ✕ should generate shopping list from meal plan (10002 ms)
+    POST /api/meal-plans/:id/duplicate
+      ✕ should duplicate as template (10002 ms)
+      ✕ should duplicate to new dates (10003 ms)
+      ✕ should reject duplicate if dates overlap (10001 ms)
+    DELETE /api/meal-plans/:id
+      ✕ should delete a meal plan (10002 ms)
+      ✕ should not allow deleting other users meal plans (10001 ms)
+    PUT /api/meal-plans/:id
+      ✕ should update meal plan details (10002 ms)
+      ✕ should detect overlaps when updating dates (10002 ms)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should create a new meal plan
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should create a new meal plan
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should reject meal plans longer than 28 days
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should reject meal plans longer than 28 days
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should detect overlapping meal plans
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should detect overlapping meal plans
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans › should require authentication
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans › should get all meal plans for authenticated user
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans › should get all meal plans for authenticated user
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans › should filter templates when requested
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans › should filter templates when requested
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should add a meal to the plan
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should add a meal to the plan
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should reject invalid recipe ID
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should reject invalid recipe ID
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should add multiple recipes to same meal
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/meals › should add multiple recipes to same meal
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id/meals/:mealId › should remove a meal from the plan
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id/meals/:mealId › should remove a meal from the plan
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id/meals/:mealId › should return 404 for non-existent meal
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id/meals/:mealId › should return 404 for non-existent meal
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans/:id/shopping-list › should generate shopping list from meal plan
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › GET /api/meal-plans/:id/shopping-list › should generate shopping list from meal plan
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should duplicate as template
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should duplicate as template
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should duplicate to new dates
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should duplicate to new dates
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should reject duplicate if dates overlap
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › POST /api/meal-plans/:id/duplicate › should reject duplicate if dates overlap
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id › should delete a meal plan
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id › should delete a meal plan
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id › should not allow deleting other users meal plans
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › DELETE /api/meal-plans/:id › should not allow deleting other users meal plans
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › PUT /api/meal-plans/:id › should update meal plan details
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › PUT /api/meal-plans/:id › should update meal plan details
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Meal Planning API Integration Tests › PUT /api/meal-plans/:id › should detect overlaps when updating dates
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Meal Planning API Integration Tests › PUT /api/meal-plans/:id › should detect overlaps when updating dates
+
+    MongooseError: Operation `mealplans.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+FAIL src/__tests__/integration/email-verification.test.js (202.817 s)
+  Email Verification Integration Tests
+    POST /api/auth/register
+      ✕ should create user with emailVerified=false by default (10007 ms)
+    GET /api/auth/me
+      ✕ should include emailVerified status (10002 ms)
+    POST /api/auth/send-verification
+      ✕ should send verification email for authenticated user (10003 ms)
+      ✕ should fail without authentication (10003 ms)
+      ✕ should fail if email already verified (10002 ms)
+      ✕ should enforce rate limiting (3 requests per hour) (10002 ms)
+    GET /api/auth/verify-email/:token
+      ✕ should verify email with valid token (10005 ms)
+      ✕ should fail with invalid token (10003 ms)
+      ✕ should fail with expired token (10004 ms)
+      ✕ should fail if email already verified (10003 ms)
+      ✕ should invalidate token after successful verification (10002 ms)
+    Token Security
+      ✕ should hash verification tokens in database (10002 ms)
+      ✕ should generate unique tokens for each request (10002 ms)
+    Token Expiration
+      ✕ should set expiration to 24 hours from creation (10005 ms)
+    User Model - cleanupExpiredTokens
+      ✕ should remove expired verification tokens (10002 ms)
+      ✕ should not remove valid tokens (10002 ms)
+    Security - Timing Attacks
+      ✕ should take similar time for valid and invalid tokens (10002 ms)
+    Integration with Registration Flow
+      ✕ should complete full registration and verification flow (10002 ms)
+
+  ● Email Verification Integration Tests › POST /api/auth/register › should create user with emailVerified=false by default
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/me › should include emailVerified status
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should send verification email for authenticated user
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should fail without authentication
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should fail if email already verified
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should enforce rate limiting (3 requests per hour)
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/verify-email/:token › should verify email with valid token
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/verify-email/:token › should fail with invalid token
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/verify-email/:token › should fail with expired token
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/verify-email/:token › should fail if email already verified
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › GET /api/auth/verify-email/:token › should invalidate token after successful verification
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › Token Security › should hash verification tokens in database
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › Token Security › should generate unique tokens for each request
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › Token Expiration › should set expiration to 24 hours from creation
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › User Model - cleanupExpiredTokens › should remove expired verification tokens
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › User Model - cleanupExpiredTokens › should not remove valid tokens
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › Security - Timing Attacks › should take similar time for valid and invalid tokens
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+  ● Email Verification Integration Tests › Integration with Registration Flow › should complete full registration and verification flow
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+2026-02-17 10:42:27.842 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/auth/login:::ffff:127.0.0.1"}
+2026-02-17 10:42:27.950 [[32minfo[39m]: POST /login 200 109ms {"requestId":"c30e501a-9972-4cf2-832e-b17fa4dbc5cd","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":109,"ip":"::ffff:127.0.0.1","rateLimit":{"remaining":300,"limit":300,"degraded":true},"responseSize":713}
+2026-02-17 10:42:27.999 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.010 [[33mwarn[39m]: POST /backup 400 12ms {"requestId":"6001244e-8200-47fc-9b3c-8205a4925261","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":12,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":4,"limit":5},"responseSize":102}
+2026-02-17 10:42:28.030 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.035 [[31merror[39m]: Request error {"requestId":"ec3f8501-436e-4166-a16c-54ef9d11b68c","error":"Must be .json file","stack":"ImportError: Must be .json file\n    at fileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:36:9)\n    at wrappedFileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/index.js:44:7)\n    at Multipart.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/lib/make-middleware.js:109:7)\n    at Multipart.emit (node:events:507:28)\n    at HeaderParser.cb (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:358:14)\n    at HeaderParser.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:394:37)\n    at feed (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:219:14)\n    at SBMH.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:104:16)\n    at Multipart._write (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Multipart.Writable.write (node:internal/streams/writable:508:10)\n    at IncomingMessage.ondata (node:internal/streams/readable:1008:24)\n    at IncomingMessage.emit (node:events:507:28)\n    at IncomingMessage.Readable.read (node:internal/streams/readable:780:10)\n    at flow (node:internal/streams/readable:1286:53)\n    at resume_ (node:internal/streams/readable:1265:3)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","method":"POST","path":"/api/import/backup","userId":"69948c634393192fba63648b","ip":"::ffff:127.0.0.1"}
+2026-02-17 10:42:28.035 [[31merror[39m]: Unhandled error {"requestId":"ec3f8501-436e-4166-a16c-54ef9d11b68c","error":"Must be .json file","stack":"ImportError: Must be .json file\n    at fileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:36:9)\n    at wrappedFileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/index.js:44:7)\n    at Multipart.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/lib/make-middleware.js:109:7)\n    at Multipart.emit (node:events:507:28)\n    at HeaderParser.cb (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:358:14)\n    at HeaderParser.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:394:37)\n    at feed (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:219:14)\n    at SBMH.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:104:16)\n    at Multipart._write (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Multipart.Writable.write (node:internal/streams/writable:508:10)\n    at IncomingMessage.ondata (node:internal/streams/readable:1008:24)\n    at IncomingMessage.emit (node:events:507:28)\n    at IncomingMessage.Readable.read (node:internal/streams/readable:780:10)\n    at flow (node:internal/streams/readable:1286:53)\n    at resume_ (node:internal/streams/readable:1265:3)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","path":"/api/import/backup","method":"POST"}
+2026-02-17 10:42:28.035 [[31merror[39m]: POST /api/import/backup 500 5ms {"requestId":"ec3f8501-436e-4166-a16c-54ef9d11b68c","method":"POST","path":"/api/import/backup","url":"/api/import/backup","statusCode":500,"duration":5,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":3,"limit":5},"responseSize":1969}
+2026-02-17 10:42:28.051 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.056 [[33mwarn[39m]: POST /backup 400 4ms {"requestId":"f831c855-6168-4edd-921d-910d34056722","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":4,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":2,"limit":5},"responseSize":133}
+2026-02-17 10:42:28.074 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.077 [[33mwarn[39m]: POST /backup 400 3ms {"requestId":"f695937c-9db2-45f8-a1ac-2a1ca8f930a8","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":1,"limit":5},"responseSize":195}
+2026-02-17 10:42:28.090 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.093 [[33mwarn[39m]: POST /backup 400 3ms {"requestId":"c26c2da6-d648-4043-85de-ef12109e3718","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":205}
+2026-02-17 10:42:28.100 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.101 [[33mwarn[39m]: POST /backup 429 1ms {"requestId":"e55e6394-6733-45da-9675-4bfbbc179956","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":1,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.108 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.111 [[33mwarn[39m]: POST /backup 429 3ms {"requestId":"29347a71-a367-4ef6-83be-33956c1276a4","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":3,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.117 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.121 [[33mwarn[39m]: POST /backup 429 4ms {"requestId":"8a168e90-9085-487c-a1cc-e7c7f4faf9b6","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":4,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.127 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.131 [[33mwarn[39m]: POST /backup 429 4ms {"requestId":"75eb4fa0-fef8-4ff4-808e-699b24d39c9d","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":4,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.149 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.150 [[33mwarn[39m]: POST /backup 429 1ms {"requestId":"2076a429-5dda-4a5e-8ab7-87b8d2f8bcb2","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":1,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.155 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.157 [[33mwarn[39m]: POST /backup 429 2ms {"requestId":"bcf1f32c-516a-40fd-8b10-fbd079c2ee4c","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":2,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.166 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.167 [[33mwarn[39m]: POST /backup 429 1ms {"requestId":"d99ba8d2-3fb2-4bc7-a4ab-446ee10b7521","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":1,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.173 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.175 [[33mwarn[39m]: POST /backup 429 2ms {"requestId":"8a6d3412-6e57-424a-8efb-21a9a5b16555","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":2,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.180 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.181 [[33mwarn[39m]: POST /backup 429 1ms {"requestId":"5bb82165-ecb9-4b9c-bef0-459873754fa1","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":1,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.187 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.189 [[33mwarn[39m]: POST /backup 429 2ms {"requestId":"f76eac00-29da-438a-8e76-b9fb751a9dc8","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":2,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.231 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.231 [[33mwarn[39m]: POST /backup 401 0ms {"requestId":"75bd0eaa-a7c7-4c7c-af70-c1c8403f1a4e","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","rateLimit":{"remaining":300,"limit":300,"degraded":true},"responseSize":84}
+2026-02-17 10:42:28.246 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.249 [[33mwarn[39m]: POST /backup 429 3ms {"requestId":"b9745199-d242-48f7-9bef-e1bc1b0c151d","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":3,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+2026-02-17 10:42:28.256 [[33mwarn[39m]: Redis not available for rate limiting {"key":"recipe-book:ratelimit:/import/backup:::ffff:127.0.0.1"}
+2026-02-17 10:42:28.259 [[33mwarn[39m]: POST /backup 429 3ms {"requestId":"cc8d2084-ced8-40ca-9b30-0305bfa88622","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":429,"duration":3,"ip":"::ffff:127.0.0.1","userId":"69948c634393192fba63648b","rateLimit":{"remaining":0,"limit":5},"responseSize":183}
+FAIL src/__tests__/integration/import-backup.test.js
+  Import from Backup - Integration Tests
+    POST /api/import/backup - File Validation
+      ✓ should reject request with no file (59 ms)
+      ✕ should reject non-JSON file (28 ms)
+      ✓ should reject invalid JSON (16 ms)
+      ✓ should reject backup missing required fields (21 ms)
+      ✓ should reject incompatible version (< 2.0.0) (16 ms)
+    POST /api/import/backup - Content Validation
+      ✕ should reject recipe missing title (8 ms)
+      ✕ should reject recipe with empty ingredients (9 ms)
+      ✕ should reject recipe with empty instructions (10 ms)
+    POST /api/import/backup - Merge Mode
+      ✕ should successfully import backup in merge mode (10 ms)
+      ✕ should skip duplicates in merge mode (6 ms)
+      ✕ should preserve existing data in merge mode (4 ms)
+    POST /api/import/backup - Replace Mode
+      ✕ should reject replace mode without password (6 ms)
+      ✕ should reject replace mode with wrong password (6 ms)
+      ✕ should delete all existing data in replace mode (4 ms)
+    POST /api/import/backup - ID Remapping
+      ✕ should remap recipe IDs in collections (6 ms)
+      ✕ should remap recipe IDs in meal plans (7 ms)
+      ✕ should handle missing recipe references gracefully (7 ms)
+    POST /api/import/backup - Transaction Rollback
+      ✕ should rollback on validation error (8 ms)
+    POST /api/import/backup - Security
+      ✓ should require authentication (43 ms)
+      ✕ should sanitize XSS in recipe titles (17 ms)
+    POST /api/import/backup - Performance
+      ✕ should complete import within reasonable time (10 ms)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - File Validation › should reject non-JSON file
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      159 |         .attach('file', Buffer.from('not json'), 'backup.txt');
+      160 |
+    > 161 |       expect(res.status).toBe(400);
+          |                          ^
+      162 |       expect(res.body.success).toBe(false);
+      163 |     });
+      164 |
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:161:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe missing title
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      226 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      227 |
+    > 228 |       expect(res.status).toBe(400);
+          |                          ^
+      229 |       expect(res.body.success).toBe(false);
+      230 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      231 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:228:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe with empty ingredients
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      252 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      253 |
+    > 254 |       expect(res.status).toBe(400);
+          |                          ^
+      255 |       expect(res.body.success).toBe(false);
+      256 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      257 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:254:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe with empty instructions
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      278 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      279 |
+    > 280 |       expect(res.status).toBe(400);
+          |                          ^
+      281 |       expect(res.body.success).toBe(false);
+      282 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      283 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:280:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should successfully import backup in merge mode
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      292 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      293 |
+    > 294 |       expect(res.status).toBe(200);
+          |                          ^
+      295 |       expect(res.body.success).toBe(true);
+      296 |       expect(res.body.summary).toMatchObject({
+      297 |         mode: 'merge',
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:294:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should skip duplicates in merge mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required., ingredients.1.name: Path `name` is required., ingredients.2.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should preserve existing data in merge mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should reject replace mode without password
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      379 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      380 |
+    > 381 |       expect(res.status).toBe(400);
+          |                          ^
+      382 |       expect(res.body.success).toBe(false);
+      383 |       expect(res.body.details.code).toBe('INVALID_PASSWORD');
+      384 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:381:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should reject replace mode with wrong password
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      392 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      393 |
+    > 394 |       expect(res.status).toBe(400);
+          |                          ^
+      395 |       expect(res.body.success).toBe(false);
+      396 |       expect(res.body.details.code).toBe('INVALID_PASSWORD');
+      397 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:394:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should delete all existing data in replace mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should remap recipe IDs in collections
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      442 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      443 |
+    > 444 |       expect(res.status).toBe(200);
+          |                          ^
+      445 |
+      446 |       // Get imported collection
+      447 |       const collection = await Collection.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:444:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should remap recipe IDs in meal plans
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      462 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      463 |
+    > 464 |       expect(res.status).toBe(200);
+          |                          ^
+      465 |
+      466 |       // Get imported meal plan
+      467 |       const mealPlan = await MealPlan.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:464:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should handle missing recipe references gracefully
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      503 |         );
+      504 |
+    > 505 |       expect(res.status).toBe(200);
+          |                          ^
+      506 |
+      507 |       // Collection should only have valid reference
+      508 |       const collection = await Collection.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:505:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Transaction Rollback › should rollback on validation error
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      534 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      535 |
+    > 536 |       expect(res.status).toBe(400);
+          |                          ^
+      537 |
+      538 |       // Verify NO data was created (rollback successful)
+      539 |       const recipes = await Recipe.find({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:536:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Security › should sanitize XSS in recipe titles
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      576 |         .attach('file', Buffer.from(JSON.stringify(xssBackup)), 'backup.json');
+      577 |
+    > 578 |       expect(res.status).toBe(200);
+          |                          ^
+      579 |
+      580 |       const recipe = await Recipe.findOne({ owner: userId });
+      581 |       expect(recipe.title).not.toContain('<script>');
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:578:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Performance › should complete import within reasonable time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      596 |       const duration = Date.now() - startTime;
+      597 |
+    > 598 |       expect(res.status).toBe(200);
+          |                          ^
+      599 |       expect(duration).toBeLessThan(5000); // Should complete in < 5s
+      600 |       expect(res.body.summary.duration).toBeLessThan(5000);
+      601 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:598:26)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.warn
+    Starting the MongoMemoryServer Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:359:17
+      at MongoMemoryServer.start (node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:350:5)
+          at async Promise.all (index 0)
+      at MongoMemoryReplSet.initAllServers (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:494:5)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/two-factor-auth.test.js:27:3)
+
+  console.warn
+    Starting the MongoMemoryReplSet Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:411:19
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/two-factor-auth.test.js:27:3)
+
+FAIL src/__tests__/integration/two-factor-auth.test.js
+  Two-Factor Authentication Integration Tests
+    POST /api/auth/2fa/setup
+      ✕ should generate 2FA QR code and secret for authenticated user
+      ✕ should require authentication
+      ✕ should generate different secrets for multiple calls
+    POST /api/auth/2fa/verify
+      ✕ should enable 2FA with valid token and generate backup codes
+      ✕ should reject invalid token
+      ✕ should require authentication
+      ✕ should require token parameter
+    GET /api/auth/2fa/status
+      ✕ should return disabled status when 2FA is not enabled
+      ✕ should return enabled status when 2FA is enabled
+      ✕ should require authentication (1 ms)
+    POST /api/auth/2fa/verify-login
+      ✕ should complete login with valid 2FA token
+      ✕ should reject invalid 2FA token
+      ✕ should reject invalid credentials
+      ✕ should accept valid backup code
+      ✕ should reject already-used backup code
+      ✕ should require all parameters
+    POST /api/auth/2fa/disable
+      ✕ should disable 2FA with valid password
+      ✕ should reject invalid password
+      ✕ should require password parameter
+      ✕ should require authentication
+    Login Flow with 2FA
+      ✕ should require 2FA verification during login when enabled (1 ms)
+      ✕ should complete full login flow with 2FA
+      ✕ should allow normal login after disabling 2FA
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/setup › should generate 2FA QR code and secret for authenticated user
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/setup › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/setup › should generate different secrets for multiple calls
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify › should enable 2FA with valid token and generate backup codes
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify › should reject invalid token
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify › should require token parameter
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › GET /api/auth/2fa/status › should return disabled status when 2FA is not enabled
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › GET /api/auth/2fa/status › should return enabled status when 2FA is enabled
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › GET /api/auth/2fa/status › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should complete login with valid 2FA token
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should reject invalid 2FA token
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should reject invalid credentials
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should accept valid backup code
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should reject already-used backup code
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/verify-login › should require all parameters
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/disable › should disable 2FA with valid password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/disable › should reject invalid password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/disable › should require password parameter
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › POST /api/auth/2fa/disable › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › Login Flow with 2FA › should require 2FA verification during login when enabled
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › Login Flow with 2FA › should complete full login flow with 2FA
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Two-Factor Authentication Integration Tests › Login Flow with 2FA › should allow normal login after disabling 2FA
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.warn
+    Starting the MongoMemoryServer Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:359:17
+      at MongoMemoryServer.start (node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:350:5)
+          at async Promise.all (index 0)
+      at MongoMemoryReplSet.initAllServers (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:494:5)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/account-management.test.js:15:3)
+
+  console.warn
+    Starting the MongoMemoryReplSet Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:411:19
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/account-management.test.js:15:3)
+
+FAIL src/__tests__/integration/account-management.test.js
+  Account Management - Update Password
+    ✕ should update password successfully
+    ✕ should verify old password no longer works after update
+    ✕ should reject incorrect current password
+    ✕ should reject weak new password
+    ✕ should reject new password same as current
+    ✕ should reject request without authentication
+    ✕ should reject missing fields
+    ✕ should keep session active after password change
+  Account Management - Delete Account
+    ✕ should delete account successfully
+    ✕ should prevent login after account deletion
+    ✕ should delete all user recipes on account deletion
+    ✕ should delete all user collections on account deletion
+    ✕ should delete all user meal plans on account deletion
+    ✕ should delete all user shopping lists on account deletion
+    ✕ should reject incorrect password for account deletion
+    ✕ should reject request without authentication
+    ✕ should reject missing password
+  Account Management - Complete Flow
+    ✕ should complete full account lifecycle
+
+  ● Account Management - Update Password › should update password successfully
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should verify old password no longer works after update
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should reject incorrect current password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should reject weak new password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should reject new password same as current
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should reject request without authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should reject missing fields
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Update Password › should keep session active after password change
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should delete account successfully
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should prevent login after account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should delete all user recipes on account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should delete all user collections on account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should delete all user meal plans on account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should delete all user shopping lists on account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should reject incorrect password for account deletion
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should reject request without authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Delete Account › should reject missing password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Account Management - Complete Flow › should complete full account lifecycle
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.warn
+    Starting the MongoMemoryReplSet Instance failed, enable debug log for more information. Error:
+     MongoServerError: interrupted at shutdown
+        at Connection.sendCommand (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/cmap/connection.ts:559:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+        at Connection.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/cmap/connection.ts:633:22)
+        at Server.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/sdam/server.ts:350:21)
+        at tryOperation (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+        at executeOperation (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+        at Db.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/db.ts:275:12)
+        at MongoMemoryReplSet._initReplSet (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+        at MongoMemoryReplSet.start (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+        at MongoMemoryReplSet.create (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+        at startMongoServer (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:23:17)
+        at ensureConnection (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:116:5)
+        at Object.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/integration/password-reset.test.js:15:5) {
+      errorLabelSet: Set(1) { 'ResetPool' },
+      errorResponse: {
+        ok: 0,
+        errmsg: 'interrupted at shutdown',
+        code: 11600,
+        codeName: 'InterruptedAtShutdown'
+      },
+      ok: 0,
+      code: 11600,
+      codeName: 'InterruptedAtShutdown'
+    }
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:411:19
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  console.warn
+    MongoServerError: shutdown must run from localhost when running db without auth
+        at Connection.sendCommand (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/cmap/connection.ts:559:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+        at Connection.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/cmap/connection.ts:633:22)
+        at Server.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/sdam/server.ts:350:21)
+        at tryOperation (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+        at executeOperation (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+        at Db.command (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb/src/db.ts:275:12)
+        at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:456:13
+        at MongoMemoryServer.stop (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:593:5)
+        at async Promise.all (index 0)
+        at MongoMemoryReplSet.stop (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:546:33)
+        at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:419:9
+        at MongoMemoryReplSet.start (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+        at MongoMemoryReplSet.create (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+        at startMongoServer (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:23:17)
+        at ensureConnection (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:116:5)
+        at Object.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/integration/password-reset.test.js:15:5) {
+      errorLabelSet: Set(0) {},
+      errorResponse: {
+        ok: 0,
+        errmsg: 'shutdown must run from localhost when running db without auth',
+        code: 13,
+        codeName: 'Unauthorized'
+      },
+      ok: 0,
+      code: 13,
+      codeName: 'Unauthorized'
+    }
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:472:23
+      at MongoMemoryServer.stop (node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:593:5)
+          at async Promise.all (index 0)
+      at MongoMemoryReplSet.stop (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:546:33)
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:419:9
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+FAIL src/__tests__/integration/password-reset.test.js (14.345 s)
+  ● Password Reset Integration Tests › POST /api/auth/forgot-password › should successfully request a password reset for existing user
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/forgot-password › should not reveal if email does not exist (security)
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/forgot-password › should reject invalid email format
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/forgot-password › should reject missing email
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/forgot-password › should handle rate limiting
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › GET /api/auth/validate-reset-token › should validate a valid reset token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › GET /api/auth/validate-reset-token › should reject invalid token format
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › GET /api/auth/validate-reset-token › should reject expired token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › GET /api/auth/validate-reset-token › should reject token not in database
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › GET /api/auth/validate-reset-token › should reject missing token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should successfully reset password with valid token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should be able to login with new password
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should not be able to use old password after reset
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject weak password
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject password without uppercase
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject password without number
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject invalid token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject expired token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject reusing the same token twice
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject missing password
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › POST /api/auth/reset-password › should reject missing token
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+  ● Password Reset Integration Tests › Complete Password Reset Flow › should complete entire password reset flow successfully
+
+    MongoServerError: interrupted at shutdown
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at Connection.sendCommand (node_modules/mongodb/src/cmap/connection.ts:559:17)
+      at Connection.command (node_modules/mongodb/src/cmap/connection.ts:633:22)
+      at Server.command (node_modules/mongodb/src/sdam/server.ts:350:21)
+      at tryOperation (node_modules/mongodb/src/operations/execute_operation.ts:289:24)
+      at executeOperation (node_modules/mongodb/src/operations/execute_operation.ts:119:12)
+      at Db.command (node_modules/mongodb/src/db.ts:275:12)
+      at MongoMemoryReplSet._initReplSet (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:697:9)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/password-reset.test.js:15:5)
+
+
+  ● Test suite failed to run
+
+    MongooseError: Operation `users.deleteMany()` buffering timed out after 10000ms
+
+      at Timeout.<anonymous> (node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:187:23)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+FAIL src/__tests__/integration/v1.1-features.test.js
+  V1.1 Features Integration Tests
+    Input Validation & Sanitization
+      ✕ should reject recipe with missing required fields (15 ms)
+      ✕ should reject recipe with title exceeding max length (6 ms)
+      ✕ should sanitize HTML in recipe fields (5 ms)
+      ✕ should validate numeric fields (6 ms)
+      ✕ should validate dishType enum (3 ms)
+      ✕ should validate rating range (79 ms)
+      ✕ should validate URL format (4 ms)
+      ✕ should accept valid recipe with all fields (70 ms)
+    Pagination
+      ✕ should return paginated results with default limit (6 ms)
+      ✕ should return correct page with custom limit (42 ms)
+      ✕ should return last page correctly (6 ms)
+      ✕ should handle pagination with filters (15 ms)
+    Caching
+      ✕ should cache GET requests (3 ms)
+      ✕ should clear cache on recipe creation (17 ms)
+      ✕ should clear cache on recipe update (18 ms)
+      ✕ should clear cache on recipe deletion (3 ms)
+    Lock Recipe Feature
+      ✕ should toggle recipe lock status (3 ms)
+      ✕ should prevent deletion of locked recipe (14 ms)
+      ✕ should allow deletion of unlocked recipe (2 ms)
+    Error Handling
+      ✕ should return 404 for non-existent recipe (15 ms)
+      ✕ should handle invalid MongoDB ID format (1 ms)
+      ✕ should handle malformed JSON (1 ms)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should reject recipe with missing required fields
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should reject recipe with title exceeding max length
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should sanitize HTML in recipe fields
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should validate numeric fields
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should validate dishType enum
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should validate rating range
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should validate URL format
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Input Validation & Sanitization › should accept valid recipe with all fields
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Pagination › should return paginated results with default limit
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Pagination › should return correct page with custom limit
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Pagination › should return last page correctly
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Pagination › should handle pagination with filters
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Caching › should cache GET requests
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Caching › should clear cache on recipe creation
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Caching › should clear cache on recipe update
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Caching › should clear cache on recipe deletion
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Lock Recipe Feature › should toggle recipe lock status
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Lock Recipe Feature › should prevent deletion of locked recipe
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Lock Recipe Feature › should allow deletion of unlocked recipe
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Error Handling › should return 404 for non-existent recipe
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Error Handling › should handle invalid MongoDB ID format
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+  ● V1.1 Features Integration Tests › Error Handling › should handle malformed JSON
+
+    ReferenceError: MongoMemoryServer is not defined
+
+      14 |     await ensureConnection();
+      15 |     // Start in-memory MongoDB
+    > 16 |     mongoServer = await MongoMemoryServer.create();
+         |     ^
+      17 |     const mongoUri = mongoServer.getUri();
+      18 |     await mongoose.connect(mongoUri);
+      19 |
+
+      at Object.<anonymous> (src/__tests__/integration/v1.1-features.test.js:16:5)
+
+(node:45947) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.warn
+    Starting the MongoMemoryServer Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:359:17
+      at MongoMemoryServer.start (node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:350:5)
+          at async Promise.all (index 0)
+      at MongoMemoryReplSet.initAllServers (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:494:5)
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:22:5)
+
+  console.warn
+    Starting the MongoMemoryReplSet Instance failed, enable debug log for more information. Error:
+     StdoutInstanceError: Port "27017" already in use
+        at MongoInstance.checkErrorInLine (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+        at MongoInstance.stdoutHandler (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+        at Socket.emit (node:events:507:28)
+        at addChunk (node:internal/streams/readable:559:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+        at Socket.Readable.push (node:internal/streams/readable:390:5)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+      21 |
+      22 |   // Create replica set with single node (sufficient for tests)
+    > 23 |   mongoServer = await MongoMemoryReplSet.create({
+         |                 ^
+      24 |     replSet: {
+      25 |       count: 1,
+      26 |       storageEngine: 'wiredTiger'
+
+      at node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:411:19
+      at MongoMemoryReplSet.start (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:406:5)
+      at MongoMemoryReplSet.create (node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:207:5)
+      at startMongoServer (src/__tests__/setup/mongodb.js:23:17)
+      at ensureConnection (src/__tests__/setup/mongodb.js:116:5)
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:22:5)
+
+FAIL src/__tests__/integration/cloud-backup.test.js
+  Cloud Backup API - OAuth Flow
+    POST /api/cloud/dropbox/auth
+      ✕ should initiate Dropbox OAuth and return auth URL
+      ✕ should require authentication
+    GET /api/cloud/status
+      ✕ should return not connected when no provider configured (1 ms)
+      ✕ should return connected status when provider configured
+  Cloud Backup API - Provider Management
+    POST /api/cloud/disconnect
+      ✕ should disconnect cloud provider
+      ✕ should fail when no provider connected
+  Cloud Backup API - Backup Operations
+    POST /api/cloud/backup
+      ✕ should create and upload manual backup successfully
+      ✕ should require cloud provider connection
+    GET /api/cloud/backups
+      ✕ should return empty array when no provider connected
+      ✕ should accept limit parameter
+    GET /api/cloud/backups/:backupId/preview
+      ✕ should preview backup contents
+      ✕ should require cloud provider connection
+    POST /api/cloud/restore
+      ✕ should restore backup in merge mode (1 ms)
+      ✕ should restore backup in replace mode
+      ✕ should validate required fields
+      ✕ should validate mode parameter
+      ✕ should reject invalid password
+      ✕ should require cloud provider connection
+  Cloud Backup API - Schedule Management
+    PUT /api/cloud/schedule
+      ✕ should update schedule settings
+      ✕ should calculate next backup time when enabled
+      ✕ should clear next backup time when disabled
+      ✕ should validate frequency values
+      ✕ should validate time format
+      ✕ should require cloud provider connection
+    GET /api/cloud/schedule
+      ✕ should return current schedule
+      ✕ should require cloud provider connection
+  Token Encryption
+    ✕ should encrypt and decrypt tokens correctly
+    ✕ should use different IVs for same token
+    ✕ should throw error for empty strings
+  Security - Token Protection
+    ✕ should not expose tokens in JSON response
+
+  ● Cloud Backup API - OAuth Flow › POST /api/cloud/dropbox/auth › should initiate Dropbox OAuth and return auth URL
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - OAuth Flow › POST /api/cloud/dropbox/auth › should require authentication
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - OAuth Flow › GET /api/cloud/status › should return not connected when no provider configured
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - OAuth Flow › GET /api/cloud/status › should return connected status when provider configured
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Provider Management › POST /api/cloud/disconnect › should disconnect cloud provider
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Provider Management › POST /api/cloud/disconnect › should fail when no provider connected
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/backup › should create and upload manual backup successfully
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/backup › should require cloud provider connection
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › GET /api/cloud/backups › should return empty array when no provider connected
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › GET /api/cloud/backups › should accept limit parameter
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › GET /api/cloud/backups/:backupId/preview › should preview backup contents
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › GET /api/cloud/backups/:backupId/preview › should require cloud provider connection
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should restore backup in merge mode
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should restore backup in merge mode
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should restore backup in replace mode
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should restore backup in replace mode
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should validate required fields
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should validate required fields
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should validate mode parameter
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should validate mode parameter
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should reject invalid password
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should reject invalid password
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should require cloud provider connection
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Backup Operations › POST /api/cloud/restore › should require cloud provider connection
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      363 |     afterEach(async () => {
+      364 |       // Clean up recipes
+    > 365 |       await Recipe.deleteMany({ owner: testUser._id });
+          |                                                 ^
+      366 |     });
+      367 |     
+      368 |     it('should restore backup in merge mode', async () => {
+
+      at Object.<anonymous> (src/__tests__/integration/cloud-backup.test.js:365:49)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should update schedule settings
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should calculate next backup time when enabled
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should clear next backup time when disabled
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should validate frequency values
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should validate time format
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › PUT /api/cloud/schedule › should require cloud provider connection
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › GET /api/cloud/schedule › should return current schedule
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Cloud Backup API - Schedule Management › GET /api/cloud/schedule › should require cloud provider connection
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Token Encryption › should encrypt and decrypt tokens correctly
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Token Encryption › should use different IVs for same token
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Token Encryption › should throw error for empty strings
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+  ● Security - Token Protection › should not expose tokens in JSON response
+
+    Port "27017" already in use
+
+      at MongoInstance.checkErrorInLine (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:649:9)
+      at MongoInstance.stdoutHandler (node_modules/mongodb-memory-server-core/src/util/MongoInstance.ts:623:10)
+
+PASS src/models/__tests__/Recipe.test.js
+  Recipe Model (REQ-006)
+    Schema Validation
+      ✓ should create a recipe with valid required fields (80 ms)
+      ✓ should fail when title is missing (4 ms)
+      ✓ should fail when ingredients are missing (4 ms)
+      ✓ should fail when instructions are missing (25 ms)
+      ✓ should require name in ingredient (2 ms)
+    DishType Enum Validation
+      ✓ should accept valid dishType: Appetizer (2 ms)
+      ✓ should accept valid dishType: Main Course (2 ms)
+      ✓ should accept valid dishType: Side Dish (2 ms)
+      ✓ should accept valid dishType: Dessert (24 ms)
+      ✓ should accept valid dishType: Beverage (2 ms)
+      ✓ should accept valid dishType: Snack (1 ms)
+      ✓ should accept valid dishType: Breakfast (2 ms)
+      ✓ should accept valid dishType: Lunch (1 ms)
+      ✓ should accept valid dishType: Dinner (9 ms)
+      ✓ should accept valid dishType: Other (1 ms)
+      ✓ should reject invalid dishType (1 ms)
+      ✓ should default to "Other" when dishType not provided (1 ms)
+    Numeric Field Validation
+      ✓ should accept valid prepTime (2 ms)
+      ✓ should reject negative prepTime
+      ✓ should reject negative cookTime
+      ✓ should accept valid servings (2 ms)
+      ✓ should reject servings below minimum
+      ✓ should accept valid rating within range (1 ms)
+      ✓ should reject rating below minimum (1 ms)
+      ✓ should reject rating above maximum (1 ms)
+    Text Field Trimming
+      ✓ should trim title (1 ms)
+      ✓ should trim description (1 ms)
+      ✓ should trim cuisine (2 ms)
+      ✓ should trim sourceUrl (1 ms)
+    Array Fields
+      ✓ should handle multiple ingredients (2 ms)
+      ✓ should handle multiple instructions (1 ms)
+      ✓ should handle tags array (1 ms)
+    Timestamps
+      ✓ should automatically add createdAt timestamp (1 ms)
+      ✓ should automatically add updatedAt timestamp (1 ms)
+      ✓ should update updatedAt on modification (15 ms)
+    Indexes
+      ✓ should have text index on title and description (4 ms)
+      ✓ should support text search on title (11 ms)
+    Optional Fields
+      ✓ should allow recipe without description (4 ms)
+      ✓ should allow recipe without times (4 ms)
+      ✓ should allow recipe without rating (2 ms)
+      ✓ should allow recipe without sourceUrl (3 ms)
+    Ingredient Schema
+      ✓ should allow ingredient with only name (1 ms)
+      ✓ should store ingredient with all fields (2 ms)
+      ✓ should not add _id to ingredients (1 ms)
+
+PASS src/services/__tests__/scraper.test.js
+  Scraper Service
+    HTML Entity Decoding (REQ-005)
+      ✓ should decode common HTML entities (5 ms)
+      ✓ should decode numeric HTML entities (1 ms)
+      ✓ should decode hex HTML entities (1 ms)
+    JSON-LD Recipe Extraction
+      ✓ should extract recipe from JSON-LD schema (1 ms)
+      ✓ should handle @graph wrapped JSON-LD
+    Servings Extraction
+      ✓ should extract servings from recipeYield number (1 ms)
+      ✓ should extract servings from recipeYield string
+      ✓ should handle various servings formats (11 ms)
+    DishType Mapping
+      ✓ should map recipeCategory to valid dishType enum (3 ms)
+    Time Parsing
+      ✓ should parse ISO 8601 duration format
+    Ingredient Cleaning
+      ✓ should remove duplicate ingredients (1 ms)
+      ✓ should filter out very short or very long ingredients
+    Instruction Cleaning
+      ✓ should remove HTML tags from instructions (1 ms)
+      ✓ should remove URLs from instructions
+      ✓ should remove duplicate instructions
+      ✓ should filter out very short instructions (1 ms)
+    Error Handling
+      ✓ should throw error on network failure (1 ms)
+      ✓ should throw error when title is missing
+      ✓ should handle timeout (101 ms)
+    Source URL
+      ✓ should include source URL in result
+
+Test Suites: 8 failed, 2 passed, 10 total
+Tests:       168 failed, 69 passed, 237 total
+Snapshots:   0 total
+Time:        426.344 s, estimated 615 s
+Ran all test suites.
+Error during MongoDB cleanup: Error: Cannot cleanup because "instance.mongodProcess" is still defined
+    at MongoMemoryServer.cleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:639:7)
+    at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:601:49
+    at Array.map (<anonymous>)
+    at MongoMemoryReplSet.cleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:601:36)
+    at MongoMemoryReplSet.stop (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:567:18)
+    at stopMongoServer (file:///Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:56:7)
+    at globalTeardown (file:///Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/globalTeardown.js:10:3)
+    at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3166:11
+    at waitForPromiseWithCleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/transform/build/index.js:141:5)
+    at ScriptTransformer.requireAndTranspileModule (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/transform/build/index.js:625:16)
+    at runGlobalHook (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3162:9)
+    at runJest (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3464:5)
+    at _run10000 (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:1543:5)
+    at runCLI (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:1444:3)
+    at Object.run (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/jest-cli/build/index.js:656:9)
+Force cleanup failed: Error: Cannot cleanup because "instance.mongodProcess" is still defined
+    at MongoMemoryServer.cleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryServer.ts:639:7)
+    at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:601:49
+    at Array.map (<anonymous>)
+    at MongoMemoryReplSet.cleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:601:36)
+    at MongoMemoryReplSet.stop (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongodb-memory-server-core/src/MongoMemoryReplSet.ts:567:18)
+    at stopMongoServer (file:///Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/mongodb.js:64:9)
+    at globalTeardown (file:///Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/__tests__/setup/globalTeardown.js:10:3)
+    at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3166:11
+    at waitForPromiseWithCleanup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/transform/build/index.js:141:5)
+    at ScriptTransformer.requireAndTranspileModule (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/transform/build/index.js:625:16)
+    at runGlobalHook (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3162:9)
+    at runJest (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:3464:5)
+    at _run10000 (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:1543:5)
+    at runCLI (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/core/build/index.js:1444:3)
+    at Object.run (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/jest-cli/build/index.js:656:9)
+✓ MongoDB Memory Server stopped
+✓ All connections closed
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

@@ -6,18 +6,19 @@
 
 import request from 'supertest';
 import mongoose from 'mongoose';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import { encryptToken, decryptToken } from '../../utils/encryption.js';
 import dropboxService from '../../services/cloudProviders/dropboxService.js';
 import Recipe from '../../models/Recipe.js';
 import { generateBackupFile } from '../../services/backupGenerator.js';
-import { startMongoServer, stopMongoServer } from '../setup/mongodb.js';
 
 let testUser;
 let authToken;
 
 beforeAll(async () => {
+    await ensureConnection();
   // Set up test environment variables
   process.env.CLOUD_TOKEN_ENCRYPTION_KEY = '26e27f93e486a80c3313f043787b369f68e941b9d0f3631dbaf4af80107c1485';
   process.env.DROPBOX_APP_KEY = 'test_app_key';
@@ -68,9 +69,6 @@ beforeAll(async () => {
     return true;
   };
   
-  // Start in-memory MongoDB with replica set support (for transactions)
-  await startMongoServer();
-  
   // Create test user
   testUser = await User.create({
     email: 'cloudtest@example.com',
@@ -87,10 +85,10 @@ beforeAll(async () => {
     });
   
   authToken = loginRes.body.data.accessToken;
-}, 30000);
+});
 
 afterAll(async () => {
-  await stopMongoServer();
+  await clearDatabase();
 });
 
 describe('Cloud Backup API - OAuth Flow', () => {

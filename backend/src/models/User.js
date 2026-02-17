@@ -386,16 +386,29 @@ userSchema.methods.markEmailVerified = function() {
 
 // Generate 2FA backup codes
 userSchema.methods.generateBackupCodes = function() {
-  const codes = [];
+  const plainCodes = [];
+  const hashedCodes = [];
+  
   for (let i = 0; i < 10; i++) {
     // Generate 8-character alphanumeric code
-    const code = crypto.randomBytes(4).toString('hex').toUpperCase();
-    codes.push({
-      code: crypto.createHash('sha256').update(code).digest('hex'),
+    const plainCode = crypto.randomBytes(4).toString('hex').toUpperCase();
+    plainCodes.push(plainCode);
+    
+    // Store hashed version
+    hashedCodes.push({
+      code: crypto.createHash('sha256').update(plainCode).digest('hex'),
       usedAt: null
     });
   }
-  return codes;
+  
+  // Save hashed codes to database
+  this.twoFactorBackupCodes = hashedCodes;
+  
+  // Return plain codes to user (with usedAt property for API response format)
+  return plainCodes.map(code => ({
+    code,
+    usedAt: null
+  }));
 };
 
 // Verify backup code

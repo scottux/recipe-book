@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import app from '../../index.js';
 import User from '../../models/User.js';
@@ -7,29 +6,22 @@ import Recipe from '../../models/Recipe.js';
 import Collection from '../../models/Collection.js';
 import MealPlan from '../../models/MealPlan.js';
 import ShoppingList from '../../models/ShoppingList.js';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 
-let mongoServer;
 let testUser;
 let accessToken;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
+  await ensureConnection();
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
+  // DO NOT disconnect - shared connection managed by global teardown
 });
 
 beforeEach(async () => {
-  // Clear all collections
-  await User.deleteMany({});
-  await Recipe.deleteMany({});
-  await Collection.deleteMany({});
-  await MealPlan.deleteMany({});
-  await ShoppingList.deleteMany({});
+  // Clear all collections using shared helper
+  await clearDatabase();
 
   // Create test user and login
   const registerRes = await request(app)
@@ -281,11 +273,15 @@ describe('Account Management - Delete Account', () => {
   test('should delete all user meal plans on account deletion', async () => {
     // Create test meal plan
     const user = await User.findById(testUser.id);
+    const startDate = new Date();
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 7); // 7 days later
+    
     await MealPlan.create({
       owner: user._id,
       name: 'Test Plan',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate,
+      endDate,
       meals: []
     });
 

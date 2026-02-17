@@ -1,0 +1,180 @@
+{
+  "timestamp": "2026-02-17T16:41:28.746Z",
+  "summary": {
+    "totalTests": 237,
+    "passed": 132,
+    "failed": 105,
+    "passRate": 56
+  },
+  "categories": [
+    {
+      "name": "authentication",
+      "count": 28,
+      "percentage": 27,
+      "tests": [
+        "POST /api/auth/register › should create user with emailVerified=false by default",
+        "GET /api/auth/me › should include emailVerified status",
+        "POST /api/auth/send-verification › should send verification email for authenticated user",
+        "POST /api/auth/send-verification › should fail if email already verified",
+        "POST /api/auth/send-verification › should enforce rate limiting (3 requests per hour)",
+        "POST /api/meal-plans › should require authentication",
+        "GET /api/meal-plans › should get all meal plans for authenticated user",
+        "POST /api/auth/forgot-password › should successfully request a password reset for existing user",
+        "POST /api/auth/forgot-password › should not reveal if email does not exist (security)",
+        "POST /api/auth/forgot-password › should reject invalid email format",
+        "POST /api/auth/forgot-password › should reject missing email",
+        "POST /api/auth/forgot-password › should handle rate limiting",
+        "GET /api/auth/validate-reset-token › should validate a valid reset token",
+        "GET /api/auth/validate-reset-token › should reject invalid token format",
+        "GET /api/auth/validate-reset-token › should reject expired token",
+        "GET /api/auth/validate-reset-token › should reject token not in database",
+        "GET /api/auth/validate-reset-token › should reject missing token",
+        "POST /api/auth/reset-password › should successfully reset password with valid token",
+        "POST /api/auth/reset-password › should be able to login with new password",
+        "POST /api/auth/reset-password › should not be able to use old password after reset",
+        "POST /api/auth/reset-password › should reject weak password",
+        "POST /api/auth/reset-password › should reject password without uppercase",
+        "POST /api/auth/reset-password › should reject password without number",
+        "POST /api/auth/reset-password › should reject invalid token",
+        "POST /api/auth/reset-password › should reject expired token",
+        "POST /api/auth/reset-password › should reject reusing the same token twice",
+        "POST /api/auth/reset-password › should reject missing password",
+        "POST /api/auth/reset-password › should reject missing token"
+      ]
+    },
+    {
+      "name": "validation",
+      "count": 19,
+      "percentage": 18,
+      "tests": [
+        "POST /api/meal-plans › should reject meal plans longer than 28 days",
+        "POST /api/meal-plans/:id/meals › should reject invalid recipe ID",
+        "POST /api/meal-plans/:id/duplicate › should reject duplicate if dates overlap",
+        "POST /api/import/backup - File Validation › should reject non-JSON file",
+        "POST /api/import/backup - Content Validation › should reject recipe missing title",
+        "POST /api/import/backup - Content Validation › should reject recipe with empty ingredients",
+        "POST /api/import/backup - Content Validation › should reject recipe with empty instructions",
+        "POST /api/import/backup - Replace Mode › should reject replace mode without password",
+        "POST /api/import/backup - Replace Mode › should reject replace mode with wrong password",
+        "POST /api/import/backup - Transaction Rollback › should rollback on validation error",
+        "Input Validation & Sanitization › should reject recipe with missing required fields",
+        "Input Validation & Sanitization › should reject recipe with title exceeding max length",
+        "Input Validation & Sanitization › should sanitize HTML in recipe fields",
+        "Input Validation & Sanitization › should validate numeric fields",
+        "Input Validation & Sanitization › should validate dishType enum",
+        "Input Validation & Sanitization › should validate rating range",
+        "Input Validation & Sanitization › should validate URL format",
+        "Input Validation & Sanitization › should accept valid recipe with all fields",
+        "Error Handling › should handle invalid MongoDB ID format"
+      ]
+    },
+    {
+      "name": "twoFactor",
+      "count": 18,
+      "percentage": 17,
+      "tests": [
+        "POST /api/auth/2fa/setup › should require authentication",
+        "POST /api/auth/2fa/verify › should enable 2FA with valid token and generate backup codes",
+        "POST /api/auth/2fa/verify › should reject invalid token",
+        "POST /api/auth/2fa/verify › should require authentication",
+        "GET /api/auth/2fa/status › should require authentication",
+        "POST /api/auth/2fa/verify-login › should complete login with valid 2FA token",
+        "POST /api/auth/2fa/verify-login › should reject invalid 2FA token",
+        "POST /api/auth/2fa/verify-login › should reject invalid credentials",
+        "POST /api/auth/2fa/verify-login › should accept valid backup code",
+        "POST /api/auth/2fa/verify-login › should reject already-used backup code",
+        "POST /api/auth/2fa/verify-login › should require all parameters",
+        "POST /api/auth/2fa/disable › should disable 2FA with valid password",
+        "POST /api/auth/2fa/disable › should reject invalid password",
+        "POST /api/auth/2fa/disable › should require password parameter",
+        "POST /api/auth/2fa/disable › should require authentication",
+        "Login Flow with 2FA › should require 2FA verification during login when enabled",
+        "Login Flow with 2FA › should complete full login flow with 2FA",
+        "Login Flow with 2FA › should allow normal login after disabling 2FA"
+      ]
+    },
+    {
+      "name": "mealPlanning",
+      "count": 15,
+      "percentage": 14,
+      "tests": [
+        "should delete all user meal plans on account deletion",
+        "POST /api/meal-plans › should create a new meal plan",
+        "POST /api/meal-plans › should detect overlapping meal plans",
+        "GET /api/meal-plans › should filter templates when requested",
+        "POST /api/meal-plans/:id/meals › should add a meal to the plan",
+        "POST /api/meal-plans/:id/meals › should add multiple recipes to same meal",
+        "DELETE /api/meal-plans/:id/meals/:mealId › should remove a meal from the plan",
+        "DELETE /api/meal-plans/:id/meals/:mealId › should return 404 for non-existent meal",
+        "GET /api/meal-plans/:id/shopping-list › should generate shopping list from meal plan",
+        "POST /api/meal-plans/:id/duplicate › should duplicate as template",
+        "POST /api/meal-plans/:id/duplicate › should duplicate to new dates",
+        "DELETE /api/meal-plans/:id › should delete a meal plan",
+        "DELETE /api/meal-plans/:id › should not allow deleting other users meal plans",
+        "PUT /api/meal-plans/:id › should update meal plan details",
+        "PUT /api/meal-plans/:id › should detect overlaps when updating dates"
+      ]
+    },
+    {
+      "name": "other",
+      "count": 13,
+      "percentage": 12,
+      "tests": [
+        "Token Expiration › should set expiration to 24 hours from creation",
+        "Pagination › should return paginated results with default limit",
+        "Pagination › should return correct page with custom limit",
+        "Pagination › should return last page correctly",
+        "Pagination › should handle pagination with filters",
+        "Caching › should cache GET requests",
+        "Caching › should clear cache on recipe creation",
+        "Caching › should clear cache on recipe update",
+        "Caching › should clear cache on recipe deletion",
+        "Lock Recipe Feature › should toggle recipe lock status",
+        "Lock Recipe Feature › should prevent deletion of locked recipe",
+        "Lock Recipe Feature › should allow deletion of unlocked recipe",
+        "Error Handling › should return 404 for non-existent recipe"
+      ]
+    },
+    {
+      "name": "cloudBackup",
+      "count": 9,
+      "percentage": 9,
+      "tests": [
+        "POST /api/import/backup - Merge Mode › should successfully import backup in merge mode",
+        "POST /api/import/backup - Merge Mode › should skip duplicates in merge mode",
+        "POST /api/import/backup - Merge Mode › should preserve existing data in merge mode",
+        "POST /api/import/backup - Replace Mode › should delete all existing data in replace mode",
+        "POST /api/import/backup - ID Remapping › should remap recipe IDs in collections",
+        "POST /api/import/backup - ID Remapping › should remap recipe IDs in meal plans",
+        "POST /api/import/backup - ID Remapping › should handle missing recipe references gracefully",
+        "POST /api/import/backup - Security › should sanitize XSS in recipe titles",
+        "POST /api/import/backup - Performance › should complete import within reasonable time"
+      ]
+    },
+    {
+      "name": "email",
+      "count": 2,
+      "percentage": 2,
+      "tests": [
+        "User Model - cleanupExpiredTokens › should remove expired verification tokens",
+        "Integration with Registration Flow › should complete full registration and verification flow"
+      ]
+    },
+    {
+      "name": "passwordReset",
+      "count": 1,
+      "percentage": 1,
+      "tests": [
+        "Complete Password Reset Flow › should complete entire password reset flow successfully"
+      ]
+    }
+  ],
+  "errorPatterns": {
+    "timeout": 1,
+    "connection": 204,
+    "authentication": 58,
+    "validation": 153,
+    "notFound": 6,
+    "serverError": 8
+  }
+}

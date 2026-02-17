@@ -1,31 +1,21 @@
 import request from 'supertest';
 import express from 'express';
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import rateLimit from 'express-rate-limit';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import Recipe from '../../models/Recipe.js';
 import recipeRoutes from '../../routes/recipes.js';
-import { cacheMiddleware, clearCache } from '../../middleware/cache.js';
+import { clearCache } from '../../middleware/cache.js';
 
 describe('V1.1 Features Integration Tests', () => {
-  let mongoServer;
   let app;
 
   beforeAll(async () => {
-    // Start in-memory MongoDB
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri);
+    await ensureConnection();
 
     // Setup Express app with v1.1 features
     app = express();
     app.use(express.json({ limit: '10mb' }));
     app.use('/api/recipes', recipeRoutes);
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoServer.stop();
   });
 
   afterEach(async () => {

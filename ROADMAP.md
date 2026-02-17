@@ -1,8 +1,8 @@
 # Recipe Book - Product Roadmap
 
-**Last Updated**: February 15, 2026  
-**Current Version**: 2.1.4  
-**Status**: ✅ V2.1.4 COMPLETE - Production Bug Fixes & UI Polish Released
+**Last Updated**: February 17, 2026  
+**Current Version**: 2.2.2  
+**Status**: ✅ V2.2.2 COMPLETE - Documentation Cleanup & Roadmap Realignment
 
 ---
 
@@ -169,131 +169,61 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 
 ---
 
-## 🎯 Next Up: V2.1.6
+## 🎯 Current Sprint: V2.2.x Series
 
-### V2.1.6 - Two-Factor Authentication (IN PROGRESS)
+### Recently Completed ✅
+- **V2.2.0** (Feb 16, 2026): Cloud Backup Integration (Dropbox + Google Drive, Automatic Scheduling)
+- **V2.2.1** (Feb 16, 2026): UI/UX Bug Fixes (Date handling, Recipe selector, Button layout)
+- **V2.2.2** (Feb 17, 2026): Documentation Cleanup & Roadmap Realignment
 
-**Priority**: HIGH  
-**Target**: Mid-February 2026  
-**Focus**: Account security with two-factor authentication
+### Next Up: V2.2.3
+
+### V2.2.3 - Test Infrastructure & Tech Debt
+
+**Priority**: MEDIUM  
+**Target**: Late February 2026  
+**Focus**: Testing improvements and technical debt reduction
 
 #### Current Phase
-- ⏳ **Phase 5**: Testing (IN PROGRESS)
+- ⏳ **Phase 1**: Planning
 
-#### Planned Features
-- **Two-Factor Authentication (2FA)**
-  - TOTP-based 2FA setup and verification
-  - QR code generation for authenticator apps
-  - Backup codes for account recovery
-  - 2FA verification during login
-  - Enable/disable 2FA in account settings
-
-- **Security Features**
-  - Secure secret generation and storage
-  - Time-based one-time passwords (TOTP)
-  - Backup code single-use validation
-  - Protected setup and verification endpoints
-
-- **User Experience**
-  - Simple 2FA setup flow with QR code
-  - Manual entry option for authenticator apps
-  - Clear backup code display and storage instructions
-  - Seamless 2FA login flow
-  - Easy disable option with password confirmation
-
-**Implementation Status**: ~95% complete, testing in progress
+#### Planned Work
+- Fix 22 failing integration tests (authentication setup issues)
+- Fix 10 failing 2FA integration tests
+- Improve test infrastructure and helper utilities
+- Security dependency updates (nodemailer, happy-dom)
+- Increase test coverage to 90%+
+- Add missing E2E tests for cloud backup features
 
 ---
 
-### V2.1.7 - Critical Bugfix Release (NEXT)
-
-**Priority**: CRITICAL  
-**Target**: Late February 2026  
-**Focus**: Fix high-priority bugs discovered in V2.1.5-V2.1.6
-
-#### Known Bugs to Fix
-1. **Meal Plan Date Selection Off-by-One** (High)
-   - Date range selection creates plan for one day earlier
-   - Fix timezone/date conversion issue
-
-2. **Meal Plan Missing Recipe Selection** (High)
-   - No recipe list shown when adding meals
-   - Implement recipe selector component
-
-3. **Shopping List Recipe Addition** (High)
-   - Cannot add recipes to shopping lists
-   - Fix recipe-to-list integration
-
-4. **Meal Planning Blue Button** (Medium)
-   - Theme violation - button not using cookbook brown
-   - Apply design system colors
-
-5. **Recipe Detail UI Cramped** (Medium)
-   - Top-right buttons cramped and inconsistent
-   - Redesign action button layout
-
-**Testing Focus**:
-- Manual testing of all meal planning workflows
-- Manual testing of shopping list workflows
-- UX review of fixes
-- Regression testing
-
-**See**: `docs/KNOWN_BUGS_V2.1.md` for full bug tracking
-
----
-
-### V2.1.8 - Test Infrastructure & Tech Debt
+### V2.2.4 - Cloud Backup Enhancements
 
 **Priority**: MEDIUM  
 **Target**: Early March 2026  
-**Focus**: Testing improvements and technical debt
-
-#### Planned Work
-- Fix 2FA integration test failures (10 tests)
-- Improve test infrastructure
-- Address accumulating tech debt
-- Dependency security updates
-- Test coverage improvements
-
----
-
-### V2.1.9 - Email Verification (DEFERRED)
----
-
-## 🎯 Deferred: V2.1.5
-
-### V2.1.5 - Email Verification (DEFERRED to V2.2)
-
-**Priority**: HIGH  
-**Target**: Late February 2026  
-**Focus**: Account verification and security
-
-#### Current Phase
-- ⏳ **Phase 1**: Requirements Documentation (IN PROGRESS)
+**Focus**: User experience improvements for cloud backups
 
 #### Planned Features
-- **Email Verification on Registration**
-  - Send verification email on signup
-  - Verification token generation (24-hour expiry)
-  - Email verification page with token validation
-  - Resend verification email (rate limited)
-  - Unverified user restrictions (optional)
+- User timezone support for scheduled backups
+- Backup history and restore interface improvements
+- Multiple provider support (connect both Dropbox AND Google Drive simultaneously)
+- Backup preview before restore
+- Selective restore (recipes only, collections only, etc.)
 
-- **Account Security**
-  - Verification status tracking
-  - Verified badge on user profile
-  - Email change verification (future)
-  - Security alert emails (future)
+---
 
-- **User Experience**
-  - Non-blocking verification (users can use app)
-  - Gentle reminder banner for unverified users
-  - Easy resend option in account settings
-  - Clear verification instructions
+### V2.3.0 - Export Format Improvements
 
-**V2.1 Series Progress**: 4 of 8 releases complete (V2.1.0 - V2.1.4)  
-**In Progress**: V2.1.6 (Two-Factor Auth)  
-**Next Up**: V2.1.7 (Critical Bugfixes)
+**Priority**: MEDIUM  
+**Target**: Mid-March 2026  
+**Focus**: Enhanced export capabilities
+
+#### Planned Features
+- Custom PDF templates for recipes and collections
+- iCal export for meal plans (calendar integration)
+- Excel/CSV export for shopping lists
+- HTML export for recipes (web publishing)
+- Export customization (fonts, colors, branding)
 
 ---
 
@@ -847,24 +777,31 @@ Features are prioritized using:
 ## Release Schedule
 
 ### Target Cadence
-- **Major versions** (X.0): Annually
-- **Minor versions** (X.Y): Quarterly
-- **Patch versions** (X.Y.Z): As needed
+- **Major versions** (X.0.0): Breaking changes, platform expansions (annually)
+- **Minor versions** (X.Y.0): New features, backwards compatible (quarterly or as needed)
+- **Patch versions** (X.Y.Z): Bug fixes, improvements, documentation (as needed)
 
-### Planned Releases
+### Completed Releases (V2.x Series)
+- **V2.0.0** (Multi-User Platform): ✅ February 15, 2026
 - **V2.1.0** (Password Reset): ✅ February 15, 2026
 - **V2.1.1** (Account Management): ✅ February 15, 2026
 - **V2.1.2** (Import from Backup): ✅ February 15, 2026
 - **V2.1.3** (Critical Bugfixes): ✅ February 15, 2026
 - **V2.1.4** (Production Bugfixes & UI Polish): ✅ February 15, 2026
-- **V2.1.6** (Two-Factor Auth): February 16, 2026
-- **V2.1.7** (Critical Bugfixes): Late February 2026
-- **V2.1.8** (Test Infrastructure): Early March 2026
-- **V2.2**: July 2026
-- **V2.3**: October 2026
-- **V2.4**: January 2027
-- **V2.5**: April 2027
-- **V3.0**: September 2027
+- **V2.1.5** (Performance & Infrastructure): ✅ February 15, 2026
+- **V2.1.6** (Email Verification): ✅ February 15, 2026
+- **V2.1.7** (Two-Factor Auth): ✅ February 15, 2026
+- **V2.2.0** (Cloud Backup - Dropbox & Google Drive): ✅ February 16, 2026
+- **V2.2.1** (UI/UX Bugfixes): ✅ February 16, 2026
+- **V2.2.2** (Documentation Cleanup): ✅ February 17, 2026
+
+### Planned Releases (V2.x Series)
+- **V2.2.3** (Test Infrastructure): Late February 2026
+- **V2.2.4** (Cloud Backup Enhancements): Early March 2026
+- **V2.3.0** (Export Improvements): Mid-March 2026
+- **V2.4.0** (Social Features): Q2 2026
+- **V2.5.0** (Smart Features): Q3 2026
+- **V3.0.0** (Mobile & Offline): Q3-Q4 2027
 
 ---
 

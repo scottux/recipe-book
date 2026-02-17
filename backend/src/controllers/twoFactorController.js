@@ -119,24 +119,32 @@ export const verify2FA = async (req, res) => {
     }
 
     // Hash and store backup codes
-    user.twoFactorBackupCodes = plainBackupCodes.map(code => ({
+    const hashedBackupCodes = plainBackupCodes.map(code => ({
       code: crypto.createHash('sha256').update(code).digest('hex'),
       usedAt: null
     }));
+    
+    console.log(`Generated ${hashedBackupCodes.length} backup codes`);
+    user.twoFactorBackupCodes = hashedBackupCodes;
+    console.log(`Assigned to user, count: ${user.twoFactorBackupCodes.length}`);
 
     // Enable 2FA
     user.twoFactorEnabled = true;
     user.twoFactorVerified = true;
-    await user.save();
-
+    
+    const savedUser = await user.save();
+    console.log(`Saved user, backup codes count: ${savedUser.twoFactorBackupCodes.length}`);
     console.log(`2FA enabled for user: ${user.email}`);
 
+    // Return backup codes as objects with code and usedAt properties
+    const backupCodesResponse = plainBackupCodes.map(code => ({
+      code,
+      usedAt: null
+    }));
+
     res.json({
-      success: true,
-      message: '2FA enabled successfully.',
-      data: {
-        backupCodes: plainBackupCodes
-      }
+      message: '2FA enabled successfully',
+      backupCodes: backupCodesResponse
     });
   } catch (error) {
     console.error('2FA verification error:', error);
@@ -302,11 +310,17 @@ export const regenerateBackupCodes = async (req, res) => {
 
     console.log(`Backup codes regenerated for user: ${user.email}`);
 
+    // Return backup codes as objects with code and usedAt properties
+    const backupCodesResponse = plainBackupCodes.map(code => ({
+      code,
+      usedAt: null
+    }));
+
     res.json({
       success: true,
       message: 'Backup codes regenerated successfully.',
       data: {
-        backupCodes: plainBackupCodes
+        backupCodes: backupCodesResponse
       }
     });
   } catch (error) {

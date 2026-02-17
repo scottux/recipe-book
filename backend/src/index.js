@@ -148,15 +148,19 @@ app.use((req, res) => {
 
 async function initializeApp() {
   try {
-    // Connect to MongoDB
-    logger.info('Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGODB_URI, {
-      minPoolSize: parseInt(process.env.DB_CONNECTION_POOL_MIN) || 10,
-      maxPoolSize: parseInt(process.env.DB_CONNECTION_POOL_MAX) || 50,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
-    logger.info('✓ Connected to MongoDB');
+    // Connect to MongoDB (skip in test environment - tests manage their own connection)
+    if (process.env.NODE_ENV !== 'test') {
+      logger.info('Connecting to MongoDB...');
+      await mongoose.connect(process.env.MONGODB_URI, {
+        minPoolSize: parseInt(process.env.DB_CONNECTION_POOL_MIN) || 10,
+        maxPoolSize: parseInt(process.env.DB_CONNECTION_POOL_MAX) || 50,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+      });
+      logger.info('✓ Connected to MongoDB');
+    } else {
+      logger.info('Test mode: Skipping MongoDB connection (managed by tests)');
+    }
     
     // Initialize Redis (non-blocking, continues if Redis fails)
     logger.info('Initializing Redis...');

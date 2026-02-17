@@ -1,5 +1,6 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import Recipe from '../../models/Recipe.js';
@@ -102,6 +103,7 @@ describe('Import from Backup - Integration Tests', () => {
   };
 
   beforeAll(async () => {
+    await ensureConnection();
     // Create test user
     testUser = await User.create({
       email: 'import@test.com',
@@ -118,7 +120,7 @@ describe('Import from Backup - Integration Tests', () => {
     });
 
     authToken = loginRes.body.data.accessToken;
-  }, 30000);
+  });
 
   afterAll(async () => {
     // Cleanup
@@ -128,7 +130,7 @@ describe('Import from Backup - Integration Tests', () => {
     await MealPlan.deleteMany({});
     await ShoppingList.deleteMany({});
     await mongoose.connection.close();
-  }, 30000);
+  });
 
   beforeEach(async () => {
     // Clear user's data before each test

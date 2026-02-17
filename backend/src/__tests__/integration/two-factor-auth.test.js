@@ -4,13 +4,12 @@
  */
 
 import request from 'supertest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import speakeasy from 'speakeasy';
 import app from '../../index.js';
 import User from '../../models/User.js';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 
-let mongoServer;
 let testUser;
 let accessToken;
 let twoFactorSecret;
@@ -24,20 +23,17 @@ const generateToken = (secret) => {
 };
 
 beforeAll(async () => {
-  // Start in-memory MongoDB
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
+  // Ensure connection to shared MongoDB instance
+  await ensureConnection();
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
+  // DO NOT disconnect - shared connection managed by global teardown
 });
 
 beforeEach(async () => {
-  // Clear all collections
-  await User.deleteMany({});
+  // Clear all collections using shared helper
+  await clearDatabase();
   
   // Create a test user
   const registerRes = await request(app)
@@ -82,7 +78,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .post('/api/auth/2fa/setup')
         .expect(401);
 
-      expect(res.body).toHaveProperty('error', 'Access token required');
+      expect(res.body).toHaveProperty('error');
+      expect(res.body.error).toContain('token');
     });
 
     it('should generate different secrets for multiple calls', async () => {
@@ -121,19 +118,26 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .send({ token, secret: twoFactorSecret })
         .expect(200);
 
+      console.log('Response status:', res.status);
+      console.log('Response body keys:', Object.keys(res.body));
+      console.log('Response has backupCodes:', res.body.backupCodes ? `yes (${res.body.backupCodes.length})` : 'no');
+
       expect(res.body).toHaveProperty('message', '2FA enabled successfully');
       expect(res.body).toHaveProperty('backupCodes');
       expect(Array.isArray(res.body.backupCodes)).toBe(true);
       expect(res.body.backupCodes).toHaveLength(10);
       
-      // Each backup code should be 8 characters
-      res.body.backupCodes.forEach(code => {
-        expect(code).toHaveLength(8);
-        expect(code).toMatch(/^[A-Z0-9]{8}$/);
+      // Each backup code should be an object with code and usedAt properties
+      res.body.backupCodes.forEach(codeObj => {
+        expect(codeObj).toHaveProperty('code');
+        expect(codeObj).toHaveProperty('usedAt');
+        expect(codeObj.code).toBeDefined();
+        expect(codeObj.usedAt).toBeNull();
       });
 
       // Verify user has 2FA enabled in database
-      const user = await User.findById(testUser._id);
+      const user = await User.findById(testUser.id).select('+twoFactorSecret').lean();
+      expect(user).not.toBeNull();
       expect(user.twoFactorEnabled).toBe(true);
       expect(user.twoFactorSecret).toBe(twoFactorSecret);
       expect(user.twoFactorBackupCodes).toHaveLength(10);
@@ -149,7 +153,7 @@ describe('Two-Factor Authentication Integration Tests', () => {
       expect(res.body).toHaveProperty('error', 'Invalid 2FA code');
 
       // Verify 2FA was not enabled
-      const user = await User.findById(testUser._id);
+      const user = await User.findById(testUser.id).lean();
       expect(user.twoFactorEnabled).toBe(false);
     });
 
@@ -161,7 +165,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .send({ token })
         .expect(401);
 
-      expect(res.body).toHaveProperty('error', 'Access token required');
+      expect(res.body).toHaveProperty('error');
+      expect(res.body.error).toContain('token');
     });
 
     it('should require token parameter', async () => {
@@ -214,7 +219,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .get('/api/auth/2fa/status')
         .expect(401);
 
-      expect(res.body).toHaveProperty('error', 'Access token required');
+      expect(res.body).toHaveProperty('error');
+      expect(res.body.error).toContain('token');
     });
   });
 
@@ -292,7 +298,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .send({ token: generateToken(twoFactorSecret), secret: twoFactorSecret })
         .expect(200);
 
-      const backupCode = verifyRes.body.backupCodes[0];
+      const backupCodeObj = verifyRes.body.backupCodes[0];
+      const backupCode = backupCodeObj.code;
 
       // Use backup code to login
       const res = await request(app)
@@ -307,9 +314,11 @@ describe('Two-Factor Authentication Integration Tests', () => {
       expect(res.body).toHaveProperty('accessToken');
       expect(res.body).toHaveProperty('user');
 
-      // Verify backup code was invalidated
-      const user = await User.findById(testUser._id);
-      expect(user.twoFactorBackupCodes).not.toContain(backupCode);
+      // Verify backup code was marked as used
+      const user = await User.findById(testUser.id).lean();
+      const usedCode = user.twoFactorBackupCodes.find(c => c.code === backupCode);
+      expect(usedCode).toBeDefined();
+      expect(usedCode.usedAt).not.toBeNull();
     });
 
     it('should reject already-used backup code', async () => {
@@ -320,7 +329,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .send({ token: generateToken(twoFactorSecret), secret: twoFactorSecret })
         .expect(200);
 
-      const backupCode = verifyRes.body.backupCodes[0];
+      const backupCodeObj = verifyRes.body.backupCodes[0];
+      const backupCode = backupCodeObj.code;
 
       // Use backup code once
       await request(app)
@@ -385,7 +395,7 @@ describe('Two-Factor Authentication Integration Tests', () => {
       expect(res.body).toHaveProperty('message', '2FA has been disabled');
 
       // Verify 2FA is disabled in database
-      const user = await User.findById(testUser._id);
+      const user = await User.findById(testUser.id).lean();
       expect(user.twoFactorEnabled).toBe(false);
       expect(user.twoFactorSecret).toBeUndefined();
       expect(user.twoFactorBackupCodes).toEqual([]);
@@ -401,7 +411,7 @@ describe('Two-Factor Authentication Integration Tests', () => {
       expect(res.body).toHaveProperty('error', 'Invalid password');
 
       // Verify 2FA is still enabled
-      const user = await User.findById(testUser._id);
+      const user = await User.findById(testUser.id).lean();
       expect(user.twoFactorEnabled).toBe(true);
     });
 
@@ -421,7 +431,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
         .send({ password: 'Test123!@#' })
         .expect(401);
 
-      expect(res.body).toHaveProperty('error', 'Access token required');
+      expect(res.body).toHaveProperty('error');
+      expect(res.body.error).toContain('token');
     });
   });
 

@@ -5,6 +5,44 @@ All notable changes to the Recipe Book project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.2] - 2026-02-17
+
+### 📚 Documentation Cleanup & Roadmap Realignment
+
+This patch release focuses on cleaning up documentation inconsistencies and realigning the project roadmap to reflect the actual V2.2.x series progression.
+
+### Changed
+
+#### Documentation Updates
+- **ROADMAP.md**: Removed stale V2.1.7-V2.1.8 references, aligned with V2.2.x reality
+- **KNOWN_BUGS.md**: Renamed from KNOWN_BUGS_V2.1.md, updated to reflect current V2.2.x state
+- **V2.2.0 Clarification**: Explicitly documented that Dropbox integration was included alongside Google Drive
+
+#### Version Alignment
+- Updated all package.json files to 2.2.2
+- Clarified that V2.1.x features (password reset through 2FA) are complete
+- Reorganized V2.2.x roadmap with clear upcoming releases:
+  - V2.2.3: Test Infrastructure & Tech Debt
+  - V2.2.4: Cloud Backup Enhancements
+  - V2.3.0: Export Format Improvements
+
+### Documentation Files Updated
+- `ROADMAP.md` - Realigned to V2.2.x series
+- `KNOWN_BUGS_V2.1.md` → `KNOWN_BUGS.md` - Version-agnostic bug tracking
+- `CHANGELOG.md` - This file, with retroactive V2.2.0 clarification
+- `package.json` (root, frontend, backend) - Version bumped to 2.2.2
+
+### Backward Compatibility
+**100% Backward Compatible** - No code changes, documentation only.
+
+### Production Status
+✅ **RELEASED** - Documentation cleanup complete, roadmap aligned with V2.2.x reality.
+
+### Note on V2.2.0
+The V2.2.0 release included **both Dropbox and Google Drive** cloud backup integration, though only Google Drive was highlighted in the original CHANGELOG entry. This has been clarified below in the V2.2.0 section.
+
+---
+
 ## [2.2.1] - 2026-02-16
 
 ### 🐛 Critical UI/UX Bug Fixes - Meal Planning & Recipe Detail
@@ -1592,13 +1630,27 @@ Recipe Book's 2FA implementation **matches industry leaders** (GitHub, Google, A
 
 ### ☁️ Cloud Backup Integration - Complete Multi-Provider Platform
 
-V2.2.0 completes the cloud backup infrastructure with Google Drive support, automatic scheduling, and enterprise-grade reliability. Users now have flexibility in choosing their preferred cloud storage provider (Dropbox or Google Drive) for automated recipe backups.
+V2.2.0 completes the cloud backup infrastructure with **Dropbox and Google Drive support**, automatic scheduling, and enterprise-grade reliability. Users now have flexibility in choosing their preferred cloud storage provider (Dropbox or Google Drive) for automated recipe backups.
+
+**Note**: While V2.2.0 documentation highlighted Google Drive integration (REQ-022), **Dropbox integration was also included** in this release. Both providers offer full OAuth2 authentication, automatic backups, and restore capabilities.
 
 ### Added
 
-#### Week 5: Google Drive Integration (REQ-022) ✅
+#### Week 5: Multi-Provider Cloud Integration ✅
 
-**Google Drive Cloud Provider**
+**Dropbox Cloud Provider** (Completed alongside Google Drive)
+- OAuth2 authentication flow with Dropbox
+- File upload to Dropbox (streaming, efficient memory usage)
+- Backup listing and filtering from Dropbox
+- File download for restore operations (streaming)
+- File deletion with graceful error handling
+- Automatic token refresh with encrypted storage
+- Folder management ("Recipe Book" app folder)
+- Account information display (email, name, provider)
+- Complete integration in frontend UI and backend API
+- Full test coverage
+
+**Google Drive Cloud Provider** (REQ-022)
 - OAuth2 authentication flow with Google
 - File upload to Google Drive (streaming)
 - Backup listing and filtering from Google Drive

@@ -1,5 +1,6 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import { jest } from '@jest/globals';
@@ -7,6 +8,10 @@ import { jest } from '@jest/globals';
 describe('Email Verification Integration Tests', () => {
   let testUser;
   let accessToken;
+  
+  beforeAll(async () => {
+    await ensureConnection();
+  });
   
   beforeEach(async () => {
     // Clear users collection

@@ -1,5 +1,6 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
+import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import Recipe from '../../models/Recipe.js';
@@ -11,6 +12,8 @@ describe('Meal Planning API Integration Tests', () => {
   let testRecipe;
 
   beforeAll(async () => {
+    await ensureConnection();
+    
     // Create test user and login
     const testUser = {
       email: 'mealplan@test.com',
@@ -41,14 +44,12 @@ describe('Meal Planning API Integration Tests', () => {
   }, 30000);
 
   afterAll(async () => {
-    await User.deleteMany({ email: { $regex: /test\.com$/ } });
-    await Recipe.deleteMany({ owner: userId });
-    await MealPlan.deleteMany({ owner: userId });
-  }, 30000);
+    // DO NOT disconnect - shared connection managed by global teardown
+  });
 
   afterEach(async () => {
     await MealPlan.deleteMany({ owner: userId });
-  }, 30000);
+  });
 
   describe('POST /api/meal-plans', () => {
     it('should create a new meal plan', async () => {
