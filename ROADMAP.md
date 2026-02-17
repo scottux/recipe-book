@@ -1,14 +1,18 @@
 # Recipe Book - Product Roadmap
 
 **Last Updated**: February 17, 2026  
-**Current Version**: 2.2.2  
-**Status**: ✅ V2.2.2 COMPLETE - Documentation Cleanup & Roadmap Realignment
+**Current Version**: V2.2.4  
+**Status**: ✅ V2.2.4 COMPLETE - Test Infrastructure Improvements
 
 ---
 
 ## Overview
 
-This roadmap outlines the planned features and improvements for the Recipe Book application. The roadmap is organized by version, with each version building upon the previous one to deliver incremental value.
+This roadmap outlines the planned features and improvements for the Recipe Book application. The roadmap is organized by version following semantic versioning:
+
+- **Major versions (X.0.0)**: Breaking changes, major platform changes
+- **Minor versions (X.Y.0)**: New features, backward compatible
+- **Patch versions (X.Y.Z)**: Bug fixes, improvements, small features
 
 ---
 
@@ -41,7 +45,12 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 - Search & filter E2E tests
 - 85% test coverage
 
+---
+
 ### V2.0 - Multi-User Platform (COMPLETE) 🎉
+**Released**: February 15, 2026
+
+Major features:
 - User authentication & authorization
 - Recipe collections
 - Meal planning
@@ -51,676 +60,594 @@ This roadmap outlines the planned features and improvements for the Recipe Book 
 
 ---
 
-## Current Roadmap (V2.1 - V3.0)
+### V2.1.x Series - Account Security (COMPLETE) ✅
 
-### V2.1.0 - Password Reset System (COMPLETE) ✅
+**V2.1.0** - Password Reset System (Feb 15, 2026)
+- Email-based password reset
+- Secure token generation (SHA-256)
+- Multi-provider email service
 
-**Priority**: HIGH  
-**Status**: ✅ RELEASED  
-**Released**: February 15, 2026  
-**Focus**: Account security and password recovery
-
-#### Features Implemented ✅
-- Email-based password reset request
-- Secure cryptographic token generation (SHA-256)
-- Token expiration (1 hour)
-- Password reset page UI
-- Email notification system (HTML + text)
-- Rate limiting (3/hour per email)
-- Security: Generic responses, timing attack prevention
-- One-time token usage tracking
-- Password strength indicator
-- Multi-provider email service (console, ethereal, SendGrid, AWS SES)
-
-#### Documentation
-- REQ-014: Password Reset specification
-- CODE_REVIEW_V2.1-PASSWORD-RESET.md (5/5 stars)
-- Integration tests (14 test cases)
-
-### V2.1.1 - Account Management UI (COMPLETE) ✅
-
-**Priority**: HIGH  
-**Status**: ✅ RELEASED  
-**Released**: February 15, 2026  
-**Focus**: User account control and data management
-
-#### Features Implemented ✅
-- Change password (authenticated users)
-- Delete account with cascade deletion
+**V2.1.1** - Account Management UI (Feb 15, 2026)
+- Change password (authenticated)
+- Delete account with cascade
 - Account settings page
-- Confirmation modals for destructive actions
-- Rate limiting on sensitive operations
 
-#### Documentation
-- REQ-015: Account Management specification
-- CODE_REVIEW_V2.1.1-ACCOUNT-MANAGEMENT.md (5/5 stars)
-- Integration tests (19 test cases)
+**V2.1.2** - Import from Backup (Feb 15, 2026)
+- Import from JSON backups
+- Duplicate detection
+- Critical test infrastructure fix (jsdom → happy-dom)
 
-### V2.1.2 - Import from Backup (COMPLETE) ✅
+**V2.1.3** - Critical Bug Fixes (Feb 15, 2026)
+- Meal planner recipe loading fix
+- Shopping list detail view
 
+**V2.1.4** - Production Bug Fixes (Feb 15, 2026)
+- API response standardization
+- UI polish (Collections color scheme)
+
+**V2.1.5** - Performance & Infrastructure (Feb 15, 2026)
+- Redis rate limiting
+- Structured logging (Winston)
+- Health check endpoints
+
+**V2.1.6** - Email Verification (Feb 15, 2026)
+- Email verification on registration
+- Verification reminder system
+
+**V2.1.7** - Two-Factor Authentication (Feb 15, 2026)
+- TOTP-based 2FA
+- Backup codes
+- QR code setup
+
+---
+
+### V2.2.x Series - Cloud Integration (COMPLETE) ✅
+
+**V2.2.0** - Cloud Backup Integration (Feb 16, 2026)
+- Dropbox integration
+- Google Drive integration
+- Automatic backup scheduling
+- Email notifications
+
+**V2.2.1** - UI/UX Bug Fixes (Feb 16, 2026)
+- Date handling fixes
+- Recipe selector modal
+- Button layout improvements
+
+**V2.2.2** - Documentation Cleanup (Feb 17, 2026)
+- ROADMAP realignment
+- Documentation consistency
+
+**V2.2.3** - Test Infrastructure (Feb 17, 2026)
+- Fixed 22 failing tests
+- Test helper library
+- 87% test coverage achieved
+
+**V2.2.4** - Test Infrastructure Improvements (Feb 17, 2026) ✅ CURRENT
+- Rate limiter test fixes (15 tests)
+- Email verification tests (7 tests fixed - 100% passing)
+- Import-backup improvements (4 tests fixed)
+- 93.5% test pass rate achieved
+
+---
+
+## Immediate Priority: V2.2.5 - V2.3.0
+
+### V2.2.5 - Import System Completion (PATCH)
+
+**Status**: 📋 Planned  
+**Timeline**: 2-3 days  
 **Priority**: HIGH  
-**Status**: ✅ RELEASED  
-**Released**: February 15, 2026  
-**Focus**: Data portability and backup restoration
+**Type**: Patch (Bug fixes + small improvements)
 
-#### Features Implemented ✅
-- Import recipes, collections, meal plans, shopping lists from JSON
-- Comprehensive validation before processing
-- Atomic transaction handling (all-or-nothing)
-- Duplicate detection and skipping
-- Import statistics reporting
-- Drag-and-drop file upload UI
-- Rate limiting (10 uploads per 15 minutes)
+#### Scope
+- Fix remaining 12 import-backup tests
+- Complete import system refactoring
+- Improve error handling
 
-#### Critical Fix ✅
-- Resolved jsdom@28.1.0 ESM compatibility issue
-- Migrated to happy-dom for HTML sanitization
-- Test infrastructure fully restored
-- 19 additional tests now passing
-
-#### Documentation
-- REQ-016: Import from Backup specification
-- CODE_REVIEW_V2.1.2.md (5/5 stars)
-- Integration tests (17 test cases)
-
-### V2.1.3 - Critical Bug Fixes (COMPLETE) ✅
-
-**Priority**: CRITICAL  
-**Status**: ✅ RELEASED  
-**Released**: February 15, 2026  
-**Focus**: Critical production bug fixes
-
-#### Features Implemented ✅
-- **Meal Planner Recipe Loading Fix** - Fixed TypeError on paginated response
-- **Shopping List Detail View** - Created missing component and route
-- **Shopping List CRUD** - Full interactive item management
-
-#### Documentation
-- CHANGELOG.md updated with V2.1.3 release notes
-- ShoppingListDetail.jsx component created
-
----
-
-### V2.1.4 - Production Bug Fixes & UI Polish (COMPLETE) ✅
-
-**Priority**: CRITICAL  
-**Status**: ✅ RELEASED  
-**Released**: February 15, 2026  
-**Focus**: Critical bug fixes, API response standardization, UI polish
-
-#### Features Implemented ✅
-- **Shopping List Add Item 400 Error** - Fixed payload structure
-- **Meal Planner Variable Fix** - Eliminated console warnings
-- **Collection Recipe Loading** - Fixed "Add Recipe" modal
-- **Collection Recipe Display** - Fixed recipes appearing in collections
-- **Collections Color Scheme** - Complete cookbook brown theme redesign
-- **Test Suite Updates** - 46 test mocks updated to match API contracts
-
-#### API Standardization (REQ-017) ✅
-- Created REQ-017: API Response Contracts specification
-- Documented response envelope patterns
-- Standardized pagination structure
-
-#### Documentation ✅
-- CHANGELOG.md updated with V2.1.4 release notes
-- REQ-017: API Response Contracts created
-- CODE_REVIEW_V2.1.4.md (5/5 stars)
-- TEST_MOCK_UPDATE_SUMMARY.md created
-
----
-
-## 🎯 Current Sprint: V2.2.x Series
-
-### Recently Completed ✅
-- **V2.2.0** (Feb 16, 2026): Cloud Backup Integration (Dropbox + Google Drive, Automatic Scheduling)
-- **V2.2.1** (Feb 16, 2026): UI/UX Bug Fixes (Date handling, Recipe selector, Button layout)
-- **V2.2.2** (Feb 17, 2026): Documentation Cleanup & Roadmap Realignment
-
-### Next Up: V2.2.3
-
-### V2.2.3 - Test Infrastructure & Tech Debt
-
-**Priority**: MEDIUM  
-**Target**: Late February 2026  
-**Focus**: Testing improvements and technical debt reduction
-
-#### Current Phase
-- ⏳ **Phase 1**: Planning
-
-#### Planned Work
-- Fix 22 failing integration tests (authentication setup issues)
-- Fix 10 failing 2FA integration tests
-- Improve test infrastructure and helper utilities
-- Security dependency updates (nodemailer, happy-dom)
-- Increase test coverage to 90%+
-- Add missing E2E tests for cloud backup features
-
----
-
-### V2.2.4 - Cloud Backup Enhancements
-
-**Priority**: MEDIUM  
-**Target**: Early March 2026  
-**Focus**: User experience improvements for cloud backups
-
-#### Planned Features
-- User timezone support for scheduled backups
-- Backup history and restore interface improvements
-- Multiple provider support (connect both Dropbox AND Google Drive simultaneously)
-- Backup preview before restore
-- Selective restore (recipes only, collections only, etc.)
-
----
-
-### V2.3.0 - Export Format Improvements
-
-**Priority**: MEDIUM  
-**Target**: Mid-March 2026  
-**Focus**: Enhanced export capabilities
-
-#### Planned Features
-- Custom PDF templates for recipes and collections
-- iCal export for meal plans (calendar integration)
-- Excel/CSV export for shopping lists
-- HTML export for recipes (web publishing)
-- Export customization (fonts, colors, branding)
-
----
-
-### V2.2 - User Experience & Integration (Q2 2026)
-
-**Priority**: MEDIUM  
-**Target**: 6-8 weeks  
-**Focus**: Enhanced UX and external integrations
-
-#### Email Features
-- **Email Verification**
-  - Email verification on registration
-  - Resend verification email
-  - Verified user badge
-  - Unverified user restrictions
-
-- **Email Notifications**
-  - Password reset emails
-  - Account activity alerts
-  - Weekly meal plan reminders
-  - Shopping list sharing notifications
-
-#### Cloud Backup Integration
-- **Automatic Cloud Backup** ⭐ HIGH PRIORITY
-  - Dropbox integration
-  - Google Drive integration
-  - Scheduled auto-backups
-  - Manual backup trigger
-  - Backup history
-  - Restore from cloud
-
-#### Export Enhancements
-- **Custom PDF Templates**
-  - Template selection
-  - Custom branding options
-  - Color scheme selection
-  - Font customization
-  - Logo upload
-
-- **Additional Export Formats**
-  - Excel/CSV for shopping lists
-  - iCal format for meal plans
-  - HTML export for recipes
-  - Plain text format
-
-#### Performance & Monitoring (from V1.4 plan)
-- **Load Testing**
-  - k6 load testing setup
-  - Stress testing scenarios
-  - Concurrent user testing
-  - Performance baseline establishment
+#### Implementation
+- **Day 1-2**: Fix import test failures
+  - Multer file validation (1 test)
+  - Merge mode operations (3 tests)
+  - Replace mode validation (3 tests)
+  - ID remapping (3 tests)
+  - XSS sanitization (2 tests)
   
-- **Visual Regression Testing**
-  - Percy or BackstopJS integration
-  - Visual diff on PRs
-  - Screenshot comparison
-  - UI consistency validation
+- **Day 3**: Polish & testing
+  - Integration testing
+  - Error handling improvements
+  - Documentation updates
 
-#### Quality Assurance (from V1.4 plan)
-- **Accessibility Testing**
-  - WCAG 2.1 AA compliance
-  - Screen reader testing
-  - Keyboard navigation
-  - Color contrast validation
-  - Automated a11y testing
+**Deliverables**:
+- ✅ All import-backup tests passing (21/21)
+- ✅ Test pass rate: 95%+ (205/215 tests)
+- ✅ Import system fully functional
 
-**Estimated Effort**: 8 weeks  
-**Dependencies**: Email service (SendGrid, AWS SES, etc.)
+**Target**: Feb 20, 2026
 
 ---
 
-### V2.3 - Social Features & MCP Integration (Q3 2026)
+### V2.3.0 - Tech Debt Sprint (MINOR)
 
+**Status**: 📋 Planned  
+**Timeline**: 2 weeks  
+**Priority**: CRITICAL  
+**Type**: Minor (Infrastructure + process improvements)
+
+**Rationale**: Tech debt accumulated from V2.2.x needs addressing before new features.
+
+#### Scope
+
+**Week 1: CI/CD & Testing**
+- GitHub Actions CI/CD pipeline
+- Automated testing on PRs
+- Branch protection rules
+- Email service testing strategy (Ethereal Email)
+- Email template tests
+
+**Week 2: Security & Documentation**
+- Security audit (`npm audit`)
+- Dependency updates (nodemailer, happy-dom)
+- API documentation (cloud backup, import)
+- Test troubleshooting guide
+- Pre-commit hooks (husky, lint-staged)
+
+#### Success Criteria
+- ✅ CI/CD pipeline functional
+- ✅ All tests passing in CI
+- ✅ Zero high/critical vulnerabilities
+- ✅ Email testing reliable
+- ✅ Complete API documentation
+
+**Deliverables**:
+- GitHub Actions workflows
+- Updated dependencies
+- Complete API docs
+- CI/CD documentation
+- Email testing guide
+
+**Target**: March 3, 2026
+
+**See Also**:
+- [V2.3.0 Tech Debt Plan](docs/planning/V2.3.0-TECH-DEBT-PLAN.md)
+- [Action Items](docs/retrospectives/ACTION-ITEMS-V2.3.0.md)
+
+---
+
+## Short-term Roadmap: V2.3.x - V2.4.0
+
+### V2.3.1 - Cloud Backup Enhancements (PATCH)
+
+**Status**: 📋 Planned  
+**Timeline**: 1 week  
 **Priority**: MEDIUM  
-**Target**: 8-10 weeks  
-**Focus**: Community features and MCP server implementation
+**Type**: Patch (Improvements to existing feature)
 
-#### Recipe Sharing
-- **Public Recipe Links**
-  - Share recipes via public URL
-  - View-only public pages
-  - Social media preview cards
-  - Share analytics
+#### Scope
+- User timezone support for scheduled backups
+- Backup history improvements
+- Restore interface enhancements
+- Backup preview before restore
 
-- **Recipe Discovery**
-  - Explore public recipes
-  - Featured recipes
-  - Trending recipes
-  - Search public recipes
+**Deliverables**:
+- Timezone-aware scheduling
+- Enhanced backup history UI
+- Preview modal before restore
+- Better error messages
 
-#### Social Features
-- **User Following**
-  - Follow other users
-  - Followers/following lists
-  - Activity feed
-  - Notification system
+**Target**: March 10, 2026
 
-- **Collections Sharing**
-  - Public collections
-  - Share collection with specific users
-  - Collaborative collections
-  - Collection comments
+---
 
-#### Community Features
-- **Recipe Ratings & Reviews**
-  - Community ratings
-  - Written reviews
-  - Photo uploads from users
-  - Helpful vote system
+### V2.3.2 - Export Format Improvements (PATCH)
 
-- **Recipe Variations**
-  - Fork/duplicate public recipes
-  - Track recipe lineage
-  - Variation notes
-  - Attribution system
+**Status**: 📋 Planned  
+**Timeline**: 1 week  
+**Priority**: MEDIUM  
+**Type**: Patch (Improvements to existing feature)
+
+#### Scope
+- iCal export for meal plans
+- Excel/CSV export for shopping lists
+- HTML export for recipes
+- Export customization options
+
+**Deliverables**:
+- iCal format support
+- CSV export functionality
+- HTML recipe export
+- Export settings UI
+
+**Target**: March 17, 2026
+
+---
+
+### V2.4.0 - Frontend Quality Sprint (MINOR)
+
+**Status**: 📋 Planned  
+**Timeline**: 2-3 weeks  
+**Priority**: HIGH  
+**Type**: Minor (Quality improvements + testing)
+
+#### Scope
+
+**Week 1: Test Coverage**
+- Component integration tests
+- Frontend test coverage to 80%+
+- E2E test updates for V2.2.x features
+- Test documentation
+
+**Week 2: UI/UX Polish**
+- Accessibility improvements (WCAG 2.1 AA)
+- Mobile responsiveness
+- Loading states
+- Error handling
+
+**Week 3: Performance**
+- Code splitting
+- Bundle size optimization
+- Lighthouse audit (target 95+)
+- Performance monitoring
+
+#### Success Criteria
+- ✅ Frontend coverage >80%
+- ✅ All E2E tests updated
+- ✅ WCAG 2.1 AA compliant
+- ✅ Lighthouse score 95+
+
+**Target**: April 7, 2026
+
+---
+
+## Medium-term Roadmap: V2.5.0 - V2.6.0
+
+### V2.5.0 - Advanced Features (MINOR)
+
+**Status**: 📋 Planned  
+**Timeline**: 3 weeks  
+**Priority**: MEDIUM  
+**Type**: Minor (New features)
+
+#### Recipe Sharing & Discovery
+
+**Public Recipe Sharing**
+- Share recipes via public URL
+- View-only public pages
+- Social media preview cards
+- Share analytics
+
+**Recipe Discovery**
+- Explore public recipes
+- Featured recipes section
+- Search public recipes
+- Filter by cuisine/category
+
+#### Enhanced Recipe Features
+
+**Recipe Versioning**
+- Track recipe changes
+- Version history
+- Revert to previous version
+- Compare versions
+
+**Recipe Variations**
+- Fork/duplicate public recipes
+- Track recipe lineage
+- Variation notes
+- Attribution system
 
 #### User Profiles
-- **Public Profiles**
-  - Profile page
-  - Bio and avatar
-  - Public recipe count
-  - Follower statistics
 
-#### MCP Server Integration
-- **Recipe Book MCP Server** ⭐ HIGH PRIORITY
-  - Create MCP server for Recipe Book
-  - Expose recipe management tools
-  - Expose search and query capabilities
-  - Enable AI assistant integration
-  
-- **MCP Tools**
-  - `search_recipes` - Search recipes by criteria
-  - `get_recipe` - Retrieve recipe details
-  - `add_recipe` - Create new recipe
-  - `update_recipe` - Modify existing recipe
-  - `get_meal_plan` - Retrieve meal plan
-  - `generate_shopping_list` - Create shopping list from recipes
-  
-- **MCP Resources**
-  - Recipe collections as resources
-  - Meal plans as resources
-  - Shopping lists as resources
-  - User preferences as resources
+**Public Profiles**
+- Profile page
+- Bio and avatar
+- Public recipe count
+- Display name
 
-- **Integration Benefits**
-  - Use Recipe Book from AI assistants (Claude, ChatGPT, etc.)
-  - Voice-controlled recipe management
-  - AI-powered recipe suggestions
-  - Natural language recipe queries
-  - Automated meal planning via AI
-
-**Estimated Effort**: 10 weeks  
-**Dependencies**: User authentication, public/private visibility, MCP protocol understanding
+**Estimated Effort**: 3 weeks  
+**Target**: May 2026
 
 ---
 
-### V2.4 - Smart Features (Q4 2026)
+### V2.6.0 - Smart Features (MINOR)
 
-**Priority**: LOW  
-**Target**: 6-8 weeks  
-**Focus**: Automation and intelligent features
+**Status**: 📋 Planned  
+**Timeline**: 3 weeks  
+**Priority**: MEDIUM  
+**Type**: Minor (AI-powered features)
 
 #### Meal Planning Automation
-- **Smart Meal Planning**
-  - Auto-generate meal plans
-  - Dietary preference filters
-  - Balanced nutrition suggestions
-  - Leftover optimization
 
-- **Recipe Recommendations**
-  - Based on user preferences
-  - Seasonal suggestions
-  - Ingredient-based suggestions
-  - Similar recipe recommendations
+**Smart Meal Planning**
+- Auto-generate meal plans
+- Dietary preference filters
+- Balanced nutrition suggestions
+- Leftover optimization
+
+**Recipe Recommendations**
+- Based on user preferences
+- Seasonal suggestions
+- Ingredient-based suggestions
+- Similar recipe recommendations
 
 #### Nutrition Tracking
-- **Nutritional Information**
-  - Automatic nutrition calculation
-  - Nutritional database integration
-  - Daily nutrition tracking
-  - Nutrition goals
 
-- **Dietary Restrictions**
-  - Tag recipes by diet type
-  - Filter by dietary needs
-  - Allergen warnings
-  - Substitution suggestions
+**Nutritional Information**
+- Automatic nutrition calculation
+- Nutritional database integration
+- Daily nutrition tracking
+- Nutrition goals
 
-#### Smart Shopping Lists
-- **Price Tracking**
-  - Store price database
-  - Price comparison
-  - Budget tracking
-  - Cost per recipe
+**Dietary Restrictions**
+- Tag recipes by diet type
+- Filter by dietary needs
+- Allergen warnings
+- Substitution suggestions
 
-- **Inventory Management**
-  - Pantry tracking
-  - Expiration alerts
-  - Shopping frequency analysis
-  - Waste reduction suggestions
-
-**Estimated Effort**: 8 weeks  
-**Dependencies**: Third-party nutrition APIs, price databases
+**Estimated Effort**: 3 weeks  
+**Dependencies**: Nutrition API (USDA FoodData Central)  
+**Target**: June 2026
 
 ---
 
-### V2.6 - Kitchen Intelligence (Q1 2027)
+## Long-term Roadmap: V2.7.0+
 
+### V2.7.0 - MCP Server Integration (MINOR)
+
+**Status**: 📋 Planned  
+**Timeline**: 2 weeks  
+**Priority**: HIGH  
+**Type**: Minor (New platform integration)
+
+#### MCP Server for Recipe Book
+
+**MCP Tools**
+- `search_recipes` - Search by criteria
+- `get_recipe` - Retrieve recipe details
+- `add_recipe` - Create new recipe
+- `update_recipe` - Modify recipe
+- `get_meal_plan` - Retrieve meal plan
+- `generate_shopping_list` - Create shopping list
+
+**MCP Resources**
+- Recipe collections
+- Meal plans
+- Shopping lists
+- User preferences
+
+**Integration Benefits**
+- AI assistant integration (Claude, ChatGPT)
+- Voice-controlled recipe management
+- Natural language recipe queries
+- Automated meal planning via AI
+
+**Estimated Effort**: 2 weeks  
+**Dependencies**: MCP protocol understanding  
+**Target**: Q3 2026
+
+---
+
+### V2.8.0 - Kitchen Intelligence (MINOR)
+
+**Status**: 📋 Planned  
+**Timeline**: 3 weeks  
 **Priority**: LOW  
-**Target**: 8-10 weeks  
-**Focus**: Personalization and kitchen management
+**Type**: Minor (New features)
 
 #### Cooking History
-- **Meal History Tracking** ⭐ NEW
-  - Track when recipes were made
-  - Optional photo upload per meal
-  - "You made this recipe on this day"
-  - Recipe frequency analytics
-  - Favorite recipes identification
-  - Season/time preference tracking
+
+**Meal History Tracking**
+- Track when recipes were made
+- Optional photo upload per meal
+- Recipe frequency analytics
+- Favorite recipes identification
+- Season/time preference tracking
 
 #### Kitchen Profile
-- **My Kitchen Profile** ⭐ NEW
-  - Stove type (gas, electric, induction)
-  - Microwave wattage
-  - Oven dimensions and type
-  - Available cookware and sizes
-  - Small appliances inventory
-  - Adjust cooking times based on equipment
-  - Equipment-specific cooking tips
 
-- **Family Profile** ⭐ NEW
-  - Family size configuration
-  - Age ranges (kids, adults, seniors)
-  - Dietary preferences per family member
-  - Allergy tracking
-  - Portion size adjustments
-  - Kid-friendly recipe filters
+**My Kitchen Profile**
+- Stove type (gas, electric, induction)
+- Microwave wattage
+- Oven dimensions and type
+- Available cookware and sizes
+- Small appliances inventory
+- Adjust cooking times based on equipment
+
+**Family Profile**
+- Family size configuration
+- Age ranges (kids, adults, seniors)
+- Dietary preferences per family member
+- Allergy tracking
+- Portion size adjustments
+- Kid-friendly recipe filters
 
 #### Pantry Management
-- **My Pantry** ⭐ NEW
-  - Track ingredients on hand
-  - Quantity tracking
-  - Expiration date monitoring
-  - "What can I make?" recipe suggestions
-  - Shopping list integration
-  - Auto-add items to pantry after shopping
-  - Pantry inventory reports
 
-- **Smart Recipe Matching**
-  - Find recipes based on available ingredients
-  - "Missing ingredients" indicator
-  - Substitution suggestions
-  - Pantry-based meal planning
-  - Minimize shopping trips
+**My Pantry**
+- Track ingredients on hand
+- Quantity tracking
+- Expiration date monitoring
+- "What can I make?" recipe suggestions
+- Shopping list integration
+- Auto-add items to pantry after shopping
 
-#### Recipe Intelligence
-- **Enhanced Recipe Difficulty** ⭐ NEW
-  - Kid-friendly indicator
-  - Complexity scoring
-  - Ingredient count indicator
-  - Instruction count indicator
-  - Time commitment level
-  - Skill level required
-  - Equipment complexity
-  - "Can kids make this?" filter
+**Smart Recipe Matching**
+- Find recipes based on available ingredients
+- "Missing ingredients" indicator
+- Substitution suggestions
+- Pantry-based meal planning
 
-- **Recipe Scanning** ⭐ NEW
-  - Upload scanned recipe images
-  - OCR text extraction
-  - Auto-populate recipe fields
-  - Preserve original image
-  - Edit extracted text
-  - Multiple image support
-  - Handwritten recipe support
-
-**Estimated Effort**: 10 weeks  
-**Dependencies**: OCR service (Google Vision API, Tesseract), image storage (S3, Cloudinary)
+**Estimated Effort**: 3 weeks  
+**Target**: Q4 2026
 
 ---
 
-### V2.5 - Advanced Analytics (Q1 2027)
+### V2.9.0 - Analytics & Insights (MINOR)
 
+**Status**: 📋 Planned  
+**Timeline**: 2 weeks  
 **Priority**: LOW  
-**Target**: 4-6 weeks  
-**Focus**: Insights and reporting
+**Type**: Minor (Analytics)
 
 #### User Analytics
-- **Cooking Insights**
-  - Most cooked recipes
-  - Cuisine preferences
-  - Cooking frequency
-  - Seasonal patterns
 
-- **Dashboard**
-  - Recipe statistics
-  - Collection insights
-  - Meal planning trends
-  - Shopping patterns
+**Cooking Insights**
+- Most cooked recipes
+- Cuisine preferences
+- Cooking frequency
+- Seasonal patterns
 
-#### Export Analytics
-- **Usage Metrics**
-  - Export frequency
-  - Popular export formats
-  - Download statistics
-  - Usage patterns
+**Dashboard**
+- Recipe statistics
+- Collection insights
+- Meal planning trends
+- Shopping patterns
 
-#### Performance Monitoring (from V1.4 plan)
-- **Production Monitoring**
-  - Real-time error tracking (Sentry)
-  - Performance monitoring (New Relic/DataDog)
-  - User session recording
-  - Analytics dashboard
+#### Performance Monitoring
 
-- **API Monitoring**
-  - Endpoint performance metrics
-  - Error rate tracking
-  - API usage statistics
-  - SLA monitoring
+**Production Monitoring**
+- Real-time error tracking (Sentry)
+- Performance monitoring (New Relic/DataDog)
+- User session recording
+- Analytics dashboard
 
-**Estimated Effort**: 6 weeks  
-**Dependencies**: Analytics service, monitoring tools
+**API Monitoring**
+- Endpoint performance metrics
+- Error rate tracking
+- API usage statistics
+- SLA monitoring
+
+**Estimated Effort**: 2 weeks  
+**Dependencies**: Analytics service, monitoring tools  
+**Target**: Q4 2026
 
 ---
 
-### V2.1.6 - Performance & Infrastructure (DEFERRED to Post-V3.0)
+## Major Release: V3.0.0
 
-**Priority**: HIGH (for production deployment)  
-**Target**: After V3.0 (Q4 2027)  
-**Focus**: Production-ready infrastructure and performance
+### V3.0.0 - Mobile & Offline Platform (MAJOR)
 
-**Note**: This release has been deferred to focus on user-facing features first. The infrastructure improvements will be implemented when preparing for production deployment.
-
-#### Planned Features
-- **Redis Rate Limiting**
-  - Replace in-memory rate limiting with Redis
-  - Support multi-server deployments
-  - Persistent rate limit state
-  - Per-endpoint customization
-
-- **OpenTelemetry & Observability**
-  - OpenTelemetry instrumentation
-  - OpenObserve integration (logs, metrics, traces)
-  - Distributed tracing
-  - Performance monitoring dashboards
-
-- **Performance Optimizations**
-  - Database query optimization audit
-  - Add missing database indexes
-  - Frontend code splitting
-  - Bundle size optimization
-
-- **Production Infrastructure**
-  - Structured logging with Winston ✅ (already implemented)
-  - Health check endpoints ✅ (already implemented)
-  - Graceful shutdown ✅ (already implemented)
-  - Production deployment guide
-  - Load balancer configuration
-  - Docker Compose production stack
-
----
-
-### V3.0 - Mobile & Offline (Q2-Q3 2027)
-
+**Status**: 📋 Planned  
+**Timeline**: 12-16 weeks  
 **Priority**: HIGH  
-**Target**: 12-16 weeks  
-**Focus**: Mobile experience and offline capabilities
+**Type**: Major (Platform expansion)
 
 #### Mobile Application
-- **React Native App**
-  - iOS application
-  - Android application
-  - Native UI components
-  - Mobile-optimized UX
 
-- **Mobile Features**
-  - Camera integration for photos
-  - Barcode scanner
-  - Voice input
-  - App notifications
+**React Native App**
+- iOS application
+- Android application
+- Native UI components
+- Mobile-optimized UX
+
+**Mobile Features**
+- Camera integration for recipe photos
+- Barcode scanner for ingredients
+- Voice input for recipes
+- Push notifications
 
 #### Offline Support
-- **Progressive Web App (PWA)**
-  - Service worker implementation
-  - Offline recipe viewing
-  - Sync when online
-  - App install prompt
 
-- **Data Synchronization**
-  - Conflict resolution
-  - Background sync
-  - Offline editing
-  - Local storage management
+**Progressive Web App (PWA)**
+- Service worker implementation
+- Offline recipe viewing
+- Sync when online
+- App install prompt
+
+**Data Synchronization**
+- Conflict resolution
+- Background sync
+- Offline editing
+- Local storage management
 
 #### Mobile-Specific Features
-- **Kitchen Mode**
-  - Screen always-on
-  - Voice commands
-  - Hands-free navigation
-  - Timer integration
 
-- **Grocery Shopping Mode**
-  - Location-based store lists
-  - Aisle organization
-  - Barcode scanning
-  - Quick check-off
+**Kitchen Mode**
+- Screen always-on
+- Voice commands
+- Hands-free navigation
+- Timer integration
 
-**Estimated Effort**: 16 weeks  
-**Dependencies**: Mobile development expertise, app store accounts
+**Grocery Shopping Mode**
+- Location-based store lists
+- Aisle organization
+- Barcode scanning
+- Quick check-off
 
----
-
-## Features from V1.4 (Performance & Monitoring)
-
-These features have been integrated into the V2.x roadmap:
-
-### Integrated into V2.1
-- ✅ Performance testing with Lighthouse
-- ✅ API performance benchmarks
-
-### Integrated into V2.2
-- ✅ Load testing with k6
-- ✅ Visual regression testing
-- ✅ Accessibility testing (a11y)
-
-### Integrated into V2.5
-- ✅ Production monitoring (Sentry, New Relic)
-- ✅ Analytics dashboard
-- ✅ API monitoring
-
-**Status**: All V1.4 features absorbed into V2.x roadmap
+**Estimated Effort**: 12-16 weeks  
+**Dependencies**: Mobile development expertise, app store accounts  
+**Target**: Q2-Q3 2027
 
 ---
 
 ## Feature Prioritization
 
-### High Priority (Must Have)
-1. Password reset (V2.1)
-2. Import from backup (V2.1)
-3. Cloud backup integration (V2.2)
-4. MCP server implementation (V2.3)
-5. Mobile app (V3.0)
+### Current Focus (Next 3 Months)
+1. ✅ Import system completion (V2.2.5)
+2. ✅ Tech debt sprint (V2.3.0) - CRITICAL
+3. ✅ Cloud backup enhancements (V2.3.1)
+4. ✅ Export improvements (V2.3.2)
+5. ✅ Frontend quality (V2.4.0)
 
-### Medium Priority (Should Have)
-1. Email verification (V2.2)
-2. Custom PDF templates (V2.2)
-3. Recipe sharing (V2.3)
-4. Social features (V2.3)
+### High Priority (6 Months)
+1. Advanced features (V2.5.0)
+2. Smart features (V2.6.0)
+3. MCP integration (V2.7.0)
 
-### Low Priority (Nice to Have)
-1. Smart meal planning (V2.4)
-2. Nutrition tracking (V2.4)
-3. Advanced analytics (V2.5)
-4. AI-powered features (V3.0+)
+### Medium Priority (12 Months)
+1. Kitchen intelligence (V2.8.0)
+2. Analytics & insights (V2.9.0)
+3. Mobile app planning
+
+### Long-term (12+ Months)
+1. Mobile app (V3.0.0)
+2. Recipe scanning (OCR)
+3. Social features expansion
 
 ---
 
-## Technical Debt & Maintenance
+## Release Cadence
 
-### Ongoing Tasks (Each Version)
-- Security updates
-- Dependency updates
-- Bug fixes
-- Performance optimization
-- Documentation updates
-- Test coverage maintenance
+### Target Schedule
+- **Patch releases** (X.Y.Z): Weekly or as needed (bug fixes)
+- **Minor releases** (X.Y.0): Every 2-3 weeks (new features)
+- **Major releases** (X.0.0): Annually (breaking changes)
 
-### Known Technical Debt
-1. **In-memory cache** - Migrate to Redis for multi-server scalability (V2.1)
-2. **File-based logging** - Implement for production (V2.1)
-3. **Database migrations** - Formal migration system (V2.2)
-4. **API versioning** - Version API endpoints (V2.3)
+### Completed Releases
+- V2.0.0 - V2.2.4: ✅ Complete (26 releases total)
+
+### Planned Releases (Next 6 Months)
+- **V2.2.5** (Import fixes): Feb 20, 2026
+- **V2.3.0** (Tech debt): Mar 3, 2026
+- **V2.3.1** (Cloud enhancements): Mar 10, 2026
+- **V2.3.2** (Export improvements): Mar 17, 2026
+- **V2.4.0** (Frontend quality): Apr 7, 2026
+- **V2.5.0** (Advanced features): May 2026
+- **V2.6.0** (Smart features): June 2026
+- **V2.7.0** (MCP integration): July 2026
 
 ---
 
 ## Success Metrics
 
-### V2.1 Targets
-- Test coverage: 90%+
-- Password reset adoption: 60%+ users
-- Import success rate: 95%+
-- API response time: < 150ms (P95)
+### V2.3.0 Targets (Tech Debt)
+- Test coverage: 95%+
+- CI/CD uptime: 99%+
+- Zero high/critical vulnerabilities
+- Email test reliability: 100%
 
-### V2.2 Targets
-- Email verification rate: 80%+
-- Cloud backup adoption: 40%+ users
+### V2.4.0 Targets (Frontend)
+- Frontend coverage: 80%+
 - Lighthouse score: 95+
-- Accessibility score: 100%
+- WCAG 2.1 AA: 100%
+- Mobile responsiveness: 100%
 
-### V2.3 Targets
-- Public recipe views: 10,000+/month
-- Active social users: 30%+
-- Average recipes per user: 50+
-- MCP server adoption: 25%+ users
-- AI assistant recipe queries: 1,000+/month
+### V2.5.0 Targets (Advanced)
+- Public recipe views: 5,000+/month
+- Recipe sharing adoption: 20%+
+- User profiles: 50%+ created
 
-### V3.0 Targets
+### V3.0.0 Targets (Mobile)
 - Mobile app installs: 5,000+
 - Mobile DAU: 1,000+
 - Offline usage: 25%+ sessions
@@ -730,120 +657,91 @@ These features have been integrated into the V2.x roadmap:
 
 ## Risk Assessment
 
-### High Risk Items
-- **Mobile App Development** (V3.0)
-  - Risk: Resource intensive, requires specialized skills
-  - Mitigation: Start planning early, consider hiring specialists
+### High Risk Items 🔴
 
-- **Cloud Integration** (V2.2)
-  - Risk: Third-party API dependencies
-  - Mitigation: Multiple provider support, fallback mechanisms
+**CI/CD Implementation** (V2.3.0)
+- Risk: Misconfiguration blocks development
+- Mitigation: Test on feature branch, bypass mechanism, admin override
 
-### Medium Risk Items
-- **AI Features** (V2.4+)
-  - Risk: Accuracy and reliability concerns
-  - Mitigation: Gradual rollout, user feedback loops
+**Dependency Updates** (V2.3.0)
+- Risk: Breaking changes in updates
+- Mitigation: Test incrementally, review changelogs, rollback plan
 
-- **Social Features** (V2.3)
-  - Risk: Moderation challenges
-  - Mitigation: Start with limited sharing, add moderation tools
+**Mobile App** (V3.0.0)
+- Risk: Resource intensive, specialized skills needed
+- Mitigation: Start planning early, consider specialists
 
-### Low Risk Items
-- **Export Enhancements** (V2.2)
-  - Risk: Format compatibility issues
-  - Mitigation: Thorough testing, user feedback
+### Medium Risk Items 🟡
 
----
+**Email Testing** (V2.3.0)
+- Risk: Strategy doesn't work as expected
+- Mitigation: Prototype first, keep mocks as fallback
 
-## Decision Making
+**AI/ML Features** (V2.6.0)
+- Risk: Accuracy and reliability concerns
+- Mitigation: Gradual rollout, user feedback loops
 
-### Feature Requests
-New feature requests will be evaluated based on:
-1. **User Value**: Does it solve a real user problem?
-2. **Strategic Fit**: Does it align with product vision?
-3. **Technical Feasibility**: Can we build it well?
-4. **Resource Cost**: Can we afford it?
-5. **Maintenance Burden**: Can we support it long-term?
+### Low Risk Items 🟢
 
-### Prioritization Framework
-Features are prioritized using:
-- **Impact**: How many users benefit?
-- **Effort**: How much work is required?
-- **Strategic Value**: How important to vision?
-- **Dependencies**: What needs to be done first?
+**Export Improvements** (V2.3.2)
+- Risk: Format compatibility issues
+- Mitigation: Thorough testing, user feedback
+
+**UI Polish** (V2.4.0)
+- Risk: Scope creep
+- Mitigation: Clear scope definition, prioritization
 
 ---
 
-## Release Schedule
+## Technical Debt Tracking
 
-### Target Cadence
-- **Major versions** (X.0.0): Breaking changes, platform expansions (annually)
-- **Minor versions** (X.Y.0): New features, backwards compatible (quarterly or as needed)
-- **Patch versions** (X.Y.Z): Bug fixes, improvements, documentation (as needed)
+### Current Tech Debt
 
-### Completed Releases (V2.x Series)
-- **V2.0.0** (Multi-User Platform): ✅ February 15, 2026
-- **V2.1.0** (Password Reset): ✅ February 15, 2026
-- **V2.1.1** (Account Management): ✅ February 15, 2026
-- **V2.1.2** (Import from Backup): ✅ February 15, 2026
-- **V2.1.3** (Critical Bugfixes): ✅ February 15, 2026
-- **V2.1.4** (Production Bugfixes & UI Polish): ✅ February 15, 2026
-- **V2.1.5** (Performance & Infrastructure): ✅ February 15, 2026
-- **V2.1.6** (Email Verification): ✅ February 15, 2026
-- **V2.1.7** (Two-Factor Auth): ✅ February 15, 2026
-- **V2.2.0** (Cloud Backup - Dropbox & Google Drive): ✅ February 16, 2026
-- **V2.2.1** (UI/UX Bugfixes): ✅ February 16, 2026
-- **V2.2.2** (Documentation Cleanup): ✅ February 17, 2026
+**Critical** (Addressed in V2.3.0):
+- ✅ CI/CD pipeline missing
+- ✅ Email testing fragile
+- ✅ Security vulnerabilities (nodemailer, happy-dom)
 
-### Planned Releases (V2.x Series)
-- **V2.2.3** (Test Infrastructure): Late February 2026
-- **V2.2.4** (Cloud Backup Enhancements): Early March 2026
-- **V2.3.0** (Export Improvements): Mid-March 2026
-- **V2.4.0** (Social Features): Q2 2026
-- **V2.5.0** (Smart Features): Q3 2026
-- **V3.0.0** (Mobile & Offline): Q3-Q4 2027
+**High** (Addressed in V2.4.0):
+- Frontend test coverage low
+- E2E tests outdated
+- Accessibility gaps
+
+**Medium** (V2.5.0+):
+- Code duplication in controllers
+- API documentation gaps (will be fixed in V2.3.0)
+- Some UI inconsistencies
 
 ---
 
 ## Community Input
 
-We welcome feedback on this roadmap! Please share your thoughts on:
-- Feature priorities
-- Missing features
-- Timeline concerns
-- Technical approaches
+We welcome feedback on this roadmap!
 
 **How to Contribute**:
 - GitHub Issues for feature requests
 - GitHub Discussions for roadmap feedback
 - User surveys for priority validation
 
----
-
-## Changelog vs. Roadmap
-
-- **CHANGELOG.md**: Historical record of what **was** released
-- **ROADMAP.md**: Forward-looking plan of what **will be** released
-
-Both documents are maintained and updated with each release.
+**Areas for Feedback**:
+- Feature priorities
+- Missing features
+- Timeline concerns
+- Technical approaches
 
 ---
 
-## Notes
+## Version History
 
-- Roadmap is subject to change based on:
-  - User feedback
-  - Technical discoveries
-  - Resource availability
-  - Strategic pivots
-
-- Dates are estimates and may shift
-- Features may be added, removed, or reprioritized
-- Community input is valued and considered
+### Recent Updates
+- **Feb 17, 2026**: Revised roadmap with proper patch/minor versioning
+- **Feb 17, 2026**: Added V2.2.5 (Import fixes)
+- **Feb 17, 2026**: Adjusted V2.3.0 scope (Tech Debt Sprint)
+- **Feb 17, 2026**: Reorganized features by appropriate version type
 
 ---
 
-**Document Version**: 1.0  
+**Document Version**: 2.0  
 **Maintained By**: Product Team  
-**Next Review**: After V2.1 release  
+**Next Review**: After V2.3.0 release (March 2026)  
 **Questions?**: See CONTRIBUTING.md or open a GitHub Discussion
