@@ -1,0 +1,2043 @@
+
+> recipe-book-backend@2.2.3 test
+> node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit
+
+✓ MongoDB Memory Server started
+  URI: mongodb://127.0.0.1:27017/?replicaSet=testset
+(node:48747) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+2026-02-17 17:06:26.876 [[32minfo[39m]: POST /login 200 102ms {"requestId":"7dd2b722-b91a-403f-b06c-7a27ffe20ebc","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":102,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:27.010 [[32minfo[39m]: POST /register 201 131ms {"requestId":"366e423a-08df-4a4a-b0d4-f3f640f1ddc8","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":131,"ip":"::ffff:127.0.0.1","responseSize":709}
+2026-02-17 17:06:27.257 [[32minfo[39m]: POST /login 200 77ms {"requestId":"b692c928-17b6-4c33-9789-32fec1e024b7","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:27.262 [[32minfo[39m]: GET /me 200 3ms {"requestId":"9881f244-c940-4790-b6e4-d19e42703b3c","method":"GET","path":"/me","url":"/api/auth/me","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e6639e417a8f63b21de2","responseSize":320}
+2026-02-17 17:06:27.407 [[32minfo[39m]: POST /login 200 68ms {"requestId":"cec18799-6ec5-4af5-8f4e-d86a5acdd520","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at sendVerification (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:713:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      733 |       await user.save({ validateBeforeSave: false });
+      734 |       
+    > 735 |       console.error('Failed to send verification email:', emailError);
+          |               ^
+      736 |       
+      737 |       return res.status(500).json({
+      738 |         success: false,
+
+      at sendVerification (src/controllers/authController.js:735:15)
+
+2026-02-17 17:06:27.421 [[31merror[39m]: POST /send-verification 500 13ms {"requestId":"6027cf43-2909-41d8-9cd8-de9e4ce7f5fd","method":"POST","path":"/send-verification","url":"/api/auth/send-verification","statusCode":500,"duration":13,"ip":"::ffff:127.0.0.1","userId":"6994e6639e417a8f63b21de9","responseSize":86}
+2026-02-17 17:06:27.563 [[32minfo[39m]: POST /login 200 66ms {"requestId":"91e03bdf-550d-4d4d-852d-d10b48953ed4","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:27.564 [[33mwarn[39m]: POST /send-verification 401 0ms {"requestId":"7a59082d-873d-415a-842f-57b30f659613","method":"POST","path":"/send-verification","url":"/api/auth/send-verification","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+2026-02-17 17:06:27.704 [[32minfo[39m]: POST /login 200 66ms {"requestId":"2ef72e57-047b-4338-a107-9e7abc7f6f54","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:27.714 [[32minfo[39m]: POST /send-verification 200 2ms {"requestId":"042509de-175c-4149-ad59-0f272688e434","method":"POST","path":"/send-verification","url":"/api/auth/send-verification","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6639e417a8f63b21dfa","responseSize":52}
+2026-02-17 17:06:27.854 [[32minfo[39m]: POST /login 200 69ms {"requestId":"55efd8bd-4829-4a27-993e-4741f8488f80","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at sendVerification (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:713:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      733 |       await user.save({ validateBeforeSave: false });
+      734 |       
+    > 735 |       console.error('Failed to send verification email:', emailError);
+          |               ^
+      736 |       
+      737 |       return res.status(500).json({
+      738 |         success: false,
+
+      at sendVerification (src/controllers/authController.js:735:15)
+
+2026-02-17 17:06:27.868 [[31merror[39m]: POST /send-verification 500 13ms {"requestId":"d9fbd6d3-5fea-4abe-927a-e8d6d3f8b19f","method":"POST","path":"/send-verification","url":"/api/auth/send-verification","statusCode":500,"duration":13,"ip":"::ffff:127.0.0.1","userId":"6994e6639e417a8f63b21e04","responseSize":86}
+2026-02-17 17:06:28.016 [[32minfo[39m]: POST /login 200 68ms {"requestId":"c992c024-7223-4b82-9489-8a41413b709b","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.log
+    Email verified for user: test@example.com
+
+      at verifyEmail (src/controllers/authController.js:797:13)
+
+2026-02-17 17:06:28.030 [[32minfo[39m]: GET /verify-email/9195996c04f8a1f0e8cd8a4853f841257803ce21f37e9a5a663f1decc93b962b 200 9ms {"requestId":"3f06974d-90cf-4ec8-81d7-fab25708eb46","method":"GET","path":"/verify-email/9195996c04f8a1f0e8cd8a4853f841257803ce21f37e9a5a663f1decc93b962b","url":"/api/auth/verify-email/9195996c04f8a1f0e8cd8a4853f841257803ce21f37e9a5a663f1decc93b962b","statusCode":200,"duration":9,"ip":"::ffff:127.0.0.1","responseSize":57}
+2026-02-17 17:06:28.233 [[32minfo[39m]: POST /login 200 68ms {"requestId":"4db79705-64cb-4e51-999b-e5e8c1934f6d","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:28.239 [[33mwarn[39m]: GET /verify-email/invalid-token-123 400 1ms {"requestId":"bc1fe142-f3e2-4070-88f9-2f581cf046eb","method":"GET","path":"/verify-email/invalid-token-123","url":"/api/auth/verify-email/invalid-token-123","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":66}
+2026-02-17 17:06:28.378 [[32minfo[39m]: POST /login 200 69ms {"requestId":"578a8266-86a7-435d-bc7f-6e33f278c225","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:28.388 [[33mwarn[39m]: GET /verify-email/31da2958a910100f7df931143fc2f812bf23374ae89b31fbfc9bd7ac38d707ab 400 1ms {"requestId":"17553470-fdb9-4f19-a8dd-1bb4ad22ee63","method":"GET","path":"/verify-email/31da2958a910100f7df931143fc2f812bf23374ae89b31fbfc9bd7ac38d707ab","url":"/api/auth/verify-email/31da2958a910100f7df931143fc2f812bf23374ae89b31fbfc9bd7ac38d707ab","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":66}
+2026-02-17 17:06:28.525 [[32minfo[39m]: POST /login 200 66ms {"requestId":"c46bf4b8-0955-4a3f-841b-bba6fa3ead99","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.log
+    Email verified for user: test@example.com
+
+      at verifyEmail (src/controllers/authController.js:797:13)
+
+2026-02-17 17:06:28.539 [[32minfo[39m]: GET /verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8 200 7ms {"requestId":"15cc4d0c-10f7-4cab-bf28-3b4176735269","method":"GET","path":"/verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8","url":"/api/auth/verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","responseSize":57}
+2026-02-17 17:06:28.540 [[33mwarn[39m]: GET /verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8 400 0ms {"requestId":"c5873544-2a2f-4cd1-b32c-6ef971a56427","method":"GET","path":"/verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8","url":"/api/auth/verify-email/a7c09b911893d1c1fb3d37596d0eaa3d363a50eb11ea4ccbf4dd6eeb33b729e8","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":66}
+2026-02-17 17:06:28.680 [[32minfo[39m]: POST /login 200 69ms {"requestId":"e4f75294-18aa-4677-9f42-998970c9312c","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.log
+    Email verified for user: test@example.com
+
+      at verifyEmail (src/controllers/authController.js:797:13)
+
+2026-02-17 17:06:28.691 [[32minfo[39m]: GET /verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1 200 7ms {"requestId":"0b258996-0770-43a1-9996-82f66c3c8d5c","method":"GET","path":"/verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1","url":"/api/auth/verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","responseSize":57}
+2026-02-17 17:06:28.693 [[33mwarn[39m]: GET /verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1 400 1ms {"requestId":"9d4653f0-3fe5-4284-b67c-80a4ded7a873","method":"GET","path":"/verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1","url":"/api/auth/verify-email/94dc22923d78f005c53be037aaadfdf340cc7cb95d9a34f346b89e15d62d38a1","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":66}
+2026-02-17 17:06:28.838 [[32minfo[39m]: POST /login 200 69ms {"requestId":"0e38c17a-d4dc-42ac-ba70-81b9ad7f4233","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:28.985 [[32minfo[39m]: POST /login 200 68ms {"requestId":"dc89e419-fc28-445d-84eb-f826fcb5109d","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:29.133 [[32minfo[39m]: POST /login 200 67ms {"requestId":"66ca877f-a866-4c28-9656-e7f143013474","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":67,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:29.284 [[32minfo[39m]: POST /login 200 69ms {"requestId":"b4466bfe-dc92-4358-a2ad-2afbb7d35099","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:29.505 [[32minfo[39m]: POST /login 200 66ms {"requestId":"5bddc9f1-4aa6-40f5-afe1-7d123f9a0a18","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:29.654 [[32minfo[39m]: POST /login 200 68ms {"requestId":"96e87b90-6923-448a-abd6-a46dfa564c83","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.log
+    Email verified for user: test@example.com
+
+      at verifyEmail (src/controllers/authController.js:797:13)
+
+2026-02-17 17:06:29.666 [[32minfo[39m]: GET /verify-email/b55b12d91e958efa604849e12e2e0b1548b6573beee9518be462e52d726e4816 200 7ms {"requestId":"e7951c06-0e8a-43bc-99ba-59a0695ddb11","method":"GET","path":"/verify-email/b55b12d91e958efa604849e12e2e0b1548b6573beee9518be462e52d726e4816","url":"/api/auth/verify-email/b55b12d91e958efa604849e12e2e0b1548b6573beee9518be462e52d726e4816","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","responseSize":57}
+2026-02-17 17:06:29.668 [[33mwarn[39m]: GET /verify-email/invalid-token-123456789012345678901234567890 400 1ms {"requestId":"eb716104-343a-4d39-980f-9c3598ed4fe6","method":"GET","path":"/verify-email/invalid-token-123456789012345678901234567890","url":"/api/auth/verify-email/invalid-token-123456789012345678901234567890","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":66}
+2026-02-17 17:06:29.843 [[32minfo[39m]: POST /login 200 68ms {"requestId":"c007728d-6b6c-409a-b96e-4c1d37452263","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:29.922 [[32minfo[39m]: POST /register 201 78ms {"requestId":"f79a6f41-708a-42eb-be14-47c3600db034","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":78,"ip":"::ffff:127.0.0.1","responseSize":707}
+FAIL src/__tests__/integration/email-verification.test.js (5.769 s)
+  Email Verification Integration Tests
+    POST /api/auth/register
+      ✕ should create user with emailVerified=false by default (398 ms)
+    GET /api/auth/me
+      ✕ should include emailVerified status (249 ms)
+    POST /api/auth/send-verification
+      ✕ should send verification email for authenticated user (158 ms)
+      ✓ should fail without authentication (142 ms)
+      ✕ should fail if email already verified (149 ms)
+      ✕ should enforce rate limiting (3 requests per hour) (155 ms)
+    GET /api/auth/verify-email/:token
+      ✓ should verify email with valid token (162 ms)
+      ✓ should fail with invalid token (208 ms)
+      ✓ should fail with expired token (148 ms)
+      ✓ should fail if email already verified (153 ms)
+      ✓ should invalidate token after successful verification (152 ms)
+    Token Security
+      ✓ should hash verification tokens in database (149 ms)
+      ✓ should generate unique tokens for each request (152 ms)
+    Token Expiration
+      ✓ should set expiration to 24 hours from creation (144 ms)
+    User Model - cleanupExpiredTokens
+      ✕ should remove expired verification tokens (228 ms)
+      ✓ should not remove valid tokens (145 ms)
+    Security - Timing Attacks
+      ✓ should take similar time for valid and invalid tokens (156 ms)
+    Integration with Registration Flow
+      ✕ should complete full registration and verification flow (255 ms)
+
+  ● Email Verification Integration Tests › POST /api/auth/register › should create user with emailVerified=false by default
+
+    expect(received).toHaveProperty(path)
+
+    Expected path: "accessToken"
+    Received path: []
+
+    Received value: {"data": {"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk0ZTY2MjllNDE3YThmNjNiMjFkZDciLCJpYXQiOjE3NzEzNjU5ODYsImV4cCI6MTc3MTM2Njg4Nn0.N_lIe1arIyQg3r_7qe46MK_ubo94erMfu6zw33ocwgM", "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk0ZTY2MjllNDE3YThmNjNiMjFkZDciLCJpYXQiOjE3NzEzNjU5ODYsImV4cCI6MTc3MTk3MDc4Nn0.7HBBc7o931thSRfgcs6dFXsbaq4kvBo3bpBYDf8tReY", "user": {"avatar": null, "createdAt": "2026-02-17T22:06:26.881Z", "displayName": "New User", "email": "newuser@example.com", "emailVerified": false, "id": "6994e6629e417a8f63b21dd7", "isVerified": false, "preferences": {"defaultServings": 4, "measurementSystem": "imperial", "theme": "auto"}, "twoFactorEnabled": false}}, "success": true}
+
+      64 |
+      65 |       expect(res.status).toBe(201);
+    > 66 |       expect(res.body).toHaveProperty('accessToken');
+         |                        ^
+      67 |       expect(res.body).toHaveProperty('user');
+      68 |       expect(res.body.user.emailVerified).toBe(false);
+      69 |       
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:66:24)
+
+  ● Email Verification Integration Tests › GET /api/auth/me › should include emailVerified status
+
+    expect(received).toHaveProperty(path)
+
+    Expected path: "emailVerified"
+    Received path: []
+
+    Received value: {"data": {"user": {"avatar": null, "createdAt": "2026-02-17T22:06:27.068Z", "displayName": "Test User", "email": "test@example.com", "emailVerified": false, "id": "6994e6639e417a8f63b21de2", "isVerified": false, "preferences": {"defaultServings": 4, "measurementSystem": "imperial", "theme": "auto"}, "twoFactorEnabled": false}}, "success": true}
+
+      83 |
+      84 |       expect(res.status).toBe(200);
+    > 85 |       expect(res.body).toHaveProperty('emailVerified');
+         |                        ^
+      86 |       expect(res.body.emailVerified).toBe(false);
+      87 |     });
+      88 |   });
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:85:24)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should send verification email for authenticated user
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      94 |         .set('Authorization', `Bearer ${accessToken}`);
+      95 |
+    > 96 |       expect(res.status).toBe(200);
+         |                          ^
+      97 |       expect(res.body.message).toContain('verification email sent');
+      98 |       
+      99 |       // Verify token was created in database
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:96:26)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should fail if email already verified
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 200
+
+      119 |         .set('Authorization', `Bearer ${accessToken}`);
+      120 |
+    > 121 |       expect(res.status).toBe(400);
+          |                          ^
+      122 |       expect(res.body.error).toContain('already verified');
+      123 |     });
+      124 |
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:121:26)
+
+  ● Email Verification Integration Tests › POST /api/auth/send-verification › should enforce rate limiting (3 requests per hour)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      129 |           .post('/api/auth/send-verification')
+      130 |           .set('Authorization', `Bearer ${accessToken}`);
+    > 131 |         expect(res.status).toBe(200);
+          |                            ^
+      132 |       }
+      133 |
+      134 |       // 4th request should be rate limited
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:131:28)
+
+  ● Email Verification Integration Tests › User Model - cleanupExpiredTokens › should remove expired verification tokens
+
+    expect(received).toBeUndefined()
+
+    Received: null
+
+      277 |       // Verify token was removed
+      278 |       user = await User.findById(expiredUser._id).select('+emailVerificationToken');
+    > 279 |       expect(user.emailVerificationToken).toBeUndefined();
+          |                                           ^
+      280 |       expect(user.emailVerificationExpires).toBeUndefined();
+      281 |     });
+      282 |
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:279:43)
+
+  ● Email Verification Integration Tests › Integration with Registration Flow › should complete full registration and verification flow
+
+    TypeError: Cannot read properties of undefined (reading 'emailVerified')
+
+      329 |
+      330 |       expect(registerRes.status).toBe(201);
+    > 331 |       expect(registerRes.body.user.emailVerified).toBe(false);
+          |                                    ^
+      332 |       
+      333 |       const newAccessToken = registerRes.body.accessToken;
+      334 |
+
+      at Object.<anonymous> (src/__tests__/integration/email-verification.test.js:331:36)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.error
+    Failed to send password reset email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendPasswordResetEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:124:11)
+        at forgotPassword (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:568:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      580 |       await user.save({ validateBeforeSave: false });
+      581 |       
+    > 582 |       console.error('Failed to send password reset email:', emailError);
+          |               ^
+      583 |       
+      584 |       // Still return success to prevent user enumeration
+      585 |       // But log the error for admin investigation
+
+      at forgotPassword (src/controllers/authController.js:582:15)
+
+2026-02-17 17:06:32.266 [[32minfo[39m]: POST /forgot-password 200 260ms {"requestId":"628b7e8b-af8e-4bf5-8998-854546db042d","method":"POST","path":"/forgot-password","url":"/api/auth/forgot-password","statusCode":200,"duration":260,"ip":"::ffff:127.0.0.1","responseSize":103}
+2026-02-17 17:06:32.635 [[32minfo[39m]: POST /forgot-password 200 358ms {"requestId":"030176a5-33ce-496e-be90-de2768c9e9e0","method":"POST","path":"/forgot-password","url":"/api/auth/forgot-password","statusCode":200,"duration":358,"ip":"::ffff:127.0.0.1","responseSize":103}
+2026-02-17 17:06:32.640 [[33mwarn[39m]: POST /forgot-password 400 0ms {"requestId":"c6246c6d-2ee7-4ee9-a341-36d9f25f6ffc","method":"POST","path":"/forgot-password","url":"/api/auth/forgot-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":52}
+2026-02-17 17:06:32.646 [[33mwarn[39m]: POST /forgot-password 400 0ms {"requestId":"a4feabac-6a3c-43ba-a3eb-34a72457a973","method":"POST","path":"/forgot-password","url":"/api/auth/forgot-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":52}
+2026-02-17 17:06:32.751 [[32minfo[39m]: GET /validate-reset-token 200 3ms {"requestId":"34a1696b-f7f9-422d-869e-b5dc71199ae0","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token?token=c69dfd19e69670e655df6f8ba4f1613639f3b1975c50d8f8ae877dae9c811eb7","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","query":{"token":"[REDACTED]"},"responseSize":55}
+2026-02-17 17:06:32.762 [[33mwarn[39m]: GET /validate-reset-token 400 2ms {"requestId":"f5116799-4adb-4cb4-8739-9d59ec1b0f84","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token?token=invalid-token","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","query":{"token":"[REDACTED]"},"responseSize":58}
+2026-02-17 17:06:32.857 [[33mwarn[39m]: GET /validate-reset-token 400 2ms {"requestId":"ba724929-b3a1-415c-9d66-2ea3c780c252","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token?token=1ba88f0bcd1430278b3e9f2a218a4e91a0e346095777924787a99689d6b83833","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","query":{"token":"[REDACTED]"},"responseSize":58}
+2026-02-17 17:06:33.020 [[32minfo[39m]: GET /validate-reset-token 200 2ms {"requestId":"f29c31ec-2ebf-48b4-bbce-e431adebc524","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token?token=32522e2fdbd838d9e991370d1f17887f4251a424dc0bb1416cc3ac8cc6a23f7c","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","query":{"token":"[REDACTED]"},"responseSize":55}
+2026-02-17 17:06:33.027 [[33mwarn[39m]: GET /validate-reset-token 400 0ms {"requestId":"cd52f972-1300-4e2c-a4e8-b5034a2696eb","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":44}
+  console.log
+    Password reset successful for user: test-1771365993029@example.com
+
+      at resetPassword (src/controllers/authController.js:872:13)
+
+2026-02-17 17:06:33.179 [[32minfo[39m]: POST /reset-password 200 68ms {"requestId":"4d9de96a-caa1-4e94-adc1-3a75b5edb179","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":109}
+  console.log
+    Password reset successful for user: test-1771365993255@example.com
+
+      at resetPassword (src/controllers/authController.js:872:13)
+
+2026-02-17 17:06:33.497 [[32minfo[39m]: POST /reset-password 200 151ms {"requestId":"fc5ed702-7664-486c-a36c-0ab193c24f1b","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":200,"duration":151,"ip":"::ffff:127.0.0.1","responseSize":109}
+2026-02-17 17:06:33.576 [[32minfo[39m]: POST /login 200 78ms {"requestId":"e0b51152-38e0-4754-9d39-a1455a736d77","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":78,"ip":"::ffff:127.0.0.1","responseSize":720}
+  console.log
+    Password reset successful for user: test-1771365993581@example.com
+
+      at resetPassword (src/controllers/authController.js:872:13)
+
+2026-02-17 17:06:33.737 [[32minfo[39m]: POST /reset-password 200 68ms {"requestId":"dfaaf2a5-d462-4f3a-bb86-3699562d60d9","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":109}
+2026-02-17 17:06:33.799 [[33mwarn[39m]: POST /login 401 61ms {"requestId":"3d792be0-2bca-491b-9e3d-57948ac9dcc5","method":"POST","path":"/login","url":"/api/auth/login","statusCode":401,"duration":61,"ip":"::ffff:127.0.0.1","responseSize":54}
+2026-02-17 17:06:33.878 [[33mwarn[39m]: POST /reset-password 400 0ms {"requestId":"f2ed1aa4-171b-4196-8cea-f2420b7fb47c","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":71}
+2026-02-17 17:06:33.956 [[33mwarn[39m]: POST /reset-password 400 0ms {"requestId":"1ff38489-27f7-421d-80a7-51f1f78c7f80","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":79}
+2026-02-17 17:06:34.039 [[33mwarn[39m]: POST /reset-password 400 0ms {"requestId":"eab25f6a-f577-4da7-9203-f4ac9643b876","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":69}
+2026-02-17 17:06:34.044 [[33mwarn[39m]: POST /reset-password 400 1ms {"requestId":"1cb14b2d-2796-4770-a996-5823a9d65646","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":60}
+2026-02-17 17:06:34.128 [[33mwarn[39m]: POST /reset-password 400 1ms {"requestId":"6c521757-360b-4a43-affa-41942a610d79","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":60}
+  console.log
+    Password reset successful for user: test-1771365994131@example.com
+
+      at resetPassword (src/controllers/authController.js:872:13)
+
+2026-02-17 17:06:34.279 [[32minfo[39m]: POST /reset-password 200 70ms {"requestId":"fa3ecdff-7381-4675-b48e-ce4ffb011ae6","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":200,"duration":70,"ip":"::ffff:127.0.0.1","responseSize":109}
+2026-02-17 17:06:34.281 [[33mwarn[39m]: POST /reset-password 400 1ms {"requestId":"37594dc7-dc56-4a2d-bd39-abedd9c675c7","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":60}
+2026-02-17 17:06:34.363 [[33mwarn[39m]: POST /reset-password 400 0ms {"requestId":"9784e48a-28de-4d45-a61c-7effaef13408","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":60}
+2026-02-17 17:06:34.367 [[33mwarn[39m]: POST /reset-password 400 0ms {"requestId":"58463f83-fa67-4a65-a978-db7af01df23b","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":60}
+  console.error
+    Failed to send password reset email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendPasswordResetEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:124:11)
+        at forgotPassword (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:568:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      580 |       await user.save({ validateBeforeSave: false });
+      581 |       
+    > 582 |       console.error('Failed to send password reset email:', emailError);
+          |               ^
+      583 |       
+      584 |       // Still return success to prevent user enumeration
+      585 |       // But log the error for admin investigation
+
+      at forgotPassword (src/controllers/authController.js:582:15)
+
+2026-02-17 17:06:34.548 [[32minfo[39m]: POST /forgot-password 200 109ms {"requestId":"4f83e107-38e3-4ea6-a887-ef30de0f4177","method":"POST","path":"/forgot-password","url":"/api/auth/forgot-password","statusCode":200,"duration":109,"ip":"::ffff:127.0.0.1","responseSize":103}
+2026-02-17 17:06:34.629 [[32minfo[39m]: GET /validate-reset-token 200 1ms {"requestId":"0e762e51-4cbe-42bf-b709-b403e45572db","method":"GET","path":"/validate-reset-token","url":"/api/auth/validate-reset-token?token=5c3cbae4cb4c577f962c9a06e423beebee320f200f884bd033ae1b9b6ce04b09","statusCode":200,"duration":1,"ip":"::ffff:127.0.0.1","query":{"token":"[REDACTED]"},"responseSize":55}
+  console.log
+    Password reset successful for user: test-1771365994369@example.com
+
+      at resetPassword (src/controllers/authController.js:872:13)
+
+2026-02-17 17:06:34.696 [[32minfo[39m]: POST /reset-password 200 66ms {"requestId":"80561440-1966-4ef3-a21c-de4570558971","method":"POST","path":"/reset-password","url":"/api/auth/reset-password","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","responseSize":109}
+2026-02-17 17:06:34.761 [[32minfo[39m]: POST /login 200 64ms {"requestId":"bf1b1042-0aae-4d37-af77-d1b32b3c5428","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":64,"ip":"::ffff:127.0.0.1","responseSize":720}
+PASS src/__tests__/integration/password-reset.test.js
+  Password Reset Integration Tests
+    POST /api/auth/forgot-password
+      ✓ should successfully request a password reset for existing user (412 ms)
+      ✓ should not reveal if email does not exist (security) (363 ms)
+      ✓ should reject invalid email format (6 ms)
+      ✓ should reject missing email (5 ms)
+      ○ skipped should handle rate limiting
+    GET /api/auth/validate-reset-token
+      ✓ should validate a valid reset token (109 ms)
+      ✓ should reject invalid token format (7 ms)
+      ✓ should reject expired token (98 ms)
+      ✓ should reject token not in database (163 ms)
+      ✓ should reject missing token (3 ms)
+    POST /api/auth/reset-password
+      ✓ should successfully reset password with valid token (225 ms)
+      ✓ should be able to login with new password (327 ms)
+      ✓ should not be able to use old password after reset (224 ms)
+      ✓ should reject weak password (78 ms)
+      ✓ should reject password without uppercase (78 ms)
+      ✓ should reject password without number (80 ms)
+      ✓ should reject invalid token (3 ms)
+      ✓ should reject expired token (86 ms)
+      ✓ should reject reusing the same token twice (154 ms)
+      ✓ should reject missing password (81 ms)
+      ✓ should reject missing token (3 ms)
+    Complete Password Reset Flow
+      ✓ should complete entire password reset flow successfully (397 ms)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:36.324 [[32minfo[39m]: POST /register 201 90ms {"requestId":"8516328d-db4d-4b9c-823e-c773965e69cc","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":90,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:36.508 [[32minfo[39m]: POST /2fa/setup 200 180ms {"requestId":"e311f745-9b74-4971-8b3c-4a37482558db","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":180,"ip":"::ffff:127.0.0.1","userId":"6994e66c9ca6dc09b5bf9bf4","responseSize":3344}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:36.596 [[32minfo[39m]: POST /register 201 76ms {"requestId":"84c7ec16-6739-4e9e-831d-27fb61c2c0d4","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:36.598 [[33mwarn[39m]: POST /2fa/setup 401 1ms {"requestId":"f8e06601-91c3-4912-abc1-be5cf5e4badf","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":401,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:36.683 [[32minfo[39m]: POST /register 201 77ms {"requestId":"a5583cf7-cbc5-4fc8-84a6-a2c2e5854f52","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:36.856 [[32minfo[39m]: POST /2fa/setup 200 172ms {"requestId":"2e0b6971-aaaa-4a4c-b89c-d2722d38984c","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":172,"ip":"::ffff:127.0.0.1","userId":"6994e66c9ca6dc09b5bf9c0d","responseSize":3368}
+2026-02-17 17:06:37.029 [[32minfo[39m]: POST /2fa/setup 200 172ms {"requestId":"33ac9602-85b4-4b02-b24d-7d970195f523","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":172,"ip":"::ffff:127.0.0.1","userId":"6994e66c9ca6dc09b5bf9c0d","responseSize":3272}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:37.122 [[32minfo[39m]: POST /register 201 83ms {"requestId":"da80b910-eba7-445b-ae7b-2f36bc59cc2a","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":83,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:37.306 [[32minfo[39m]: POST /2fa/setup 200 183ms {"requestId":"b3de2bfc-c3de-4674-aa87-db6491d17a92","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":183,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c1e","responseSize":3284}
+2026-02-17 17:06:37.319 [[32minfo[39m]: POST /2fa/verify 200 10ms {"requestId":"98f70514-3d29-4449-9cbb-efacb375054f","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c1e","responseSize":394}
+  console.log
+    Response status: 200
+
+      at Object.<anonymous> (src/__tests__/integration/two-factor-auth.test.js:129:15)
+
+  console.log
+    Response body keys: [ 'message', 'backupCodes' ]
+
+      at Object.<anonymous> (src/__tests__/integration/two-factor-auth.test.js:130:15)
+
+  console.log
+    Response has backupCodes: yes (10)
+
+      at Object.<anonymous> (src/__tests__/integration/two-factor-auth.test.js:131:15)
+
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:37.416 [[32minfo[39m]: POST /register 201 85ms {"requestId":"bdf1c4b2-4445-48cc-a982-711d70db69b9","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":85,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:37.599 [[32minfo[39m]: POST /2fa/setup 200 182ms {"requestId":"70ebad4f-6aa9-45e5-bc0a-bd119a07f7e3","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":182,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c3b","responseSize":3264}
+2026-02-17 17:06:37.603 [[33mwarn[39m]: POST /2fa/verify 400 2ms {"requestId":"cf660258-6bad-4e29-acc7-c95a7c975f95","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c3b","responseSize":28}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:37.687 [[32minfo[39m]: POST /register 201 75ms {"requestId":"cdbb4621-b0b6-43a1-aba2-8cf14cbf3f84","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":75,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:37.862 [[32minfo[39m]: POST /2fa/setup 200 174ms {"requestId":"aa961793-0b8d-4861-8546-9add24afabb2","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":174,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c4d","responseSize":3284}
+2026-02-17 17:06:37.864 [[33mwarn[39m]: POST /2fa/verify 401 0ms {"requestId":"86f578ce-e1d0-4f43-9d55-e1bf3fe93e19","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:37.996 [[32minfo[39m]: POST /register 201 98ms {"requestId":"03ec2a98-2952-441d-b239-9cfda583d738","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":98,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:38.167 [[32minfo[39m]: POST /2fa/setup 200 169ms {"requestId":"28154d08-169e-4f04-b8c8-5c4fddeeed10","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":169,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c5b","responseSize":3312}
+2026-02-17 17:06:38.170 [[33mwarn[39m]: POST /2fa/verify 400 1ms {"requestId":"80a3df4b-4a8f-4a79-af04-610b93b10d54","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e66d9ca6dc09b5bf9c5b","responseSize":29}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:38.259 [[32minfo[39m]: POST /register 201 80ms {"requestId":"b6c7c571-100b-42d8-a0a1-7ad1ab232897","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":80,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:38.262 [[32minfo[39m]: GET /2fa/status 200 2ms {"requestId":"81152aac-aa77-4628-93de-4d51f085e3bc","method":"GET","path":"/2fa/status","url":"/api/auth/2fa/status","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9c6a","responseSize":17}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:38.345 [[32minfo[39m]: POST /register 201 76ms {"requestId":"e2f9897e-291e-4131-a1ed-f084b76cf8df","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:38.519 [[32minfo[39m]: POST /2fa/setup 200 173ms {"requestId":"801c9f52-28bb-483d-980c-5a7b1f14540b","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":173,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9c78","responseSize":3268}
+2026-02-17 17:06:38.530 [[32minfo[39m]: POST /2fa/verify 200 10ms {"requestId":"0bcd59db-766e-4d49-a74b-3049d78e5f2d","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9c78","responseSize":394}
+2026-02-17 17:06:38.534 [[32minfo[39m]: GET /2fa/status 200 2ms {"requestId":"807e8920-f39b-4ab1-851f-da3584956e93","method":"GET","path":"/2fa/status","url":"/api/auth/2fa/status","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9c78","responseSize":16}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:38.620 [[32minfo[39m]: POST /register 201 79ms {"requestId":"ffc17833-3c72-4e88-b064-cb043bc3c1ab","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":79,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:38.621 [[33mwarn[39m]: GET /2fa/status 401 0ms {"requestId":"4aa8bc68-02e8-4f11-b1d1-c7b764830d84","method":"GET","path":"/2fa/status","url":"/api/auth/2fa/status","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:38.700 [[32minfo[39m]: POST /register 201 72ms {"requestId":"6a9efa99-055b-4875-b7a0-d346014a4fd5","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":72,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:38.878 [[32minfo[39m]: POST /2fa/setup 200 177ms {"requestId":"44dc2657-3dc5-495d-acb6-90c3e8ce4aca","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":177,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9cb6","responseSize":3368}
+2026-02-17 17:06:38.890 [[32minfo[39m]: POST /2fa/verify 200 10ms {"requestId":"f90f40e1-e56b-45cf-8667-6cc078fca315","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9cb6","responseSize":394}
+2026-02-17 17:06:38.961 [[32minfo[39m]: POST /2fa/verify-login 200 70ms {"requestId":"396ef703-effd-4068-a936-1d42883c98b4","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":200,"duration":70,"ip":"::ffff:127.0.0.1","responseSize":689}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:39.048 [[32minfo[39m]: POST /register 201 81ms {"requestId":"283cba6b-791d-43fa-8fa4-c1de8d036f74","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":81,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:39.228 [[32minfo[39m]: POST /2fa/setup 200 178ms {"requestId":"da013c03-90a2-4694-96c7-dbd72206098b","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":178,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9ce0","responseSize":3308}
+2026-02-17 17:06:39.239 [[32minfo[39m]: POST /2fa/verify 200 9ms {"requestId":"3325d910-f20c-4e0c-a1c3-77c01ebe15c6","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":9,"ip":"::ffff:127.0.0.1","userId":"6994e66e9ca6dc09b5bf9ce0","responseSize":394}
+2026-02-17 17:06:39.303 [[33mwarn[39m]: POST /2fa/verify-login 400 63ms {"requestId":"6d996c47-98f0-4c53-b248-7539ae788909","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":400,"duration":63,"ip":"::ffff:127.0.0.1","responseSize":28}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:39.389 [[32minfo[39m]: POST /register 201 79ms {"requestId":"c02482f1-bc77-47f7-936f-a393f9a835f7","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":79,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:39.567 [[32minfo[39m]: POST /2fa/setup 200 176ms {"requestId":"59f1cb21-ad99-4a13-a78f-e9035834ca4c","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":176,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d08","responseSize":3236}
+2026-02-17 17:06:39.577 [[32minfo[39m]: POST /2fa/verify 200 8ms {"requestId":"8eb119f9-541d-431c-9a05-dc9a39440a4a","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d08","responseSize":394}
+2026-02-17 17:06:39.640 [[33mwarn[39m]: POST /2fa/verify-login 401 61ms {"requestId":"6c22c3ff-da35-41a8-b8e1-f231c6f48fd6","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":401,"duration":61,"ip":"::ffff:127.0.0.1","responseSize":31}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:39.725 [[32minfo[39m]: POST /register 201 76ms {"requestId":"f46185e8-bd93-42c2-b7fd-e09eb1dc9400","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:39.897 [[32minfo[39m]: POST /2fa/setup 200 171ms {"requestId":"48da8568-4355-4f1f-af72-46f9b86b9974","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":171,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d30","responseSize":3224}
+2026-02-17 17:06:39.906 [[32minfo[39m]: POST /2fa/verify 200 7ms {"requestId":"ae2c2da9-5047-47ab-9080-abd652606ff0","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d30","responseSize":394}
+2026-02-17 17:06:39.980 [[32minfo[39m]: POST /2fa/verify-login 200 72ms {"requestId":"2d944ac7-f228-4b68-95df-279658320b3e","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":200,"duration":72,"ip":"::ffff:127.0.0.1","responseSize":689}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:40.064 [[32minfo[39m]: POST /register 201 76ms {"requestId":"0d110b12-5f44-45b3-87d0-39fdccc4e712","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:40.248 [[32minfo[39m]: POST /2fa/setup 200 178ms {"requestId":"f6cff970-02c1-4383-832d-22be2f99c0fd","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":178,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d5c","responseSize":3264}
+2026-02-17 17:06:40.260 [[32minfo[39m]: POST /2fa/verify 200 10ms {"requestId":"29505ef6-95ac-40ac-a220-d16285dd1331","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e66f9ca6dc09b5bf9d5c","responseSize":394}
+2026-02-17 17:06:40.330 [[32minfo[39m]: POST /2fa/verify-login 200 69ms {"requestId":"68b8a541-f8a8-487e-a62a-8635682d6ffb","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":689}
+2026-02-17 17:06:40.391 [[33mwarn[39m]: POST /2fa/verify-login 400 60ms {"requestId":"8bea3a2c-d9b0-4d06-96b2-d7ecf8f34be5","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":400,"duration":60,"ip":"::ffff:127.0.0.1","responseSize":28}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:40.475 [[32minfo[39m]: POST /register 201 77ms {"requestId":"2ea67746-fdee-4790-a4d7-deb5afde2306","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:40.647 [[32minfo[39m]: POST /2fa/setup 200 171ms {"requestId":"f2869749-1c78-413b-8064-67221028c7ac","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":171,"ip":"::ffff:127.0.0.1","userId":"6994e6709ca6dc09b5bf9d94","responseSize":3340}
+2026-02-17 17:06:40.657 [[32minfo[39m]: POST /2fa/verify 200 8ms {"requestId":"eac9528b-9a67-4527-a2dd-fa4a4b3b365d","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e6709ca6dc09b5bf9d94","responseSize":394}
+2026-02-17 17:06:40.659 [[33mwarn[39m]: POST /2fa/verify-login 400 0ms {"requestId":"62e457de-0457-4e44-8ef7-3c87c38aec2e","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":51}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:40.751 [[32minfo[39m]: POST /register 201 85ms {"requestId":"6dc5eae9-5a24-452c-b4f8-88d7fd364ba3","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":85,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:40.931 [[32minfo[39m]: POST /2fa/setup 200 179ms {"requestId":"26e7de6f-57c2-40b6-b21a-5f15c0815e2c","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":179,"ip":"::ffff:127.0.0.1","userId":"6994e6709ca6dc09b5bf9db0","responseSize":3296}
+2026-02-17 17:06:40.940 [[32minfo[39m]: POST /2fa/verify 200 7ms {"requestId":"054dd9c4-052a-45bc-96b4-38758836b88b","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6709ca6dc09b5bf9db0","responseSize":394}
+2026-02-17 17:06:41.010 [[32minfo[39m]: POST /2fa/disable 200 68ms {"requestId":"be4b50fb-a6cb-45b7-9f44-f586ddb2d06b","method":"POST","path":"/2fa/disable","url":"/api/auth/2fa/disable","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","userId":"6994e6709ca6dc09b5bf9db0","responseSize":35}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:41.095 [[32minfo[39m]: POST /register 201 78ms {"requestId":"3db5c87f-3039-474c-9bd2-89f9b3ed0222","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":78,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:41.272 [[32minfo[39m]: POST /2fa/setup 200 175ms {"requestId":"54ffdba2-6127-4efb-a28a-354df26206c0","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":175,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9de5","responseSize":3260}
+2026-02-17 17:06:41.284 [[32minfo[39m]: POST /2fa/verify 200 10ms {"requestId":"cfca612a-ce55-4db8-a886-57e96e0abe99","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9de5","responseSize":394}
+2026-02-17 17:06:41.348 [[33mwarn[39m]: POST /2fa/disable 401 63ms {"requestId":"757b4b9d-7252-4793-b2af-232a08855203","method":"POST","path":"/2fa/disable","url":"/api/auth/2fa/disable","statusCode":401,"duration":63,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9de5","responseSize":28}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:41.429 [[32minfo[39m]: POST /register 201 72ms {"requestId":"9c9f69e8-4ad3-4e46-a973-c48254f5d265","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":72,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:41.608 [[32minfo[39m]: POST /2fa/setup 200 177ms {"requestId":"be1b30f0-c9ff-4875-bfe9-2a60ae67d615","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":177,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e19","responseSize":3328}
+2026-02-17 17:06:41.619 [[32minfo[39m]: POST /2fa/verify 200 9ms {"requestId":"23d65683-d97e-4eb4-b053-e1796a492c65","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":9,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e19","responseSize":394}
+2026-02-17 17:06:41.622 [[33mwarn[39m]: POST /2fa/disable 400 1ms {"requestId":"4955d543-5bcc-4a88-86b9-81701f582dba","method":"POST","path":"/2fa/disable","url":"/api/auth/2fa/disable","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e19","responseSize":32}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:41.705 [[32minfo[39m]: POST /register 201 76ms {"requestId":"8a9aa5db-f42a-417b-b7af-422c7576ac79","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:41.921 [[32minfo[39m]: POST /2fa/setup 200 215ms {"requestId":"a5421d3e-82a4-4692-9175-63f9508a16d7","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":215,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e40","responseSize":3364}
+2026-02-17 17:06:41.930 [[32minfo[39m]: POST /2fa/verify 200 7ms {"requestId":"61c463f1-d3ee-403b-94d5-f9d8dc47f649","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e40","responseSize":394}
+2026-02-17 17:06:41.932 [[33mwarn[39m]: POST /2fa/disable 401 0ms {"requestId":"b88c3351-3747-4c0a-842d-3afdad008dd0","method":"POST","path":"/2fa/disable","url":"/api/auth/2fa/disable","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:42.013 [[32minfo[39m]: POST /register 201 74ms {"requestId":"cdb58093-f8c2-4aea-bc19-5cb18fbbff55","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":74,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:42.190 [[32minfo[39m]: POST /2fa/setup 200 176ms {"requestId":"981dbb7f-edcd-42a2-a807-92b8ca83b5fc","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":176,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e5c","responseSize":3216}
+2026-02-17 17:06:42.200 [[32minfo[39m]: POST /2fa/verify 200 8ms {"requestId":"2a08126d-83af-4e5b-b388-ab7e21606832","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e6719ca6dc09b5bf9e5c","responseSize":394}
+2026-02-17 17:06:42.262 [[32minfo[39m]: POST /login 200 60ms {"requestId":"0da8470c-a5f5-45b1-a3d9-16087444b231","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":60,"ip":"::ffff:127.0.0.1","responseSize":90}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:42.346 [[32minfo[39m]: POST /register 201 76ms {"requestId":"43e5a32a-4c7f-47cc-a838-c5a9f3870d53","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:42.522 [[32minfo[39m]: POST /2fa/setup 200 175ms {"requestId":"f511d91b-4a47-42b1-b066-5a7d15939820","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":175,"ip":"::ffff:127.0.0.1","userId":"6994e6729ca6dc09b5bf9e84","responseSize":3240}
+2026-02-17 17:06:42.532 [[32minfo[39m]: POST /2fa/verify 200 8ms {"requestId":"12e5de5e-ad6e-4140-b8e8-7d1dbc41d6b5","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e6729ca6dc09b5bf9e84","responseSize":394}
+2026-02-17 17:06:42.605 [[32minfo[39m]: POST /login 200 60ms {"requestId":"de93341b-20f9-4c37-9906-726ce554d3b3","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":60,"ip":"::ffff:127.0.0.1","responseSize":90}
+2026-02-17 17:06:42.672 [[32minfo[39m]: POST /2fa/verify-login 200 65ms {"requestId":"911a3e20-798d-4b63-b407-f73e874e557b","method":"POST","path":"/2fa/verify-login","url":"/api/auth/2fa/verify-login","statusCode":200,"duration":65,"ip":"::ffff:127.0.0.1","responseSize":689}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:42.752 [[32minfo[39m]: POST /register 201 73ms {"requestId":"03dd6f8a-81b7-4b3a-af02-4e21a2ae1164","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":73,"ip":"::ffff:127.0.0.1","responseSize":714}
+2026-02-17 17:06:42.934 [[32minfo[39m]: POST /2fa/setup 200 181ms {"requestId":"e22c7a84-6668-40dd-9d45-838669fc84b4","method":"POST","path":"/2fa/setup","url":"/api/auth/2fa/setup","statusCode":200,"duration":181,"ip":"::ffff:127.0.0.1","userId":"6994e6729ca6dc09b5bf9eba","responseSize":3264}
+2026-02-17 17:06:42.943 [[32minfo[39m]: POST /2fa/verify 200 8ms {"requestId":"993da8fe-f9f5-45e5-9573-d648fdad561b","method":"POST","path":"/2fa/verify","url":"/api/auth/2fa/verify","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e6729ca6dc09b5bf9eba","responseSize":394}
+2026-02-17 17:06:43.011 [[32minfo[39m]: POST /2fa/disable 200 66ms {"requestId":"7dcd3595-b424-4ab7-8db7-6c630af20e48","method":"POST","path":"/2fa/disable","url":"/api/auth/2fa/disable","statusCode":200,"duration":66,"ip":"::ffff:127.0.0.1","userId":"6994e6729ca6dc09b5bf9eba","responseSize":35}
+2026-02-17 17:06:43.081 [[32minfo[39m]: POST /login 200 69ms {"requestId":"8681e1b2-078f-4e30-8395-a1345499f0ec","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","responseSize":714}
+PASS src/__tests__/integration/two-factor-auth.test.js (8.31 s)
+  Two-Factor Authentication Integration Tests
+    POST /api/auth/2fa/setup
+      ✓ should generate 2FA QR code and secret for authenticated user (299 ms)
+      ✓ should require authentication (87 ms)
+      ✓ should generate different secrets for multiple calls (432 ms)
+    POST /api/auth/2fa/verify
+      ✓ should enable 2FA with valid token and generate backup codes (293 ms)
+      ✓ should reject invalid token (281 ms)
+      ✓ should require authentication (258 ms)
+      ✓ should require token parameter (307 ms)
+    GET /api/auth/2fa/status
+      ✓ should return disabled status when 2FA is not enabled (92 ms)
+      ✓ should return enabled status when 2FA is enabled (271 ms)
+      ✓ should require authentication (86 ms)
+    POST /api/auth/2fa/verify-login
+      ✓ should complete login with valid 2FA token (341 ms)
+      ✓ should reject invalid 2FA token (341 ms)
+      ✓ should reject invalid credentials (338 ms)
+      ✓ should accept valid backup code (341 ms)
+      ✓ should reject already-used backup code (410 ms)
+      ✓ should require all parameters (268 ms)
+    POST /api/auth/2fa/disable
+      ✓ should disable 2FA with valid password (351 ms)
+      ✓ should reject invalid password (338 ms)
+      ✓ should require password parameter (272 ms)
+      ✓ should require authentication (309 ms)
+    Login Flow with 2FA
+      ✓ should require 2FA verification during login when enabled (331 ms)
+      ✓ should complete full login flow with 2FA (410 ms)
+      ✓ should allow normal login after disabling 2FA (408 ms)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:45.112 [[32minfo[39m]: POST /register 201 100ms {"requestId":"a8fe53e9-3d62-4ed2-845b-4f43cb3f05d2","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":100,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:45.309 [[32minfo[39m]: PATCH /password 200 194ms {"requestId":"117e4ce1-27a8-40c6-a654-c97479c70d19","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":200,"duration":194,"ip":"::ffff:127.0.0.1","userId":"6994e675d129d9ea36f1bbd0","responseSize":59}
+2026-02-17 17:06:45.380 [[32minfo[39m]: POST /login 200 68ms {"requestId":"f41a3c08-af92-47c3-a708-f58fe109effd","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":68,"ip":"::ffff:127.0.0.1","responseSize":707}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:45.463 [[32minfo[39m]: POST /register 201 77ms {"requestId":"6471cdf4-37c3-4f4e-b176-aa5de0f29a34","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:45.694 [[32minfo[39m]: PATCH /password 200 229ms {"requestId":"82592a8c-877a-4eb1-8971-530af7af8ff3","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":200,"duration":229,"ip":"::ffff:127.0.0.1","userId":"6994e675d129d9ea36f1bbe4","responseSize":59}
+2026-02-17 17:06:45.781 [[33mwarn[39m]: POST /login 401 77ms {"requestId":"ae81a30c-ce4b-446e-8f0f-189154f73514","method":"POST","path":"/login","url":"/api/auth/login","statusCode":401,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":54}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:45.864 [[32minfo[39m]: POST /register 201 76ms {"requestId":"6774498f-b047-4bca-829d-bfcb9ab9e336","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:45.931 [[33mwarn[39m]: PATCH /password 400 64ms {"requestId":"0117e889-7bf9-47e7-a92c-17a3dba74e73","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":400,"duration":64,"ip":"::ffff:127.0.0.1","userId":"6994e675d129d9ea36f1bbf5","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.015 [[32minfo[39m]: POST /register 201 76ms {"requestId":"b15e41f8-430d-4949-aabc-8649468e7940","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.018 [[33mwarn[39m]: PATCH /password 400 2ms {"requestId":"ebef94e6-cc63-4722-abe9-35f1651de95d","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e675d129d9ea36f1bc03","responseSize":71}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.103 [[32minfo[39m]: POST /register 201 79ms {"requestId":"c28d22a5-c1f8-4deb-ba0b-e49895e43601","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":79,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.227 [[33mwarn[39m]: PATCH /password 400 122ms {"requestId":"c4610754-3abc-4b30-85a8-1360a6064444","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":400,"duration":122,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc0f","responseSize":81}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.314 [[32minfo[39m]: POST /register 201 77ms {"requestId":"d8b6c51e-84e5-4398-8d63-a280b4e67720","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.315 [[33mwarn[39m]: PATCH /password 401 0ms {"requestId":"5d304907-52e1-4863-ada5-e8af6404195f","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.439 [[32minfo[39m]: POST /register 201 119ms {"requestId":"25c4046e-0caf-4c54-9261-e6fb0ce1daa6","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":119,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.445 [[33mwarn[39m]: PATCH /password 400 5ms {"requestId":"4aeb99e9-58a0-4e51-92c0-083add224e22","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":400,"duration":5,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc28","responseSize":68}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.561 [[32minfo[39m]: POST /register 201 104ms {"requestId":"3d37c696-82a0-4185-bf35-3e264a5cd4e6","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":104,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.790 [[32minfo[39m]: PATCH /password 200 226ms {"requestId":"00a34b58-0f58-4e25-bfcd-2e6a89a64134","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":200,"duration":226,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc34","responseSize":59}
+2026-02-17 17:06:46.793 [[32minfo[39m]: GET /me 200 2ms {"requestId":"a0bd16a9-df3a-49f3-9604-fadb9d44b98c","method":"GET","path":"/me","url":"/api/auth/me","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc34","responseSize":320}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:46.875 [[32minfo[39m]: POST /register 201 76ms {"requestId":"7d396660-b223-4ebb-9bc5-39c943381a3d","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":76,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:46.946 [[32minfo[39m]: DELETE /account 200 70ms {"requestId":"b8a67f61-b6d8-41e6-b94b-e69791052297","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":70,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc44","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.023 [[32minfo[39m]: POST /register 201 74ms {"requestId":"98fd6d1a-63f0-46fb-830a-9254d0698651","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":74,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.094 [[32minfo[39m]: DELETE /account 200 69ms {"requestId":"8874d36e-9074-4264-98ad-b9ac801f2d2a","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","userId":"6994e676d129d9ea36f1bc59","responseSize":58}
+2026-02-17 17:06:47.096 [[33mwarn[39m]: POST /login 401 1ms {"requestId":"53a52007-5f72-4403-b193-f7edcaae5af2","method":"POST","path":"/login","url":"/api/auth/login","statusCode":401,"duration":1,"ip":"::ffff:127.0.0.1","responseSize":54}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.176 [[32minfo[39m]: POST /register 201 77ms {"requestId":"e58fc936-cdec-4b5e-a54e-c512b17c7b12","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.263 [[32minfo[39m]: DELETE /account 200 70ms {"requestId":"d107cb97-7a9c-47df-a09a-8893dd39055d","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":70,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bc6e","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.344 [[32minfo[39m]: POST /register 201 78ms {"requestId":"7cf4fa02-570e-4761-9bc4-9f8ebc9ebc3a","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":78,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.419 [[32minfo[39m]: DELETE /account 200 69ms {"requestId":"bf555891-a986-4141-b855-7ee8299de16e","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bc8a","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.499 [[32minfo[39m]: POST /register 201 77ms {"requestId":"be37fcb0-88c1-44c9-8c32-a9f6cccfdc2b","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":77,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.579 [[32minfo[39m]: DELETE /account 200 72ms {"requestId":"7d577de3-c6ea-4301-9c62-f415c1aafb2f","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":72,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bca4","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.655 [[32minfo[39m]: POST /register 201 72ms {"requestId":"ca1e6377-4a73-4abb-862e-93e432d24b51","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":72,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.729 [[32minfo[39m]: DELETE /account 200 67ms {"requestId":"53fa33d6-4c8c-4acf-96c1-7e7534dae737","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":67,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bcbe","responseSize":58}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.806 [[32minfo[39m]: POST /register 201 73ms {"requestId":"cdb5ccd1-5a1e-4234-a761-b2db176a33b4","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":73,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.867 [[33mwarn[39m]: DELETE /account 400 60ms {"requestId":"e180f149-5fce-4178-9680-974e5d6ee9e5","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":400,"duration":60,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bcd8","responseSize":50}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:47.948 [[32minfo[39m]: POST /register 201 73ms {"requestId":"1759cfac-70f8-4fe1-b934-06b3ac9d2710","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":73,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:47.950 [[33mwarn[39m]: DELETE /account 401 0ms {"requestId":"80da549d-e8a3-4ff1-be10-f2f4c96b7b5a","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:48.032 [[32minfo[39m]: POST /register 201 75ms {"requestId":"4d02d8db-ded1-433c-bce8-6b0acdd5cd6f","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":75,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:48.033 [[33mwarn[39m]: DELETE /account 400 0ms {"requestId":"93608eae-00f3-4e22-b2ca-f40a4b03fb91","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":400,"duration":0,"ip":"::ffff:127.0.0.1","userId":"6994e677d129d9ea36f1bcf3","responseSize":72}
+  console.error
+    Failed to send verification email: Error: Email service not initialized. Call initializeEmailService() first.
+        at sendVerificationEmail (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/services/emailService.js:179:11)
+        at register (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/authController.js:64:13)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      71 |     } catch (emailError) {
+      72 |       // Log error but don't fail registration
+    > 73 |       console.error('Failed to send verification email:', emailError);
+         |               ^
+      74 |     }
+      75 |
+      76 |     res.status(201).json({
+
+      at register (src/controllers/authController.js:73:15)
+
+2026-02-17 17:06:48.113 [[32minfo[39m]: POST /register 201 73ms {"requestId":"7ef737cc-92ff-4958-96dd-7e739027d800","method":"POST","path":"/register","url":"/api/auth/register","statusCode":201,"duration":73,"ip":"::ffff:127.0.0.1","responseSize":707}
+2026-02-17 17:06:48.310 [[32minfo[39m]: PATCH /password 200 184ms {"requestId":"5e439b8c-4fea-4fef-bde1-1d99009854d9","method":"PATCH","path":"/password","url":"/api/auth/password","statusCode":200,"duration":184,"ip":"::ffff:127.0.0.1","userId":"6994e678d129d9ea36f1bcff","responseSize":59}
+2026-02-17 17:06:48.312 [[32minfo[39m]: GET /me 200 1ms {"requestId":"e09522d5-cc07-4f78-be39-a363f735f813","method":"GET","path":"/me","url":"/api/auth/me","statusCode":200,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e678d129d9ea36f1bcff","responseSize":320}
+2026-02-17 17:06:48.382 [[32minfo[39m]: DELETE /account 200 69ms {"requestId":"3ad5f59b-e242-4f1e-b12b-c8f1b6eb7166","method":"DELETE","path":"/account","url":"/api/auth/account","statusCode":200,"duration":69,"ip":"::ffff:127.0.0.1","userId":"6994e678d129d9ea36f1bcff","responseSize":58}
+PASS src/__tests__/integration/account-management.test.js (5.297 s)
+  Account Management - Update Password
+    ✓ should update password successfully (401 ms)
+    ✓ should verify old password no longer works after update (401 ms)
+    ✓ should reject incorrect current password (149 ms)
+    ✓ should reject weak new password (88 ms)
+    ✓ should reject new password same as current (209 ms)
+    ✓ should reject request without authentication (88 ms)
+    ✓ should reject missing fields (131 ms)
+    ✓ should keep session active after password change (346 ms)
+  Account Management - Delete Account
+    ✓ should delete account successfully (153 ms)
+    ✓ should prevent login after account deletion (149 ms)
+    ✓ should delete all user recipes on account deletion (168 ms)
+    ✓ should delete all user collections on account deletion (156 ms)
+    ✓ should delete all user meal plans on account deletion (161 ms)
+    ✓ should delete all user shopping lists on account deletion (149 ms)
+    ✓ should reject incorrect password for account deletion (139 ms)
+    ✓ should reject request without authentication (81 ms)
+    ✓ should reject missing password (84 ms)
+  Account Management - Complete Flow
+    ✓ should complete full account lifecycle (350 ms)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+2026-02-17 17:06:50.022 [[32minfo[39m]: POST /login 200 72ms {"requestId":"e66dfbaa-7827-4752-ace1-2ee6715b2e72","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":72,"ip":"::ffff:127.0.0.1","responseSize":718}
+2026-02-17 17:06:50.027 [[32minfo[39m]: Dropbox OAuth initiated for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.028 [[32minfo[39m]: GET /dropbox/auth 200 2ms {"requestId":"2d81f469-2d35-435e-b610-77ffc806a69a","method":"GET","path":"/dropbox/auth","url":"/api/cloud/dropbox/auth","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":255}
+2026-02-17 17:06:50.030 [[33mwarn[39m]: GET /dropbox/auth 401 0ms {"requestId":"4fcbcdd6-715c-4c7a-be2f-b06b49892041","method":"GET","path":"/dropbox/auth","url":"/api/cloud/dropbox/auth","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+2026-02-17 17:06:50.034 [[32minfo[39m]: GET /status 200 3ms {"requestId":"fa877e3a-c1f4-4f3d-843f-8a42950e8b0d","method":"GET","path":"/status","url":"/api/cloud/status","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":50}
+2026-02-17 17:06:50.043 [[32minfo[39m]: GET /status 200 2ms {"requestId":"126e37fe-e528-45f4-ab70-b4f2dba8b9ad","method":"GET","path":"/status","url":"/api/cloud/status","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":427}
+2026-02-17 17:06:50.058 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.058 [[32minfo[39m]: POST /disconnect 200 7ms {"requestId":"128f6454-24a7-4019-a1d1-171106517d3d","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.072 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.072 [[32minfo[39m]: POST /disconnect 200 8ms {"requestId":"34d24d2c-12d1-4c42-a29e-f857f21a4eec","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.075 [[33mwarn[39m]: POST /disconnect 400 2ms {"requestId":"e8dc83c3-7e92-4e65-b9db-8878b8f7e67d","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":57}
+2026-02-17 17:06:50.084 [[32minfo[39m]: Manual backup requested for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.084 [[32minfo[39m]: Generating manual backup for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.098 [[32minfo[39m]: Archive created: 292 bytes
+2026-02-17 17:06:50.099 [[32minfo[39m]: Backup generated successfully: recipe-book-manual-backup-2026-02-17T22-06-50.zip (292 bytes)
+2026-02-17 17:06:50.104 [[32minfo[39m]: Cleaned up backup file: /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/temp/recipe-book-manual-backup-2026-02-17T22-06-50.zip
+2026-02-17 17:06:50.104 [[32minfo[39m]: Manual backup successful for user 6994e6794579a7a39386d0fc: recipe-book-manual-backup-2026-02-16T15-00-00.zip
+2026-02-17 17:06:50.104 [[32minfo[39m]: POST /backup 200 22ms {"requestId":"7ad802f6-7491-43c5-b720-168a4c8d1bf5","method":"POST","path":"/backup","url":"/api/cloud/backup","statusCode":200,"duration":22,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":315}
+2026-02-17 17:06:50.119 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.119 [[32minfo[39m]: POST /disconnect 200 7ms {"requestId":"5d4c19c1-e243-4b94-88c4-229b8fb1575c","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.122 [[33mwarn[39m]: POST /backup 400 2ms {"requestId":"a765a4f1-9875-4069-ae52-5fcf371042e6","method":"POST","path":"/backup","url":"/api/cloud/backup","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":104}
+2026-02-17 17:06:50.134 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.134 [[32minfo[39m]: POST /disconnect 200 7ms {"requestId":"631f76cd-cbe7-4939-bb8c-d0ca238a890e","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.137 [[32minfo[39m]: GET /backups 200 2ms {"requestId":"b193120e-2b5b-4e04-ba98-2ec7a8a54cf5","method":"GET","path":"/backups","url":"/api/cloud/backups","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":39}
+2026-02-17 17:06:50.146 [[32minfo[39m]: GET /backups 200 2ms {"requestId":"e7f26c63-d8ce-43f0-bddc-dbed7c69ca3e","method":"GET","path":"/backups","url":"/api/cloud/backups?limit=5","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","query":{"limit":"5"},"responseSize":354}
+2026-02-17 17:06:50.162 [[32minfo[39m]: Preview backup requested for user 6994e6794579a7a39386d0fc: id:backup_1
+2026-02-17 17:06:50.162 [[32minfo[39m]: Generating manual backup for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.170 [[32minfo[39m]: Archive created: 519 bytes
+2026-02-17 17:06:50.170 [[32minfo[39m]: Backup generated successfully: recipe-book-manual-backup-2026-02-17T22-06-50.zip (519 bytes)
+2026-02-17 17:06:50.170 [[32minfo[39m]: Getting backup preview: /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/temp/recipe-book-manual-backup-2026-02-17T22-06-50.zip
+2026-02-17 17:06:50.171 [[32minfo[39m]: Parsing backup file: /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/temp/recipe-book-manual-backup-2026-02-17T22-06-50.zip
+2026-02-17 17:06:50.182 [[32minfo[39m]: Backup parsed successfully: 2 recipes
+2026-02-17 17:06:50.183 [[32minfo[39m]: GET /backups/id:backup_1/preview 200 23ms {"requestId":"dad084ee-6160-48b5-858f-b04888e80f82","method":"GET","path":"/backups/id:backup_1/preview","url":"/api/cloud/backups/id:backup_1/preview","statusCode":200,"duration":23,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":193}
+2026-02-17 17:06:50.200 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.200 [[32minfo[39m]: POST /disconnect 200 10ms {"requestId":"d477faa5-6033-44db-9f8a-c36c72e2059d","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.203 [[33mwarn[39m]: GET /backups/id:backup_1/preview 400 2ms {"requestId":"bee2ea40-60ae-4c72-8501-619f2a012771","method":"GET","path":"/backups/id:backup_1/preview","url":"/api/cloud/backups/id:backup_1/preview","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":57}
+2026-02-17 17:06:50.278 [[32minfo[39m]: Restore requested for user 6994e6794579a7a39386d0fc: backup=id:backup_1, mode=merge
+2026-02-17 17:06:50.278 [[32minfo[39m]: Generating manual backup for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.287 [[32minfo[39m]: Archive created: 494 bytes
+2026-02-17 17:06:50.288 [[32minfo[39m]: Backup generated successfully: recipe-book-manual-backup-2026-02-17T22-06-50.zip (494 bytes)
+2026-02-17 17:06:50.288 [[32minfo[39m]: Parsing backup file: /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/temp/recipe-book-manual-backup-2026-02-17T22-06-50.zip
+2026-02-17 17:06:50.297 [[32minfo[39m]: Backup parsed successfully: 1 recipes
+2026-02-17 17:06:50.299 [[32minfo[39m]: Starting restore for user 6994e6794579a7a39386d0fc {"mode":"merge","recipeCount":1}
+2026-02-17 17:06:50.299 [[32minfo[39m]: Merge mode: Importing with duplicate checking for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.304 [[32minfo[39m]: Merge mode complete: 1 items imported, 0 skipped
+2026-02-17 17:06:50.304 [[32minfo[39m]: Restore successful for user 6994e6794579a7a39386d0fc {"stats":{"totalImported":1,"totalSkipped":0,"recipes":{"imported":1,"skipped":0},"collections":{"imported":0,"skipped":0},"mealPlans":{"imported":0,"skipped":0},"shoppingLists":{"imported":0,"skipped":0}}}
+2026-02-17 17:06:50.304 [[32minfo[39m]: Restore successful for user 6994e6794579a7a39386d0fc {"statistics":{"totalImported":1,"totalSkipped":0,"recipes":{"imported":1,"skipped":0},"collections":{"imported":0,"skipped":0},"mealPlans":{"imported":0,"skipped":0},"shoppingLists":{"imported":0,"skipped":0}}}
+2026-02-17 17:06:50.304 [[32minfo[39m]: POST /restore 200 87ms {"requestId":"d242424f-e445-408f-878c-3a1cdc25938d","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":200,"duration":87,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":268}
+2026-02-17 17:06:50.382 [[32minfo[39m]: Restore requested for user 6994e6794579a7a39386d0fc: backup=id:backup_1, mode=replace
+2026-02-17 17:06:50.382 [[32minfo[39m]: Generating manual backup for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.391 [[32minfo[39m]: Archive created: 495 bytes
+2026-02-17 17:06:50.392 [[32minfo[39m]: Backup generated successfully: recipe-book-manual-backup-2026-02-17T22-06-50.zip (495 bytes)
+2026-02-17 17:06:50.392 [[32minfo[39m]: Parsing backup file: /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/temp/recipe-book-manual-backup-2026-02-17T22-06-50.zip
+2026-02-17 17:06:50.400 [[32minfo[39m]: Backup parsed successfully: 1 recipes
+2026-02-17 17:06:50.401 [[32minfo[39m]: Starting restore for user 6994e6794579a7a39386d0fc {"mode":"replace","recipeCount":1}
+2026-02-17 17:06:50.401 [[32minfo[39m]: Replace mode: Deleting existing data for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.406 [[32minfo[39m]: Existing data deleted for user 6994e6794579a7a39386d0fc {"recipes":1,"collections":0,"mealPlans":0,"shoppingLists":0}
+2026-02-17 17:06:50.412 [[32minfo[39m]: Replace mode complete: 1 items imported
+2026-02-17 17:06:50.412 [[32minfo[39m]: Restore successful for user 6994e6794579a7a39386d0fc {"stats":{"totalImported":1,"totalSkipped":0,"recipes":{"imported":1,"skipped":0},"collections":{"imported":0,"skipped":0},"mealPlans":{"imported":0,"skipped":0},"shoppingLists":{"imported":0,"skipped":0}}}
+2026-02-17 17:06:50.412 [[32minfo[39m]: Restore successful for user 6994e6794579a7a39386d0fc {"statistics":{"totalImported":1,"totalSkipped":0,"recipes":{"imported":1,"skipped":0},"collections":{"imported":0,"skipped":0},"mealPlans":{"imported":0,"skipped":0},"shoppingLists":{"imported":0,"skipped":0}}}
+2026-02-17 17:06:50.412 [[32minfo[39m]: POST /restore 200 92ms {"requestId":"83b5cdf3-abef-4898-963f-9381d3f52db0","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":200,"duration":92,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":268}
+2026-02-17 17:06:50.430 [[33mwarn[39m]: POST /restore 400 1ms {"requestId":"6b15cce2-8d3b-4c3d-a429-ff607308ce55","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":96}
+2026-02-17 17:06:50.446 [[33mwarn[39m]: POST /restore 400 1ms {"requestId":"5efc28be-840d-41d8-ae85-1d720de98422","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":76}
+2026-02-17 17:06:50.520 [[33mwarn[39m]: Invalid password for restore attempt by user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.520 [[33mwarn[39m]: POST /restore 401 61ms {"requestId":"069af427-8478-45f7-ad58-28e58675dfca","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":401,"duration":61,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":46}
+2026-02-17 17:06:50.538 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.539 [[32minfo[39m]: POST /disconnect 200 6ms {"requestId":"a3449b64-fd2a-4aa1-9e7d-8b26611afbc5","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.541 [[33mwarn[39m]: POST /restore 400 1ms {"requestId":"9b4b0f35-02b1-4d4b-bd5a-562f3c6cf8e7","method":"POST","path":"/restore","url":"/api/cloud/restore","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":57}
+2026-02-17 17:06:50.554 [[32minfo[39m]: Schedule updated for user 6994e6794579a7a39386d0fc: enabled=true, frequency=daily
+2026-02-17 17:06:50.554 [[32minfo[39m]: PUT /schedule 200 6ms {"requestId":"a2c9a164-79b3-4678-b119-7c5f9838ec1a","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":208}
+2026-02-17 17:06:50.568 [[32minfo[39m]: Schedule updated for user 6994e6794579a7a39386d0fc: enabled=true, frequency=weekly
+2026-02-17 17:06:50.568 [[32minfo[39m]: PUT /schedule 200 7ms {"requestId":"fe428710-e1c4-499a-83f3-cf071997d871","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":196}
+2026-02-17 17:06:50.579 [[32minfo[39m]: Schedule updated for user 6994e6794579a7a39386d0fc: enabled=false, frequency=undefined
+2026-02-17 17:06:50.580 [[32minfo[39m]: PUT /schedule 200 5ms {"requestId":"4687e362-6e4c-4955-b634-c2cb44ca1ec5","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":5,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":175}
+2026-02-17 17:06:50.592 [[32minfo[39m]: Schedule updated for user 6994e6794579a7a39386d0fc: enabled=undefined, frequency=invalid
+2026-02-17 17:06:50.592 [[32minfo[39m]: PUT /schedule 200 6ms {"requestId":"cc329474-7450-40c8-9dad-1f3560c399b0","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":175}
+2026-02-17 17:06:50.605 [[32minfo[39m]: Schedule updated for user 6994e6794579a7a39386d0fc: enabled=undefined, frequency=undefined
+2026-02-17 17:06:50.605 [[32minfo[39m]: PUT /schedule 200 6ms {"requestId":"463f7ead-5be5-4308-a7dc-e351223f3803","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":175}
+2026-02-17 17:06:50.620 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.620 [[32minfo[39m]: POST /disconnect 200 7ms {"requestId":"bd642a12-379d-4a7d-996e-84936478e903","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.623 [[33mwarn[39m]: PUT /schedule 400 2ms {"requestId":"1b37285a-c54e-479a-84d6-f32007209f1e","method":"PUT","path":"/schedule","url":"/api/cloud/schedule","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":57}
+2026-02-17 17:06:50.640 [[32minfo[39m]: GET /schedule 200 3ms {"requestId":"06a42eff-8048-4fd9-918e-4fe108f4c34d","method":"GET","path":"/schedule","url":"/api/cloud/schedule","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":175}
+2026-02-17 17:06:50.652 [[32minfo[39m]: dropbox disconnected for user 6994e6794579a7a39386d0fc
+2026-02-17 17:06:50.653 [[32minfo[39m]: POST /disconnect 200 6ms {"requestId":"c2ac5fd7-ea24-46d4-b959-7a970d7c558b","method":"POST","path":"/disconnect","url":"/api/cloud/disconnect","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":62}
+2026-02-17 17:06:50.655 [[33mwarn[39m]: GET /schedule 400 2ms {"requestId":"d38e0dde-0a5d-4916-9375-35d8d8c74f5a","method":"GET","path":"/schedule","url":"/api/cloud/schedule","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":57}
+2026-02-17 17:06:50.666 [[32minfo[39m]: GET /status 200 3ms {"requestId":"f0dfccfc-abed-4380-88d7-952cd2bb6482","method":"GET","path":"/status","url":"/api/cloud/status","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e6794579a7a39386d0fc","responseSize":421}
+PASS src/__tests__/integration/cloud-backup.test.js
+  Cloud Backup API - OAuth Flow
+    POST /api/cloud/dropbox/auth
+      ✓ should initiate Dropbox OAuth and return auth URL (5 ms)
+      ✓ should require authentication (1 ms)
+    GET /api/cloud/status
+      ✓ should return not connected when no provider configured (3 ms)
+      ✓ should return connected status when provider configured (9 ms)
+  Cloud Backup API - Provider Management
+    POST /api/cloud/disconnect
+      ✓ should disconnect cloud provider (16 ms)
+      ✓ should fail when no provider connected (16 ms)
+  Cloud Backup API - Backup Operations
+    POST /api/cloud/backup
+      ✓ should create and upload manual backup successfully (30 ms)
+      ✓ should require cloud provider connection (17 ms)
+    GET /api/cloud/backups
+      ✓ should return empty array when no provider connected (15 ms)
+      ✓ should accept limit parameter (9 ms)
+    GET /api/cloud/backups/:backupId/preview
+      ✓ should preview backup contents (37 ms)
+      ✓ should require cloud provider connection (19 ms)
+    POST /api/cloud/restore
+      ✓ should restore backup in merge mode (107 ms)
+      ✓ should restore backup in replace mode (109 ms)
+      ✓ should validate required fields (14 ms)
+      ✓ should validate mode parameter (18 ms)
+      ✓ should reject invalid password (74 ms)
+      ✓ should require cloud provider connection (19 ms)
+  Cloud Backup API - Schedule Management
+    PUT /api/cloud/schedule
+      ✓ should update schedule settings (11 ms)
+      ✓ should calculate next backup time when enabled (14 ms)
+      ✓ should clear next backup time when disabled (11 ms)
+      ✓ should validate frequency values (13 ms)
+      ✓ should validate time format (13 ms)
+      ✓ should require cloud provider connection (17 ms)
+    GET /api/cloud/schedule
+      ✓ should return current schedule (16 ms)
+      ✓ should require cloud provider connection (16 ms)
+  Token Encryption
+    ✓ should encrypt and decrypt tokens correctly
+    ✓ should use different IVs for same token
+    ✓ should throw error for empty strings (3 ms)
+  Security - Token Protection
+    ✓ should not expose tokens in JSON response (7 ms)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+2026-02-17 17:06:52.630 [[32minfo[39m]: POST /login 200 70ms {"requestId":"46b603cb-6ab4-49a3-a798-c0930b2c324a","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":70,"ip":"::ffff:127.0.0.1","responseSize":713}
+2026-02-17 17:06:52.639 [[33mwarn[39m]: POST /backup 400 3ms {"requestId":"9bba2ca7-166c-4cbf-94ce-2de9b3e16cff","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":102}
+2026-02-17 17:06:52.646 [[31merror[39m]: Request error {"requestId":"375367d5-36d4-4941-8bbd-159f3c0112d2","error":"Must be .json file","stack":"ImportError: Must be .json file\n    at fileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:36:9)\n    at wrappedFileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/index.js:44:7)\n    at Multipart.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/lib/make-middleware.js:109:7)\n    at Multipart.emit (node:events:507:28)\n    at HeaderParser.cb (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:358:14)\n    at HeaderParser.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:394:37)\n    at feed (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:219:14)\n    at SBMH.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:104:16)\n    at Multipart._write (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Multipart.Writable.write (node:internal/streams/writable:508:10)\n    at IncomingMessage.ondata (node:internal/streams/readable:1008:24)\n    at IncomingMessage.emit (node:events:507:28)\n    at IncomingMessage.Readable.read (node:internal/streams/readable:780:10)\n    at flow (node:internal/streams/readable:1286:53)\n    at resume_ (node:internal/streams/readable:1265:3)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","method":"POST","path":"/api/import/backup","userId":"6994e67ccbf8b8b14d1aac70","ip":"::ffff:127.0.0.1"}
+2026-02-17 17:06:52.646 [[31merror[39m]: Unhandled error {"requestId":"375367d5-36d4-4941-8bbd-159f3c0112d2","error":"Must be .json file","stack":"ImportError: Must be .json file\n    at fileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:36:9)\n    at wrappedFileFilter (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/index.js:44:7)\n    at Multipart.<anonymous> (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/multer/lib/make-middleware.js:109:7)\n    at Multipart.emit (node:events:507:28)\n    at HeaderParser.cb (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:358:14)\n    at HeaderParser.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:394:37)\n    at feed (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:219:14)\n    at SBMH.push (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/streamsearch/lib/sbmh.js:104:16)\n    at Multipart._write (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/busboy/lib/types/multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)\n    at Multipart.Writable.write (node:internal/streams/writable:508:10)\n    at IncomingMessage.ondata (node:internal/streams/readable:1008:24)\n    at IncomingMessage.emit (node:events:507:28)\n    at IncomingMessage.Readable.read (node:internal/streams/readable:780:10)\n    at flow (node:internal/streams/readable:1286:53)\n    at resume_ (node:internal/streams/readable:1265:3)\n    at processTicksAndRejections (node:internal/process/task_queues:90:21)","path":"/api/import/backup","method":"POST"}
+2026-02-17 17:06:52.646 [[31merror[39m]: POST /api/import/backup 500 2ms {"requestId":"375367d5-36d4-4941-8bbd-159f3c0112d2","method":"POST","path":"/api/import/backup","url":"/api/import/backup","statusCode":500,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":1969}
+2026-02-17 17:06:52.666 [[33mwarn[39m]: POST /backup 400 2ms {"requestId":"6eff12cf-b420-4d4e-a733-6db78cfeb93e","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":133}
+2026-02-17 17:06:52.671 [[33mwarn[39m]: POST /backup 400 1ms {"requestId":"f3dfa3f1-a50a-4c7f-be39-b69bd2fa3994","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":195}
+2026-02-17 17:06:52.677 [[33mwarn[39m]: POST /backup 400 2ms {"requestId":"1c38b017-bf98-492c-a50d-3c0226eec3c6","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":400,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":205}
+2026-02-17 17:06:52.682 [[33mwarn[39m]: POST /backup 422 1ms {"requestId":"9b561c79-8bac-4fdf-b273-839920f5ea70","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":422,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":197}
+2026-02-17 17:06:52.687 [[33mwarn[39m]: POST /backup 422 1ms {"requestId":"4639d16e-454c-48d8-b4eb-66ae0a5e07c9","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":422,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":211}
+2026-02-17 17:06:52.694 [[33mwarn[39m]: POST /backup 422 2ms {"requestId":"98285c39-42d3-4ec4-8750-a7c72dac2d28","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":422,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":214}
+  console.error
+    Import error: Error: Recipe validation failed: dishType: `dessert` is not a valid enum value for path `dishType`.
+        at ValidationError.inspect (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/error/validation.js:52:26)
+        at formatValue (node:internal/util/inspect:877:19)
+        at inspect (node:internal/util/inspect:404:10)
+        at formatWithOptionsInternal (node:internal/util/inspect:2402:40)
+        at format (node:internal/util/inspect:2259:10)
+        at console.error (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/console/build/index.js:288:48)
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:135:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+      errors: {
+        dishType: ValidatorError: `dessert` is not a valid enum value for path `dishType`.
+            at validate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1443:13)
+            at SchemaString.SchemaType.doValidate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1427:7)
+            at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/document.js:3134:18
+            at processTicksAndRejections (node:internal/process/task_queues:85:11) {
+          properties: [Object],
+          kind: 'enum',
+          path: 'dishType',
+          value: 'dessert',
+          reason: undefined,
+          Symbol(mongoose#validatorError): true
+        }
+      },
+      _message: 'Recipe validation failed'
+    }
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.708 [[31merror[39m]: POST /backup 500 10ms {"requestId":"40928fb5-9573-45b4-b97f-9133b75bcccc","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+2026-02-17 17:06:52.725 [[33mwarn[39m]: POST /backup 401 1ms {"requestId":"3b85277c-cc62-43c5-b959-bdd7259741f4","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":401,"duration":1,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":147}
+  console.error
+    Import error: TypeError: Cannot read properties of null (reading 'comparePassword')
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:84:36)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.731 [[31merror[39m]: POST /backup 500 3ms {"requestId":"c666b48f-751e-4a76-a282-6d130e5d5e0b","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+  console.error
+    Import error: Error: Recipe validation failed: dishType: `dessert` is not a valid enum value for path `dishType`.
+        at ValidationError.inspect (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/error/validation.js:52:26)
+        at formatValue (node:internal/util/inspect:877:19)
+        at inspect (node:internal/util/inspect:404:10)
+        at formatWithOptionsInternal (node:internal/util/inspect:2402:40)
+        at format (node:internal/util/inspect:2259:10)
+        at console.error (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/console/build/index.js:288:48)
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:135:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+      errors: {
+        dishType: ValidatorError: `dessert` is not a valid enum value for path `dishType`.
+            at validate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1443:13)
+            at SchemaString.SchemaType.doValidate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1427:7)
+            at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/document.js:3134:18
+            at processTicksAndRejections (node:internal/process/task_queues:85:11) {
+          properties: [Object],
+          kind: 'enum',
+          path: 'dishType',
+          value: 'dessert',
+          reason: undefined,
+          Symbol(mongoose#validatorError): true
+        }
+      },
+      _message: 'Recipe validation failed'
+    }
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.740 [[31merror[39m]: POST /backup 500 4ms {"requestId":"756f9347-125c-4974-beae-113ea5c6a9e2","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":4,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+  console.error
+    Import error: Error: Recipe validation failed: dishType: `dessert` is not a valid enum value for path `dishType`.
+        at ValidationError.inspect (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/error/validation.js:52:26)
+        at formatValue (node:internal/util/inspect:877:19)
+        at inspect (node:internal/util/inspect:404:10)
+        at formatWithOptionsInternal (node:internal/util/inspect:2402:40)
+        at format (node:internal/util/inspect:2259:10)
+        at console.error (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/console/build/index.js:288:48)
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:135:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+      errors: {
+        dishType: ValidatorError: `dessert` is not a valid enum value for path `dishType`.
+            at validate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1443:13)
+            at SchemaString.SchemaType.doValidate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1427:7)
+            at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/document.js:3134:18
+            at processTicksAndRejections (node:internal/process/task_queues:85:11) {
+          properties: [Object],
+          kind: 'enum',
+          path: 'dishType',
+          value: 'dessert',
+          reason: undefined,
+          Symbol(mongoose#validatorError): true
+        }
+      },
+      _message: 'Recipe validation failed'
+    }
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.746 [[31merror[39m]: POST /backup 500 3ms {"requestId":"6e0d5b2c-8573-4440-af7b-d352e03101dd","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+  console.warn
+    Collection 'Test Collection' references missing recipe: 507f1f77bcf86cd799439099
+
+      269 |     ids.forEach((recipeId) => {
+      270 |       if (recipeId && !recipeIds.has(recipeId)) {
+    > 271 |         console.warn(
+          |                 ^
+      272 |           `Collection '${collection.name}' references missing recipe: ${recipeId}`
+      273 |         );
+      274 |       }
+
+      at src/services/importValidator.js:271:17
+          at Array.forEach (<anonymous>)
+      at src/services/importValidator.js:269:9
+          at Array.forEach (<anonymous>)
+      at validateReferences (src/services/importValidator.js:267:28)
+      at validateBackupContent (src/services/importValidator.js:99:3)
+      at importBackup (src/controllers/importController.js:71:7)
+
+  console.error
+    Import error: Error: Recipe validation failed: dishType: `dessert` is not a valid enum value for path `dishType`.
+        at ValidationError.inspect (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/error/validation.js:52:26)
+        at formatValue (node:internal/util/inspect:877:19)
+        at inspect (node:internal/util/inspect:404:10)
+        at formatWithOptionsInternal (node:internal/util/inspect:2402:40)
+        at format (node:internal/util/inspect:2259:10)
+        at console.error (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/console/build/index.js:288:48)
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:135:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+      errors: {
+        dishType: ValidatorError: `dessert` is not a valid enum value for path `dishType`.
+            at validate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1443:13)
+            at SchemaString.SchemaType.doValidate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1427:7)
+            at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/document.js:3134:18
+            at processTicksAndRejections (node:internal/process/task_queues:85:11) {
+          properties: [Object],
+          kind: 'enum',
+          path: 'dishType',
+          value: 'dessert',
+          reason: undefined,
+          Symbol(mongoose#validatorError): true
+        }
+      },
+      _message: 'Recipe validation failed'
+    }
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.797 [[31merror[39m]: POST /backup 500 47ms {"requestId":"10b6a3c1-2ce7-406d-9b34-2dc40e4c12e9","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":47,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+2026-02-17 17:06:52.833 [[33mwarn[39m]: POST /backup 422 2ms {"requestId":"9942f377-11e4-4ddc-849b-3beaa3f8a8db","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":422,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":174}
+2026-02-17 17:06:52.837 [[33mwarn[39m]: POST /backup 401 0ms {"requestId":"f90f2cb0-21c8-4d9e-8744-14934c9003d1","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+2026-02-17 17:06:52.864 [[32minfo[39m]: POST /backup 200 14ms {"requestId":"ce264363-bbe8-4939-a0dd-84d17d6e86f0","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":200,"duration":14,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":212}
+  console.error
+    Import error: Error: Recipe validation failed: dishType: `dessert` is not a valid enum value for path `dishType`.
+        at ValidationError.inspect (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/error/validation.js:52:26)
+        at formatValue (node:internal/util/inspect:877:19)
+        at inspect (node:internal/util/inspect:404:10)
+        at formatWithOptionsInternal (node:internal/util/inspect:2402:40)
+        at format (node:internal/util/inspect:2259:10)
+        at console.error (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/@jest/console/build/index.js:288:48)
+        at importBackup (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/src/controllers/importController.js:135:17)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5) {
+      errors: {
+        dishType: ValidatorError: `dessert` is not a valid enum value for path `dishType`.
+            at validate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1443:13)
+            at SchemaString.SchemaType.doValidate (/Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/schemaType.js:1427:7)
+            at /Users/scott.carroll/Development/copilot-testing/recipe-book/backend/node_modules/mongoose/lib/document.js:3134:18
+            at processTicksAndRejections (node:internal/process/task_queues:85:11) {
+          properties: [Object],
+          kind: 'enum',
+          path: 'dishType',
+          value: 'dessert',
+          reason: undefined,
+          Symbol(mongoose#validatorError): true
+        }
+      },
+      _message: 'Recipe validation failed'
+    }
+
+      133 |         });
+      134 |       } else {
+    > 135 |         console.error('Import error:', error);
+          |                 ^
+      136 |         res.status(500).json({
+      137 |           success: false,
+      138 |           error: 'Import failed',
+
+      at importBackup (src/controllers/importController.js:135:17)
+
+2026-02-17 17:06:52.874 [[31merror[39m]: POST /backup 500 4ms {"requestId":"e82cab73-38c6-413f-b5b4-dcde608c39e9","method":"POST","path":"/backup","url":"/api/import/backup","statusCode":500,"duration":4,"ip":"::ffff:127.0.0.1","userId":"6994e67ccbf8b8b14d1aac70","responseSize":119}
+FAIL src/__tests__/integration/import-backup.test.js
+  Import from Backup - Integration Tests
+    POST /api/import/backup - File Validation
+      ✓ should reject request with no file (8 ms)
+      ✕ should reject non-JSON file (8 ms)
+      ✓ should reject invalid JSON (18 ms)
+      ✓ should reject backup missing required fields (5 ms)
+      ✓ should reject incompatible version (< 2.0.0) (6 ms)
+    POST /api/import/backup - Content Validation
+      ✕ should reject recipe missing title (5 ms)
+      ✕ should reject recipe with empty ingredients (5 ms)
+      ✕ should reject recipe with empty instructions (6 ms)
+    POST /api/import/backup - Merge Mode
+      ✕ should successfully import backup in merge mode (14 ms)
+      ✕ should skip duplicates in merge mode (3 ms)
+      ✕ should preserve existing data in merge mode (3 ms)
+    POST /api/import/backup - Replace Mode
+      ✕ should reject replace mode without password (11 ms)
+      ✕ should reject replace mode with wrong password (5 ms)
+      ✕ should delete all existing data in replace mode (3 ms)
+    POST /api/import/backup - ID Remapping
+      ✕ should remap recipe IDs in collections (6 ms)
+      ✕ should remap recipe IDs in meal plans (7 ms)
+      ✕ should handle missing recipe references gracefully (52 ms)
+    POST /api/import/backup - Transaction Rollback
+      ✕ should rollback on validation error (33 ms)
+    POST /api/import/backup - Security
+      ✓ should require authentication (3 ms)
+      ✕ should sanitize XSS in recipe titles (29 ms)
+    POST /api/import/backup - Performance
+      ✕ should complete import within reasonable time (8 ms)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - File Validation › should reject non-JSON file
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      165 |         .attach('file', Buffer.from('not json'), 'backup.txt');
+      166 |
+    > 167 |       expect(res.status).toBe(400);
+          |                          ^
+      168 |       expect(res.body.success).toBe(false);
+      169 |     });
+      170 |
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:167:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe missing title
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 422
+
+      232 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      233 |
+    > 234 |       expect(res.status).toBe(400);
+          |                          ^
+      235 |       expect(res.body.success).toBe(false);
+      236 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      237 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:234:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe with empty ingredients
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 422
+
+      258 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      259 |
+    > 260 |       expect(res.status).toBe(400);
+          |                          ^
+      261 |       expect(res.body.success).toBe(false);
+      262 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      263 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:260:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Content Validation › should reject recipe with empty instructions
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 422
+
+      284 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      285 |
+    > 286 |       expect(res.status).toBe(400);
+          |                          ^
+      287 |       expect(res.body.success).toBe(false);
+      288 |       expect(res.body.details.code).toBe('INVALID_RECIPE');
+      289 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:286:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should successfully import backup in merge mode
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      298 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      299 |
+    > 300 |       expect(res.status).toBe(200);
+          |                          ^
+      301 |       expect(res.body.success).toBe(true);
+      302 |       expect(res.body.summary).toMatchObject({
+      303 |         mode: 'merge',
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:300:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should skip duplicates in merge mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required., ingredients.1.name: Path `name` is required., ingredients.2.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Merge Mode › should preserve existing data in merge mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should reject replace mode without password
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 401
+
+      385 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      386 |
+    > 387 |       expect(res.status).toBe(400);
+          |                          ^
+      388 |       expect(res.body.success).toBe(false);
+      389 |       expect(res.body.details.code).toBe('INVALID_PASSWORD');
+      390 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:387:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should reject replace mode with wrong password
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      398 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      399 |
+    > 400 |       expect(res.status).toBe(400);
+          |                          ^
+      401 |       expect(res.body.success).toBe(false);
+      402 |       expect(res.body.details.code).toBe('INVALID_PASSWORD');
+      403 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:400:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Replace Mode › should delete all existing data in replace mode
+
+    ValidationError: Recipe validation failed: ingredients.0.name: Path `name` is required.
+
+      at model.Document.invalidate (node_modules/mongoose/lib/document.js:3381:32)
+      at EmbeddedDocument.Subdocument.invalidate (node_modules/mongoose/lib/types/subdocument.js:257:12)
+      at node_modules/mongoose/lib/document.js:3142:17
+      at node_modules/mongoose/lib/schemaType.js:1446:9
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should remap recipe IDs in collections
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      448 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      449 |
+    > 450 |       expect(res.status).toBe(200);
+          |                          ^
+      451 |
+      452 |       // Get imported collection
+      453 |       const collection = await Collection.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:450:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should remap recipe IDs in meal plans
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      468 |         .attach('file', Buffer.from(JSON.stringify(validBackupV2)), 'backup.json');
+      469 |
+    > 470 |       expect(res.status).toBe(200);
+          |                          ^
+      471 |
+      472 |       // Get imported meal plan
+      473 |       const mealPlan = await MealPlan.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:470:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - ID Remapping › should handle missing recipe references gracefully
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      509 |         );
+      510 |
+    > 511 |       expect(res.status).toBe(200);
+          |                          ^
+      512 |
+      513 |       // Collection should only have valid reference
+      514 |       const collection = await Collection.findOne({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:511:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Transaction Rollback › should rollback on validation error
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 422
+
+      540 |         .attach('file', Buffer.from(JSON.stringify(invalidBackup)), 'backup.json');
+      541 |
+    > 542 |       expect(res.status).toBe(400);
+          |                          ^
+      543 |
+      544 |       // Verify NO data was created (rollback successful)
+      545 |       const recipes = await Recipe.find({ owner: userId });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:542:26)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Security › should sanitize XSS in recipe titles
+
+    TypeError: Cannot read properties of null (reading 'title')
+
+      585 |
+      586 |       const recipe = await Recipe.findOne({ owner: userId });
+    > 587 |       expect(recipe.title).not.toContain('<script>');
+          |                     ^
+      588 |       expect(recipe.title).toContain('Safe Title');
+      589 |     });
+      590 |   });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:587:21)
+
+  ● Import from Backup - Integration Tests › POST /api/import/backup - Performance › should complete import within reasonable time
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      602 |       const duration = Date.now() - startTime;
+      603 |
+    > 604 |       expect(res.status).toBe(200);
+          |                          ^
+      605 |       expect(duration).toBeLessThan(5000); // Should complete in < 5s
+      606 |       expect(res.body.summary.duration).toBeLessThan(5000);
+      607 |     });
+
+      at Object.<anonymous> (src/__tests__/integration/import-backup.test.js:604:26)
+
+(node:48747) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+2026-02-17 17:06:54.666 [[32minfo[39m]: POST /login 200 73ms {"requestId":"abd49b1c-74f0-4889-8702-0bd7c6e697fc","method":"POST","path":"/login","url":"/api/auth/login","statusCode":200,"duration":73,"ip":"::ffff:127.0.0.1","responseSize":711}
+2026-02-17 17:06:54.685 [[32minfo[39m]: POST / 201 9ms {"requestId":"c978f8ce-34d5-484a-9c2f-ec403d96c5d6","method":"POST","path":"/","url":"/api/meal-plans","statusCode":201,"duration":9,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":285}
+2026-02-17 17:06:54.697 [[33mwarn[39m]: POST / 400 3ms {"requestId":"3296fb0a-7d9e-4f5c-9832-55adb782d30d","method":"POST","path":"/","url":"/api/meal-plans","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":53}
+2026-02-17 17:06:54.705 [[32minfo[39m]: POST / 201 6ms {"requestId":"910c5513-ebc4-4e58-a700-6d14651a7ffd","method":"POST","path":"/","url":"/api/meal-plans","statusCode":201,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":277}
+2026-02-17 17:06:54.709 [[33mwarn[39m]: POST / 400 3ms {"requestId":"ba3346e9-bcae-4689-b957-edafd97d9382","method":"POST","path":"/","url":"/api/meal-plans","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":196}
+2026-02-17 17:06:54.715 [[33mwarn[39m]: POST / 401 0ms {"requestId":"edf16b7c-588d-473b-8def-0e3dfdee7e5a","method":"POST","path":"/","url":"/api/meal-plans","statusCode":401,"duration":0,"ip":"::ffff:127.0.0.1","responseSize":84}
+2026-02-17 17:06:54.725 [[32minfo[39m]: GET / 200 4ms {"requestId":"2ca59cb6-c800-4042-ab32-bbc927dc62dd","method":"GET","path":"/","url":"/api/meal-plans","statusCode":200,"duration":4,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":557}
+2026-02-17 17:06:54.736 [[32minfo[39m]: GET / 200 2ms {"requestId":"b948471c-6d83-4ae8-a1a0-b1a37a52741d","method":"GET","path":"/","url":"/api/meal-plans?isTemplate=false","statusCode":200,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","query":{"isTemplate":"false"},"responseSize":285}
+2026-02-17 17:06:54.759 [[32minfo[39m]: POST /6994e67e57666f4b9f8a0925/meals 200 13ms {"requestId":"27128132-8de4-4d3a-8274-1fed53a70c09","method":"POST","path":"/6994e67e57666f4b9f8a0925/meals","url":"/api/meal-plans/6994e67e57666f4b9f8a0925/meals","statusCode":200,"duration":13,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":1077}
+2026-02-17 17:06:54.773 [[33mwarn[39m]: POST /6994e67e57666f4b9f8a0932/meals 404 2ms {"requestId":"51965997-9bd1-426b-9ea8-87669cac8639","method":"POST","path":"/6994e67e57666f4b9f8a0932/meals","url":"/api/meal-plans/6994e67e57666f4b9f8a0932/meals","statusCode":404,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":28}
+2026-02-17 17:06:54.789 [[32minfo[39m]: POST /6994e67e57666f4b9f8a0939/meals 200 7ms {"requestId":"dbdfb254-ddbe-4880-a386-d48033506694","method":"POST","path":"/6994e67e57666f4b9f8a0939/meals","url":"/api/meal-plans/6994e67e57666f4b9f8a0939/meals","statusCode":200,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":1070}
+2026-02-17 17:06:54.806 [[32minfo[39m]: POST /6994e67e57666f4b9f8a0939/meals 200 9ms {"requestId":"1d5e7ec4-08b0-4985-8916-4cd157c1c7a9","method":"POST","path":"/6994e67e57666f4b9f8a0939/meals","url":"/api/meal-plans/6994e67e57666f4b9f8a0939/meals","statusCode":200,"duration":9,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":1759}
+2026-02-17 17:06:54.819 [[32minfo[39m]: DELETE /6994e67e57666f4b9f8a0954/meals/6994e67e57666f4b9f8a0955 200 6ms {"requestId":"63c3f7e0-4ff5-4d91-97a4-a766c15c7dc8","method":"DELETE","path":"/6994e67e57666f4b9f8a0954/meals/6994e67e57666f4b9f8a0955","url":"/api/meal-plans/6994e67e57666f4b9f8a0954/meals/6994e67e57666f4b9f8a0955","statusCode":200,"duration":6,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":280}
+2026-02-17 17:06:54.831 [[33mwarn[39m]: DELETE /6994e67e57666f4b9f8a095f/meals/6994e67e57666f4b9f8a0963 404 2ms {"requestId":"6ca2ca73-8a30-4cc6-9352-fabcf9b5b6b9","method":"DELETE","path":"/6994e67e57666f4b9f8a095f/meals/6994e67e57666f4b9f8a0963","url":"/api/meal-plans/6994e67e57666f4b9f8a095f/meals/6994e67e57666f4b9f8a0963","statusCode":404,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":26}
+2026-02-17 17:06:54.842 [[32minfo[39m]: GET /6994e67e57666f4b9f8a0969/shopping-list 200 3ms {"requestId":"9f5ca672-20c4-44a3-8674-5beb2d332b70","method":"GET","path":"/6994e67e57666f4b9f8a0969/shopping-list","url":"/api/meal-plans/6994e67e57666f4b9f8a0969/shopping-list","statusCode":200,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":337}
+2026-02-17 17:06:54.857 [[32minfo[39m]: POST /6994e67e57666f4b9f8a0973/duplicate 201 7ms {"requestId":"659605ba-43d1-4477-8e0c-3072dd705bf7","method":"POST","path":"/6994e67e57666f4b9f8a0973/duplicate","url":"/api/meal-plans/6994e67e57666f4b9f8a0973/duplicate","statusCode":201,"duration":7,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":1073}
+2026-02-17 17:06:54.876 [[32minfo[39m]: POST /6994e67e57666f4b9f8a0985/duplicate 201 10ms {"requestId":"e235d0d5-327a-4e1d-8a56-5d79cf0bd1ed","method":"POST","path":"/6994e67e57666f4b9f8a0985/duplicate","url":"/api/meal-plans/6994e67e57666f4b9f8a0985/duplicate","statusCode":201,"duration":10,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":1070}
+2026-02-17 17:06:54.889 [[33mwarn[39m]: POST /6994e67e57666f4b9f8a0998/duplicate 400 3ms {"requestId":"53ca5bfb-37fb-4347-bec5-9ebc5f10fdaf","method":"POST","path":"/6994e67e57666f4b9f8a0998/duplicate","url":"/api/meal-plans/6994e67e57666f4b9f8a0998/duplicate","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":207}
+2026-02-17 17:06:54.904 [[32minfo[39m]: DELETE /6994e67e57666f4b9f8a09a5 200 5ms {"requestId":"1d05bebc-8c37-4764-bbae-2d44842c88db","method":"DELETE","path":"/6994e67e57666f4b9f8a09a5","url":"/api/meal-plans/6994e67e57666f4b9f8a09a5","statusCode":200,"duration":5,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":44}
+2026-02-17 17:06:54.982 [[33mwarn[39m]: DELETE /6994e67e57666f4b9f8a09ae 403 2ms {"requestId":"5b49c31d-d066-4b6c-bf3b-b636ab93931f","method":"DELETE","path":"/6994e67e57666f4b9f8a09ae","url":"/api/meal-plans/6994e67e57666f4b9f8a09ae","statusCode":403,"duration":2,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":25}
+2026-02-17 17:06:54.998 [[32minfo[39m]: PUT /6994e67e57666f4b9f8a09b3 200 8ms {"requestId":"b9cc2b8e-e137-4931-8c8a-374e74f56802","method":"PUT","path":"/6994e67e57666f4b9f8a09b3","url":"/api/meal-plans/6994e67e57666f4b9f8a09b3","statusCode":200,"duration":8,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":283}
+2026-02-17 17:06:55.014 [[33mwarn[39m]: PUT /6994e67f57666f4b9f8a09bc 400 3ms {"requestId":"76ef3d8e-b426-499f-9a36-0d2f4119ae9a","method":"PUT","path":"/6994e67f57666f4b9f8a09bc","url":"/api/meal-plans/6994e67f57666f4b9f8a09bc","statusCode":400,"duration":3,"ip":"::ffff:127.0.0.1","userId":"6994e67e57666f4b9f8a08ea","responseSize":205}
+PASS src/__tests__/integration/meal-planning.test.js
+  Meal Planning API Integration Tests
+    POST /api/meal-plans
+      ✓ should create a new meal plan (17 ms)
+      ✓ should reject meal plans longer than 28 days (5 ms)
+      ✓ should detect overlapping meal plans (16 ms)
+      ✓ should require authentication (2 ms)
+    GET /api/meal-plans
+      ✓ should get all meal plans for authenticated user (12 ms)
+      ✓ should filter templates when requested (11 ms)
+    POST /api/meal-plans/:id/meals
+      ✓ should add a meal to the plan (25 ms)
+      ✓ should reject invalid recipe ID (11 ms)
+      ✓ should add multiple recipes to same meal (33 ms)
+    DELETE /api/meal-plans/:id/meals/:mealId
+      ✓ should remove a meal from the plan (13 ms)
+      ✓ should return 404 for non-existent meal (11 ms)
+    GET /api/meal-plans/:id/shopping-list
+      ✓ should generate shopping list from meal plan (11 ms)
+    POST /api/meal-plans/:id/duplicate
+      ✓ should duplicate as template (15 ms)
+      ✓ should duplicate to new dates (21 ms)
+      ✓ should reject duplicate if dates overlap (12 ms)
+    DELETE /api/meal-plans/:id
+      ✓ should delete a meal plan (12 ms)
+      ✓ should not allow deleting other users meal plans (79 ms)
+    PUT /api/meal-plans/:id
+      ✓ should update meal plan details (17 ms)
+      ✓ should detect overlaps when updating dates (17 ms)
+
+PASS src/services/__tests__/scraper.test.js
+  Scraper Service
+    HTML Entity Decoding (REQ-005)
+      ✓ should decode common HTML entities (5 ms)
+      ✓ should decode numeric HTML entities (1 ms)
+      ✓ should decode hex HTML entities (1 ms)
+    JSON-LD Recipe Extraction
+      ✓ should extract recipe from JSON-LD schema (1 ms)
+      ✓ should handle @graph wrapped JSON-LD (1 ms)
+    Servings Extraction
+      ✓ should extract servings from recipeYield number
+      ✓ should extract servings from recipeYield string (1 ms)
+      ✓ should handle various servings formats (1 ms)
+    DishType Mapping
+      ✓ should map recipeCategory to valid dishType enum (3 ms)
+    Time Parsing
+      ✓ should parse ISO 8601 duration format
+    Ingredient Cleaning
+      ✓ should remove duplicate ingredients (1 ms)
+      ✓ should filter out very short or very long ingredients
+    Instruction Cleaning
+      ✓ should remove HTML tags from instructions (1 ms)
+      ✓ should remove URLs from instructions
+      ✓ should remove duplicate instructions (1 ms)
+      ✓ should filter out very short instructions
+    Error Handling
+      ✓ should throw error on network failure (1 ms)
+      ✓ should throw error when title is missing (1 ms)
+      ✓ should handle timeout (101 ms)
+    Source URL
+      ✓ should include source URL in result
+
+PASS src/models/__tests__/Recipe.test.js
+  Recipe Model (REQ-006)
+    Schema Validation
+      ✓ should create a recipe with valid required fields (78 ms)
+      ✓ should fail when title is missing (5 ms)
+      ✓ should fail when ingredients are missing (3 ms)
+      ✓ should fail when instructions are missing (20 ms)
+      ✓ should require name in ingredient (1 ms)
+    DishType Enum Validation
+      ✓ should accept valid dishType: Appetizer (2 ms)
+      ✓ should accept valid dishType: Main Course (1 ms)
+      ✓ should accept valid dishType: Side Dish (1 ms)
+      ✓ should accept valid dishType: Dessert (1 ms)
+      ✓ should accept valid dishType: Beverage (2 ms)
+      ✓ should accept valid dishType: Snack (21 ms)
+      ✓ should accept valid dishType: Breakfast (1 ms)
+      ✓ should accept valid dishType: Lunch (1 ms)
+      ✓ should accept valid dishType: Dinner (1 ms)
+      ✓ should accept valid dishType: Other (1 ms)
+      ✓ should reject invalid dishType (1 ms)
+      ✓ should default to "Other" when dishType not provided (1 ms)
+    Numeric Field Validation
+      ✓ should accept valid prepTime (15 ms)
+      ✓ should reject negative prepTime (1 ms)
+      ✓ should reject negative cookTime (1 ms)
+      ✓ should accept valid servings (1 ms)
+      ✓ should reject servings below minimum
+      ✓ should accept valid rating within range (2 ms)
+      ✓ should reject rating below minimum
+      ✓ should reject rating above maximum (1 ms)
+    Text Field Trimming
+      ✓ should trim title (17 ms)
+      ✓ should trim description (1 ms)
+      ✓ should trim cuisine (1 ms)
+      ✓ should trim sourceUrl (1 ms)
+    Array Fields
+      ✓ should handle multiple ingredients (1 ms)
+      ✓ should handle multiple instructions (1 ms)
+      ✓ should handle tags array (1 ms)
+    Timestamps
+      ✓ should automatically add createdAt timestamp (2 ms)
+      ✓ should automatically add updatedAt timestamp (8 ms)
+      ✓ should update updatedAt on modification (15 ms)
+    Indexes
+      ✓ should have text index on title and description (2 ms)
+      ✓ should support text search on title (5 ms)
+    Optional Fields
+      ✓ should allow recipe without description (1 ms)
+      ✓ should allow recipe without times (1 ms)
+      ✓ should allow recipe without rating (1 ms)
+      ✓ should allow recipe without sourceUrl (1 ms)
+    Ingredient Schema
+      ✓ should allow ingredient with only name (1 ms)
+      ✓ should store ingredient with all fields (1 ms)
+      ✓ should not add _id to ingredients (1 ms)
+
+Test Suites: 2 failed, 7 passed, 9 total
+Tests:       23 failed, 1 skipped, 191 passed, 215 total
+Snapshots:   0 total
+Time:        32.213 s, estimated 45 s
+Ran all test suites.
+✓ MongoDB Memory Server stopped
+✓ All connections closed
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

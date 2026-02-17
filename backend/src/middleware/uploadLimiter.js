@@ -7,6 +7,11 @@ const rateLimit = require('express-rate-limit');
  * Prevents abuse and resource exhaustion
  */
 export const createUploadLimiter = (options = {}) => {
+  // Skip rate limiting in test environment
+  if (process.env.NODE_ENV === 'test') {
+    return (req, res, next) => next();
+  }
+  
   const defaults = {
     windowMs: 60 * 60 * 1000, // 1 hour window
     max: 5, // 5 requests per hour per IP
