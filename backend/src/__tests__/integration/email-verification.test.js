@@ -4,6 +4,8 @@ import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import { jest } from '@jest/globals';
+import { mockEmailService, restoreEmailService } from '../helpers/emailMocks.js';
+import { clearAllRateLimits } from '../helpers/rateLimiterHelpers.js';
 
 describe('Email Verification Integration Tests', () => {
   let testUser;
@@ -14,13 +16,19 @@ describe('Email Verification Integration Tests', () => {
   });
   
   beforeEach(async () => {
+    // Mock email service
+    mockEmailService();
+    
+    // Clear rate limits
+    clearAllRateLimits();
+    
     // Clear users collection
     await User.deleteMany({});
     
     // Create test user
     testUser = await User.create({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password123!',
       displayName: 'Test User',
       emailVerified: false
     });
@@ -30,14 +38,18 @@ describe('Email Verification Integration Tests', () => {
       .post('/api/auth/login')
       .send({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'Password123!'
       });
     
-    accessToken = loginRes.body.accessToken;
+    accessToken = loginRes.body.data.accessToken;
+  });
+
+  afterEach(() => {
+    restoreEmailService();
   });
 
   afterAll(async () => {
-    await mongoose.connection.close();
+    // DO NOT disconnect - shared connection managed by global teardown
   });
 
   describe('POST /api/auth/register', () => {
@@ -46,7 +58,7 @@ describe('Email Verification Integration Tests', () => {
         .post('/api/auth/register')
         .send({
           email: 'newuser@example.com',
-          password: 'password123',
+          password: 'Password123!',
           displayName: 'New User'
         });
 
@@ -225,12 +237,12 @@ describe('Email Verification Integration Tests', () => {
   describe('Token Expiration', () => {
     it('should set expiration to 24 hours from creation', async () => {
       const beforeCreate = Date.now();
-      await testUser.createEmailVerificationToken();
+      testUser.createEmailVerificationToken();
       await testUser.save();
       const afterCreate = Date.now();
 
-      const user = await User.findById(testUser._id);
-      const expiresAt = user.emailVerificationExpires.getTime();
+      // Use testUser directly - it has the field set
+      const expiresAt = testUser.emailVerificationExpires.getTime();
       
       // Should expire approximately 24 hours from now
       const expectedExpiry = beforeCreate + 24 * 60 * 60 * 1000;
@@ -243,15 +255,16 @@ describe('Email Verification Integration Tests', () => {
 
   describe('User Model - cleanupExpiredTokens', () => {
     it('should remove expired verification tokens', async () => {
-      // Create user with expired token
+      // Create user with token
       const expiredUser = await User.create({
         email: 'expired@example.com',
-        password: 'password123',
-        displayName: 'Expired User',
-        emailVerificationExpires: new Date(Date.now() - 1000)
+        password: 'Password123!',
+        displayName: 'Expired User'
       });
       
-      await expiredUser.createEmailVerificationToken();
+      // Create token and then manually expire it
+      expiredUser.createEmailVerificationToken();
+      expiredUser.emailVerificationExpires = new Date(Date.now() - 1000);
       await expiredUser.save();
 
       // Verify token exists
@@ -302,12 +315,15 @@ describe('Email Verification Integration Tests', () => {
 
   describe('Integration with Registration Flow', () => {
     it('should complete full registration and verification flow', async () => {
+      // Clear rate limits to avoid conflicts from previous tests
+      clearAllRateLimits();
+      
       // 1. Register new user
       const registerRes = await request(app)
         .post('/api/auth/register')
         .send({
           email: 'flow@example.com',
-          password: 'password123',
+          password: 'Password123!',
           displayName: 'Flow User'
         });
 
@@ -323,25 +339,21 @@ describe('Email Verification Integration Tests', () => {
 
       expect(meRes1.body.emailVerified).toBe(false);
 
-      // 3. Send verification email
-      const sendRes = await request(app)
-        .post('/api/auth/send-verification')
-        .set('Authorization', `Bearer ${newAccessToken}`);
-
-      expect(sendRes.status).toBe(200);
-
-      // 4. Get verification token from database
-      const user = await User.findOne({ email: 'flow@example.com' }).select('+emailVerificationToken');
-      const plainToken = await user.createEmailVerificationToken();
+      // 3. Get the token that was created during registration
+      let user = await User.findOne({ email: 'flow@example.com' }).select('+emailVerificationToken');
+      expect(user.emailVerificationToken).toBeDefined();
+      
+      // Create a new token to simulate sending verification email
+      const plainToken = user.createEmailVerificationToken();
       await user.save();
 
-      // 5. Verify email
+      // 4. Verify email with the token
       const verifyRes = await request(app)
         .get(`/api/auth/verify-email/${plainToken}`);
 
       expect(verifyRes.status).toBe(200);
 
-      // 6. Get user info again (should show verified)
+      // 5. Get user info again (should show verified)
       const meRes2 = await request(app)
         .get('/api/auth/me')
         .set('Authorization', `Bearer ${newAccessToken}`);

@@ -6,13 +6,16 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import speakeasy from 'speakeasy';
+import crypto from 'crypto';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
+import { clearAllRateLimits } from '../helpers/rateLimiterHelpers.js';
 
 let testUser;
 let accessToken;
 let twoFactorSecret;
+let backupCodes; // Store backup codes from 2FA setup
 
 // Helper function to generate valid TOTP token
 const generateToken = (secret) => {
@@ -34,7 +37,7 @@ afterAll(async () => {
 beforeEach(async () => {
   // Clear all collections using shared helper
   await clearDatabase();
-  
+
   // Create a test user
   const registerRes = await request(app)
     .post('/api/auth/register')
@@ -46,6 +49,11 @@ beforeEach(async () => {
 
   testUser = registerRes.body.data.user;
   accessToken = registerRes.body.data.accessToken;
+});
+
+afterEach(async () => {
+  // Clear rate limiters to prevent 429 errors between tests
+  clearAllRateLimits();
 });
 
 describe('Two-Factor Authentication Integration Tests', () => {
@@ -144,10 +152,11 @@ describe('Two-Factor Authentication Integration Tests', () => {
     });
 
     it('should reject invalid token', async () => {
+      // Try to verify with an invalid token (secret already set up in beforeEach)
       const res = await request(app)
         .post('/api/auth/2fa/verify')
         .set('Authorization', `Bearer ${accessToken}`)
-        .send({ token: '000000' })
+        .send({ token: '000000', secret: twoFactorSecret })
         .expect(400);
 
       expect(res.body).toHaveProperty('error', 'Invalid 2FA code');
@@ -236,11 +245,14 @@ describe('Two-Factor Authentication Integration Tests', () => {
       
       const token = generateToken(twoFactorSecret);
       
-      await request(app)
+      const verifyRes = await request(app)
         .post('/api/auth/2fa/verify')
         .set('Authorization', `Bearer ${accessToken}`)
         .send({ token, secret: twoFactorSecret })
         .expect(200);
+      
+      // Store backup codes for tests
+      backupCodes = verifyRes.body.backupCodes;
     });
 
     it('should complete login with valid 2FA token', async () => {
@@ -291,14 +303,8 @@ describe('Two-Factor Authentication Integration Tests', () => {
     });
 
     it('should accept valid backup code', async () => {
-      // Get backup codes
-      const verifyRes = await request(app)
-        .post('/api/auth/2fa/verify')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send({ token: generateToken(twoFactorSecret), secret: twoFactorSecret })
-        .expect(200);
-
-      const backupCodeObj = verifyRes.body.backupCodes[0];
+      // Use backup code from beforeEach setup
+      const backupCodeObj = backupCodes[0];
       const backupCode = backupCodeObj.code;
 
       // Use backup code to login
@@ -315,21 +321,17 @@ describe('Two-Factor Authentication Integration Tests', () => {
       expect(res.body).toHaveProperty('user');
 
       // Verify backup code was marked as used
+      // Note: Backup codes are stored as SHA-256 hashes in the database
+      const hashedCode = crypto.createHash('sha256').update(backupCode.toUpperCase()).digest('hex');
       const user = await User.findById(testUser.id).lean();
-      const usedCode = user.twoFactorBackupCodes.find(c => c.code === backupCode);
+      const usedCode = user.twoFactorBackupCodes.find(c => c.code === hashedCode);
       expect(usedCode).toBeDefined();
       expect(usedCode.usedAt).not.toBeNull();
     });
 
     it('should reject already-used backup code', async () => {
-      // Get backup codes
-      const verifyRes = await request(app)
-        .post('/api/auth/2fa/verify')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send({ token: generateToken(twoFactorSecret), secret: twoFactorSecret })
-        .expect(200);
-
-      const backupCodeObj = verifyRes.body.backupCodes[0];
+      // Use backup code from beforeEach setup
+      const backupCodeObj = backupCodes[0];
       const backupCode = backupCodeObj.code;
 
       // Use backup code once

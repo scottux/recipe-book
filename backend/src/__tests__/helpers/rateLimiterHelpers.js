@@ -1,28 +1,48 @@
 /**
  * Rate Limiter Test Helpers
  * 
- * Utilities for managing rate limiters in tests
+ * Utilities for managing rate limiting in tests.
  */
 
+import { clearRateLimit } from '../../middleware/rateLimiter.js';
+
+// Track all used emails and IPs for cleanup
+const usedEmails = new Set();
+const usedIps = new Set();
+
 /**
- * Clear in-memory rate limiter stores
- * This prevents rate limit interference between tests
+ * Register email/IP for cleanup
+ * Call this when making requests that should be tracked
  */
-export function clearRateLimiters() {
-  // Clear any in-memory Map objects used for rate limiting
-  // in authController (passwordChangeAttempts, accountDeletionAttempts, etc.)
+export const trackRateLimitKey = (email, ip) => {
+  if (email) usedEmails.add(email.toLowerCase());
+  if (ip) usedIps.add(ip);
+};
+
+/**
+ * Clear all tracked rate limits
+ * Call in afterEach to reset state between tests
+ */
+export const clearAllRateLimits = () => {
+  // Clear all tracked emails and IPs
+  for (const email of usedEmails) {
+    clearRateLimit(email, null);
+  }
+  for (const ip of usedIps) {
+    clearRateLimit(null, ip);
+  }
   
-  // Note: This is a workaround for in-memory rate limiting
-  // If using Redis rate limiter, this would flush Redis test keys
-}
+  // Clear the tracking sets
+  usedEmails.clear();
+  usedIps.clear();
+};
 
 /**
- * Wait for rate limit window to expire
- * @param {number} ms - Milliseconds to wait
+ * Clear specific rate limit
  */
-export async function waitForRateLimitReset(ms = 100) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+export const clearSpecificRateLimit = (email, ip) => {
+  clearRateLimit(email?.toLowerCase(), ip);
+};
 
 /**
  * Clear Redis rate limiter cache (if using Redis)
@@ -43,10 +63,17 @@ export async function clearRedisRateLimits(redisClient) {
 }
 
 /**
- * Bypass rate limiting for a specific test
- * This is useful when testing core functionality without rate limit interference
+ * Wait for rate limit window to expire
+ * @param {number} ms - Milliseconds to wait
  */
-export function mockNoRateLimit() {
-  // Mock or disable rate limiting middleware for tests
-  // Implementation depends on how rate limiter is structured
+export async function waitForRateLimitReset(ms = 100) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+/**
+ * Mock rate limiter to always allow requests
+ * Useful for tests that don't need to test rate limiting
+ */
+export const mockRateLimiter = () => {
+  return (req, res, next) => next();
+};

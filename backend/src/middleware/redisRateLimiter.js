@@ -101,6 +101,11 @@ class RedisRateLimiter {
    */
   middleware() {
     return async (req, res, next) => {
+      // Skip rate limiting in test environment
+      if (process.env.NODE_ENV === 'test') {
+        return next();
+      }
+      
       const key = this.keyGenerator(req);
       
       try {

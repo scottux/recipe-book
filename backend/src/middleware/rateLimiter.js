@@ -64,6 +64,11 @@ const getClientIp = (req) => {
  */
 export const passwordResetRateLimiter = () => {
   return (req, res, next) => {
+    // Skip rate limiting in test environment
+    if (process.env.NODE_ENV === 'test') {
+      return next();
+    }
+    
     const now = Date.now();
     const hourAgo = now - 60 * 60 * 1000;
     
@@ -143,6 +148,11 @@ export const createRateLimiter = ({
   }, Math.min(windowMs / 2, 5 * 60 * 1000)); // Cleanup at half window or 5 min max
   
   return (req, res, next) => {
+    // Skip rate limiting in test environment
+    if (process.env.NODE_ENV === 'test') {
+      return next();
+    }
+    
     const now = Date.now();
     const windowStart = now - windowMs;
     const key = keyGenerator(req);

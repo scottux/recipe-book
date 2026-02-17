@@ -1,6 +1,7 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { clearDatabase, ensureConnection } from '../setup/mongodb.js';
+import { clearAllRateLimits } from '../helpers/rateLimiterHelpers.js';
 import app from '../../index.js';
 import User from '../../models/User.js';
 import Recipe from '../../models/Recipe.js';
@@ -12,6 +13,11 @@ describe('Import from Backup - Integration Tests', () => {
   let authToken;
   let userId;
   let testUser;
+
+  afterEach(async () => {
+    // Clear rate limiters to prevent 429 errors between tests
+    clearAllRateLimits();
+  });
 
   // Sample backup data
   const validBackupV2 = {

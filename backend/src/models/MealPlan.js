@@ -163,15 +163,18 @@ mealPlanSchema.methods.generateShoppingList = async function () {
         (mealRecipe.servings || recipe.servings) / recipe.servings;
 
       recipe.ingredients.forEach((ingredient) => {
-        const key = `${ingredient.item.toLowerCase()}-${ingredient.unit || 'unit'}`;
+        const itemName = ingredient.name || ingredient.item; // Support both name (current) and item (legacy)
+        if (!itemName) return; // Skip if no name/item
+        
+        const key = `${itemName.toLowerCase()}-${ingredient.unit || 'unit'}`;
 
         if (ingredientMap.has(key)) {
           const existing = ingredientMap.get(key);
-          existing.quantity += (ingredient.quantity || 1) * servingMultiplier;
+          existing.quantity += (ingredient.amount || ingredient.quantity || 1) * servingMultiplier;
         } else {
           ingredientMap.set(key, {
-            item: ingredient.item,
-            quantity: (ingredient.quantity || 1) * servingMultiplier,
+            item: itemName,
+            quantity: (ingredient.amount || ingredient.quantity || 1) * servingMultiplier,
             unit: ingredient.unit || '',
             category: ingredient.category || 'Other',
           });
