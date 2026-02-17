@@ -120,6 +120,12 @@ export const sendPasswordResetEmail = async ({
   resetUrl,
   expiryMinutes = 15
 }) => {
+  // Skip sending in test environment
+  if (process.env.NODE_ENV === 'test') {
+    console.log('[TEST MODE] Skipping password reset email to:', to);
+    return { messageId: 'test-message-id', accepted: [to] };
+  }
+  
   if (!transporter) {
     throw new Error('Email service not initialized. Call initializeEmailService() first.');
   }
@@ -175,6 +181,12 @@ export const sendVerificationEmail = async ({
   username,
   verificationUrl
 }) => {
+  // Skip sending in test environment
+  if (process.env.NODE_ENV === 'test') {
+    console.log('[TEST MODE] Skipping verification email to:', to);
+    return { messageId: 'test-message-id', accepted: [to] };
+  }
+  
   if (!transporter) {
     throw new Error('Email service not initialized. Call initializeEmailService() first.');
   }

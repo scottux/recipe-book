@@ -131,6 +131,26 @@ export const importBackup = [
             message: 'Backup file is not valid JSON',
           },
         });
+      } else if (error.name === 'MulterError' || error.code === 'LIMIT_FILE_SIZE') {
+        // Handle multer-specific errors
+        res.status(400).json({
+          success: false,
+          error: error.message || 'File upload error',
+          details: {
+            code: error.code || 'UPLOAD_ERROR',
+            message: error.message || 'File upload failed',
+          },
+        });
+      } else if (error.name === 'ValidationError') {
+        // Handle Mongoose validation errors
+        res.status(422).json({
+          success: false,
+          error: 'Validation failed',
+          details: {
+            code: 'VALIDATION_ERROR',
+            message: error.message,
+          },
+        });
       } else {
         console.error('Import error:', error);
         res.status(500).json({
@@ -186,11 +206,11 @@ async function detectDuplicates(userId, backupData) {
       // Compare first 3 ingredients
       const backupIngredients = backupRecipe.ingredients
         .slice(0, 3)
-        .map((i) => (i.item || i.name).toLowerCase())
+        .map((i) => (i.name || i.item).toLowerCase())
         .sort();
       const existingIngredients = existing.ingredients
         .slice(0, 3)
-        .map((i) => i.item.toLowerCase())
+        .map((i) => (i.name || i.item).toLowerCase())
         .sort();
 
       return (
