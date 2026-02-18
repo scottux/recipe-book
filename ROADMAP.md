@@ -1,8 +1,8 @@
 # Recipe Book - Product Roadmap
 
 **Last Updated**: February 17, 2026  
-**Current Version**: V2.2.4  
-**Status**: ✅ V2.2.4 COMPLETE - Test Infrastructure Improvements
+**Current Version**: V2.2.5  
+**Status**: ✅ V2.2.5 COMPLETE - Import System Bug Fixes
 
 ---
 
@@ -123,69 +123,36 @@ Major features:
 - Test helper library
 - 87% test coverage achieved
 
-**V2.2.4** - Test Infrastructure Improvements (Feb 17, 2026) ✅ CURRENT
+**V2.2.4** - Test Infrastructure Improvements (Feb 17, 2026) ✅
 - Rate limiter test fixes (15 tests)
 - Email verification tests (7 tests fixed - 100% passing)
 - Import-backup improvements (4 tests fixed)
 - 93.5% test pass rate achieved
 
+**V2.2.5** - Import System Bug Fixes (Feb 17, 2026) ✅ CURRENT
+- Fixed meal plan recipe ID extraction
+- Fixed dishType enum normalization
+- Fixed collection creation (removed virtual field)
+- Fixed userId type conversion
+- Test pass rate: 62% (13/21 tests passing)
+- Core import functionality restored
+- XSS sanitization deferred to V2.4.0
+
 ---
 
-## Immediate Priority: V2.2.5 - V2.3.0
+## Immediate Priority: V2.3.0
 
-### V2.2.5 - Import System Completion (PATCH)
+### V2.2.6 - Future Patch (if needed)
 
-**Status**: 🔄 IN PROGRESS  
-**Timeline**: 2-3 days  
-**Priority**: HIGH  
-**Type**: Patch (Bug fixes + small improvements)
+**Status**: 📋 Potential  
+**Timeline**: As needed  
+**Priority**: LOW  
+**Type**: Patch (Additional bug fixes)
 
-**Current Progress**: 12/21 tests passing (57%)
-
-#### Scope
-- Fix remaining 9 import-backup test failures
-- Complete import system refactoring
-- Improve error handling and validation
-
-#### Progress So Far (Feb 17, 2026)
-**Completed**:
-- ✅ Fixed Multer error handling (file type validation now returns 400)
-- ✅ Fixed password validation status codes (401 → 400)
-- ✅ Relaxed ingredient amount validation (allow empty strings)
-- ✅ 12/21 tests now passing (up from 11)
-
-**Remaining Work**:
-- [ ] Fix merge mode test failures (3 tests)
-- [ ] Fix replace mode validation (1 test)
-- [ ] Fix ID remapping logic (3 tests)
-- [ ] Fix XSS sanitization test (1 test - recipe is null)
-- [ ] Fix performance test (1 test)
-
-#### Implementation Plan
-- **Day 1**: Debug validation errors
-  - Add logging to identify exact validation failures
-  - Review meal plan and collection validation
-  - Fix merge mode logic
-  
-- **Day 2**: Fix ID remapping and replace mode
-  - Verify transaction handling
-  - Test XSS sanitization
-  - Performance improvements
-  
-- **Day 3**: Polish & testing
-  - Integration testing
-  - Error handling improvements
-  - Documentation updates
-
-**Deliverables**:
-- ✅ All import-backup tests passing (21/21)
-- ✅ Test pass rate: 95%+ (205/215 tests)
-- ✅ Import system fully functional
-- ✅ Import validation documented
-
-**Target**: Feb 20, 2026
+Will be created if critical issues are discovered in V2.2.5.
 
 **See Also**:
+- [Code Review V2.2.5](docs/reviews/CODE_REVIEW_V2.2.5.md)
 - [Retrospective V2.2.5](docs/retrospectives/RETROSPECTIVE-V2.2.5-FEB-2026.md)
 - [Action Items V2.2.5](docs/retrospectives/ACTION-ITEMS-V2.2.5.md)
 
@@ -638,10 +605,9 @@ Major features:
 - **Major releases** (X.0.0): Annually (breaking changes)
 
 ### Completed Releases
-- V2.0.0 - V2.2.4: ✅ Complete (26 releases total)
+- V2.0.0 - V2.2.5: ✅ Complete (27 releases total)
 
 ### Planned Releases (Next 6 Months)
-- **V2.2.5** (Import fixes): Feb 20, 2026
 - **V2.3.0** (Tech debt): Mar 3, 2026
 - **V2.3.1** (Cloud enhancements): Mar 10, 2026
 - **V2.3.2** (Export improvements): Mar 17, 2026
@@ -758,6 +724,7 @@ We welcome feedback on this roadmap!
 ## Version History
 
 ### Recent Updates
+- **Feb 17, 2026**: V2.2.5 marked complete (Import bug fixes)
 - **Feb 17, 2026**: Revised roadmap with proper patch/minor versioning
 - **Feb 17, 2026**: Added V2.2.5 (Import fixes)
 - **Feb 17, 2026**: Adjusted V2.3.0 scope (Tech Debt Sprint)

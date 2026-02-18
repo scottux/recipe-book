@@ -235,8 +235,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes for lookups
-userSchema.index({ email: 1 });
+// Note: email index is automatically created by unique: true in schema
 
 // Compound index for efficient token lookup
 userSchema.index({ 

@@ -118,13 +118,13 @@ describe('Password Reset Integration Tests', () => {
     });
 
     it('should reject expired token', async () => {
-      const { user, resetToken } = await createUserWithResetToken({
+      const { userDoc, resetToken } = await createUserWithResetToken({
         password: testPassword
       });
 
       // Manually expire the token
-      user.resetPasswordExpires = new Date(Date.now() - 1000);
-      await user.save();
+      userDoc.resetPasswordExpires = new Date(Date.now() - 1000);
+      await userDoc.save();
 
       const response = await request(app)
         .get(`/api/auth/validate-reset-token?token=${resetToken}`);
@@ -296,13 +296,13 @@ describe('Password Reset Integration Tests', () => {
     });
 
     it('should reject expired token', async () => {
-      const { user, resetToken } = await createUserWithResetToken({
+      const { userDoc, resetToken } = await createUserWithResetToken({
         password: testPassword
       });
 
       // Manually expire the token
-      user.resetPasswordExpires = new Date(Date.now() - 1000);
-      await user.save();
+      userDoc.resetPasswordExpires = new Date(Date.now() - 1000);
+      await userDoc.save();
 
       const response = await request(app)
         .post('/api/auth/reset-password')
