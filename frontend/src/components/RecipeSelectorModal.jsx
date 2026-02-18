@@ -46,7 +46,10 @@ export default function RecipeSelectorModal({
     const tags = new Set();
     const cuisines = new Set();
     
-    recipes.forEach(recipe => {
+    // Ensure recipes is an array before iterating
+    const recipeArray = Array.isArray(recipes) ? recipes : [];
+    
+    recipeArray.forEach(recipe => {
       recipe.tags?.forEach(tag => tags.add(tag));
       if (recipe.cuisine) cuisines.add(recipe.cuisine);
     });
@@ -59,7 +62,10 @@ export default function RecipeSelectorModal({
 
   // Filter recipes based on search and filters
   const filteredRecipes = useMemo(() => {
-    return recipes.filter(recipe => {
+    // Ensure recipes is an array before filtering
+    const recipeArray = Array.isArray(recipes) ? recipes : [];
+    
+    return recipeArray.filter(recipe => {
       // Search filter (title and description)
       if (searchTerm) {
         const search = searchTerm.toLowerCase();
@@ -133,7 +139,9 @@ export default function RecipeSelectorModal({
 
   if (!isOpen) return null;
 
-  const selectedRecipe = recipes.find(r => r._id === selectedRecipeId);
+  // Ensure recipes is an array before using .find()
+  const recipeArray = Array.isArray(recipes) ? recipes : [];
+  const selectedRecipe = recipeArray.find(r => r._id === selectedRecipeId);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
@@ -215,7 +223,7 @@ export default function RecipeSelectorModal({
 
             {/* Results Count */}
             <div className="text-sm text-cookbook-accent font-body">
-              Showing {filteredRecipes.length} of {recipes.length} recipes
+              Showing {filteredRecipes.length} of {Array.isArray(recipes) ? recipes.length : 0} recipes
               {(searchTerm || selectedTag || selectedCuisine) && (
                 <button
                   type="button"

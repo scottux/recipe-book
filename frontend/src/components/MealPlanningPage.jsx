@@ -36,13 +36,17 @@ export default function MealPlanningPage() {
         recipeAPI.getAll()
       ]);
       
-      setMealPlans(plansResponse.data);
-      // Handle paginated recipe response - recipes are directly in data array
-      setRecipes(recipesResponse.data || []);
+      // Ensure data is always an array
+      setMealPlans(Array.isArray(plansResponse.data) ? plansResponse.data : []);
+      
+      // Handle paginated recipe response - ensure data is always an array
+      const recipesData = recipesResponse.data;
+      setRecipes(Array.isArray(recipesData) ? recipesData : []);
       
       // Select most recent plan by default
-      if (plansResponse.data.length > 0 && !selectedPlan) {
-        setSelectedPlan(plansResponse.data[0]);
+      const plans = Array.isArray(plansResponse.data) ? plansResponse.data : [];
+      if (plans.length > 0 && !selectedPlan) {
+        setSelectedPlan(plans[0]);
       }
       setError(null);
     } catch (err) {

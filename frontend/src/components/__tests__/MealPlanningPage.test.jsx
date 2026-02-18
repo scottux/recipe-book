@@ -561,4 +561,114 @@ describe('MealPlanningPage', () => {
     expect(screen.getAllByText('dinner').length).toBeGreaterThan(0);
     expect(screen.getAllByText('snack').length).toBeGreaterThan(0);
   });
+
+  // REGRESSION TEST: Bug fix for recipes.forEach error
+  it('handles non-array recipes data gracefully', async () => {
+    mealPlanAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: mockMealPlans 
+    });
+    // Simulate malformed API response where data is null/undefined
+    recipeAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: null, // This should be handled gracefully
+      pagination: {
+        currentPage: 1,
+        totalPages: 0,
+        totalRecipes: 0,
+        limit: 50,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    });
+    
+    renderComponent();
+    
+    // Should not crash and should render the page
+    await waitFor(() => {
+      expect(screen.getByText('Meal Planning')).toBeInTheDocument();
+    });
+    
+    // Can still interact with meal plans
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  });
+
+  it('handles non-array recipes data in RecipeSelectorModal', async () => {
+    const user = userEvent.setup();
+    mealPlanAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: mockMealPlans 
+    });
+    // Simulate malformed API response
+    recipeAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: null, // Non-array data
+      pagination: {
+        currentPage: 1,
+        totalPages: 0,
+        totalRecipes: 0,
+        limit: 50,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    });
+    
+    renderComponent();
+    
+    await waitFor(() => {
+      expect(screen.getByText('Meal Planning')).toBeInTheDocument();
+    });
+    
+    // Open add meal modal
+    const addButtons = screen.getAllByText('+ Add recipe');
+    await user.click(addButtons[0]);
+    
+    // Modal should open without crashing
+    await waitFor(() => {
+      expect(screen.getByText(/Add.*Recipe/i)).toBeInTheDocument();
+    });
+    
+    // Should show "No recipes available" message
+    expect(screen.getByText(/No recipes available/i)).toBeInTheDocument();
+  });
+
+  it('handles recipes data as an object instead of array', async () => {
+    const user = userEvent.setup();
+    mealPlanAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: mockMealPlans 
+    });
+    // Simulate malformed API response where data is an object, not array
+    recipeAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: { recipes: mockRecipes }, // Wrong structure - object instead of array
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalRecipes: 2,
+        limit: 50,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    });
+    
+    renderComponent();
+    
+    // Should not crash
+    await waitFor(() => {
+      expect(screen.getByText('Meal Planning')).toBeInTheDocument();
+    });
+    
+    // Open add meal modal
+    const addButtons = screen.getAllByText('+ Add recipe');
+    await user.click(addButtons[0]);
+    
+    // Modal should open and handle the non-array data gracefully
+    await waitFor(() => {
+      expect(screen.getByText(/Add.*Recipe/i)).toBeInTheDocument();
+    });
+    
+    // Should show empty state message
+    expect(screen.getByText(/No recipes available/i)).toBeInTheDocument();
+  });
 });
