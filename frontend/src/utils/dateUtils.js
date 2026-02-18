@@ -62,3 +62,14 @@ export const compareDateWithUTCString = (localDate, utcDateStr) => {
   
   return localStr === utcStr;
 };
+
+/**
+ * Create a local Date object from a YYYY-MM-DD string without timezone conversion
+ * This prevents the off-by-one date bug when parsing date strings
+ * @param {string} dateStr - Date string in YYYY-MM-DD format
+ * @returns {Date} Date object at midnight in local timezone
+ */
+export const parseLocalDate = (dateStr) => {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day); // month is 0-indexed
+};

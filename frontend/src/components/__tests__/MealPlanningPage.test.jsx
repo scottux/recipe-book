@@ -671,4 +671,157 @@ describe('MealPlanningPage', () => {
     // Should show empty state message
     expect(screen.getByText(/No recipes available/i)).toBeInTheDocument();
   });
+
+  // REGRESSION TEST: Date off-by-one bug fix
+  it('correctly displays meal plan dates without timezone conversion errors', async () => {
+    // Create a meal plan for Feb 15-21, 2026 (Sunday through Saturday)
+    const mealPlanWithSpecificDates = {
+      _id: 'plan-feb15',
+      name: 'Week of Feb 15',
+      startDate: '2026-02-15', // Sunday
+      endDate: '2026-02-21',   // Saturday
+      meals: [
+        {
+          _id: 'meal-sun',
+          date: '2026-02-15', // Sunday
+          mealType: 'breakfast',
+          recipes: [
+            {
+              _id: 'recipe1',
+              recipe: {
+                _id: 'r1',
+                title: 'Sunday Pancakes',
+              },
+              servings: 4,
+            },
+          ],
+        },
+        {
+          _id: 'meal-sat',
+          date: '2026-02-21', // Saturday
+          mealType: 'dinner',
+          recipes: [
+            {
+              _id: 'recipe2',
+              recipe: {
+                _id: 'r2',
+                title: 'Saturday Steak',
+              },
+              servings: 2,
+            },
+          ],
+        },
+      ],
+    };
+    
+    mealPlanAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: [mealPlanWithSpecificDates]
+    });
+    recipeAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: mockRecipes,
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalRecipes: 2,
+        limit: 50,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    });
+    
+    renderComponent();
+    
+    await waitFor(() => {
+      expect(screen.getByText('Week of Feb 15')).toBeInTheDocument();
+    });
+    
+    // The calendar should display exactly 7 days: Feb 15-21
+    // Key assertions: First day should be Feb 15 (not Feb 14), last day should be Feb 21 (not Feb 20)
+    
+    // Check that Sunday Feb 15 is displayed
+    const sundayHeader = screen.getByText('Sun');
+    expect(sundayHeader).toBeInTheDocument();
+    const feb15Date = screen.getByText((content, element) => {
+      return element?.textContent === 'Feb 15';
+    });
+    expect(feb15Date).toBeInTheDocument();
+    
+    // Check that Saturday Feb 21 is displayed
+    const saturdayHeader = screen.getByText('Sat');
+    expect(saturdayHeader).toBeInTheDocument();
+    const feb21Date = screen.getByText((content, element) => {
+      return element?.textContent === 'Feb 21';
+    });
+    expect(feb21Date).toBeInTheDocument();
+    
+    // Verify meals appear on correct dates
+    expect(screen.getByText('Sunday Pancakes')).toBeInTheDocument();
+    expect(screen.getByText('Saturday Steak')).toBeInTheDocument();
+    
+    // Additional verification: count day headers (should be exactly 7)
+    const dayHeaders = screen.getAllByText(/(Sun|Mon|Tue|Wed|Thu|Fri|Sat)/);
+    expect(dayHeaders.length).toBe(7);
+  });
+
+  it('creates meal plan with correct dates from date picker', async () => {
+    const user = userEvent.setup();
+    const newPlan = {
+      _id: 'plan-feb15',
+      name: 'Week of Feb 15',
+      startDate: '2026-02-15', // Sunday
+      endDate: '2026-02-21',   // Saturday
+      meals: [],
+    };
+    
+    mealPlanAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: [] 
+    });
+    recipeAPI.getAll.mockResolvedValue({ 
+      success: true,
+      data: mockRecipes,
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalRecipes: 2,
+        limit: 50,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    });
+    mealPlanAPI.create.mockResolvedValue({ 
+      success: true,
+      data: newPlan 
+    });
+    
+    renderComponent();
+    
+    await waitFor(() => {
+      expect(screen.getByText('No meal plans yet')).toBeInTheDocument();
+    });
+    
+    // Open modal
+    const createButton = screen.getByRole('button', { name: /Create Your First Meal Plan/i });
+    await user.click(createButton);
+    
+    // Fill form with Feb 15-21 dates
+    await user.type(screen.getByPlaceholderText('Week of Jan 15'), 'Week of Feb 15');
+    await user.type(screen.getByLabelText(/Start Date/i), '2026-02-15');
+    await user.type(screen.getByLabelText(/End Date/i), '2026-02-21');
+    
+    // Submit
+    const submitButton = screen.getByRole('button', { name: 'Create Plan' });
+    await user.click(submitButton);
+    
+    // Verify API was called with correct dates (no timezone conversion)
+    await waitFor(() => {
+      expect(mealPlanAPI.create).toHaveBeenCalledWith({
+        name: 'Week of Feb 15',
+        startDate: '2026-02-15', // Should be Feb 15, not Feb 14
+        endDate: '2026-02-21',   // Should be Feb 21, not Feb 20
+      });
+    });
+  });
 });

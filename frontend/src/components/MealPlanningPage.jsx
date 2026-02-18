@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { mealPlanAPI, recipeAPI, exportAPI, shoppingListAPI } from '../services/api';
-import { getLocalDateString, getUTCDateString } from '../utils/dateUtils';
+import { getLocalDateString, getUTCDateString, parseLocalDate } from '../utils/dateUtils';
 import RecipeSelectorModal from './RecipeSelectorModal';
 
 export default function MealPlanningPage() {
@@ -177,8 +177,9 @@ export default function MealPlanningPage() {
   const generateWeekDays = () => {
     if (!selectedPlan) return [];
     
-    const start = new Date(selectedPlan.startDate);
-    const end = new Date(selectedPlan.endDate);
+    // Use parseLocalDate to avoid timezone conversion issues
+    const start = parseLocalDate(selectedPlan.startDate);
+    const end = parseLocalDate(selectedPlan.endDate);
     const days = [];
     
     for (let d = new Date(start); d <= end && days.length < 7; d.setDate(d.getDate() + 1)) {

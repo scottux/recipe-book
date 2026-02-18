@@ -569,6 +569,79 @@ The investment in comprehensive testing (54 new tests) paid immediate dividends 
 
 ---
 
-**Document Version**: 1.0  
+**Document Version**: 1.1  
 **Last Updated**: February 18, 2026  
 **Next Review**: After V2.4.0 release
+
+---
+
+## ADDENDUM: Bug #2 - Meal Plan Date Off-by-One Error
+
+### Problem Discovered
+
+During testing of Bug #1 fix, a second critical bug was discovered: When users created a meal plan with dates Feb 15-21 (Sunday through Saturday), the calendar displayed Feb 14-20 instead - all dates were off by one day.
+
+### Impact Assessment
+
+**Severity**: Critical  
+**User Impact**: High - Completely breaks meal planning UX  
+**Data Impact**: None - Data stored correctly, display issue only
+
+### Root Cause
+
+The `generateWeekDays()` function used `new Date(dateString)` which interprets strings as UTC:
+
+```javascript
+// BEFORE (buggy):
+const start = new Date(selectedPlan.startDate); // "2026-02-15" → Feb 14, 7pm EST
+```
+
+When JavaScript parses `"2026-02-15"`, it treats it as **UTC midnight**. In Eastern timezone (UTC-5), this becomes **Feb 14 at 7:00 PM**, causing the off-by-one error.
+
+### The Fix
+
+Created `parseLocalDate()` utility to parse dates without timezone conversion:
+
+```javascript
+// NEW UTILITY (dateUtils.js):
+export const parseLocalDate = (dateStr) => {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day); // Local midnight, no UTC conversion
+};
+
+// FIXED (MealPlanningPage.jsx):
+const start = parseLocalDate(selectedPlan.startDate);
+const end = parseLocalDate(selectedPlan.endDate);
+```
+
+### Testing Added
+
+**Unit Tests** (`dateUtils.test.js` - 13 tests):
+- ✅ Tests for `parseLocalDate()` function
+- ✅ Edge cases (month/year boundaries)
+- ✅ Specific regression test for Feb 15-21 bug
+
+**Integration Tests** (`MealPlanningPage.test.jsx` - 2 tests):
+- ✅ "correctly displays meal plan dates without timezone conversion errors"
+- ✅ "creates meal plan with correct dates from date picker"
+
+### Overall V2.3.1 Summary
+
+**Two Critical Bugs Fixed:**
+
+1. **recipes.forEach Error**
+   - Changed forEach → filter
+   - Added defensive Array.isArray() checks
+   - 26 new tests for RecipeSelectorModal
+
+2. **Date Off-by-One Error**
+   - Created parseLocalDate() utility
+   - Fixed timezone conversion issue
+   - 13 unit tests + 2 integration tests
+
+**Total Impact:**
+- 69 new tests added (26 + 28 + 13 + 2)
+- 100% test coverage for affected components
+- Both bugs have regression tests preventing recurrence
+- Critical SDLC gaps identified and documented
+

@@ -11,13 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.1] - 2026-02-18
 
-### 🐛 Critical Bug Fix + Test Coverage - Meal Planning forEach Error
+### 🐛 Critical Bug Fixes + Test Coverage - Meal Planning Issues
 
-This patch release fixes a critical bug in the Meal Planning feature and adds comprehensive test coverage to prevent similar issues.
+This patch release fixes two critical bugs in the Meal Planning feature and adds comprehensive test coverage to prevent similar issues.
 
 ### Fixed
 
-#### Meal Planning RecipeSelectorModal Bug ✅
+#### Bug #1: Meal Planning RecipeSelectorModal ✅
 - **Issue**: `recipes.forEach is not a function` crash in RecipeSelectorModal
 - **Root Cause**: Used `forEach()` instead of `filter()` for array filtering + no defensive array validation
 - **Impact**: Meal Planning feature completely broken
@@ -28,6 +28,19 @@ This patch release fixes a critical bug in the Meal Planning feature and adds co
 - **Code Changes**:
   - `frontend/src/components/RecipeSelectorModal.jsx` - Core bug fix
   - `frontend/src/components/MealPlanningPage.jsx` - Added safety check `recipes={recipes || []}`
+- **Status**: ✅ RESOLVED
+
+#### Bug #2: Meal Plan Date Off-by-One Error ✅
+- **Issue**: When creating meal plan for Feb 15-21, calendar displayed Feb 14-20 (dates off by 1 day)
+- **Root Cause**: `new Date("2026-02-15")` interprets as UTC midnight → converts to previous day in local timezone
+- **Impact**: All meal plans showed wrong dates in calendar view
+- **Fix**:
+  1. Created `parseLocalDate()` utility to parse date strings without timezone conversion
+  2. Updated `generateWeekDays()` to use `parseLocalDate()` instead of `new Date()`
+  3. Dates now correctly parse to local timezone midnight
+- **Code Changes**:
+  - `frontend/src/utils/dateUtils.js` - Added `parseLocalDate()` function
+  - `frontend/src/components/MealPlanningPage.jsx` - Updated to use `parseLocalDate()`
 - **Status**: ✅ RESOLVED
 
 ### Added
