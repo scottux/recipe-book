@@ -177,9 +177,14 @@ export default function MealPlanningPage() {
   const generateWeekDays = () => {
     if (!selectedPlan) return [];
     
-    // Use parseLocalDate to avoid timezone conversion issues
-    const start = parseLocalDate(selectedPlan.startDate);
-    const end = parseLocalDate(selectedPlan.endDate);
+    // Extract date string from ISO date and parse it
+    // selectedPlan.startDate is like "2026-02-15T00:00:00.000Z"
+    // We need just "2026-02-15"
+    const startDateStr = selectedPlan.startDate.split('T')[0];
+    const endDateStr = selectedPlan.endDate.split('T')[0];
+    
+    const start = parseLocalDate(startDateStr);
+    const end = parseLocalDate(endDateStr);
     const days = [];
     
     for (let d = new Date(start); d <= end && days.length < 7; d.setDate(d.getDate() + 1)) {
@@ -252,11 +257,29 @@ export default function MealPlanningPage() {
                 onChange={(e) => setSelectedPlan(mealPlans.find(p => p._id === e.target.value))}
                 className="border-2 border-cookbook-aged rounded-lg px-4 py-2 w-full font-body focus:ring-2 focus:ring-cookbook-accent focus:border-transparent bg-white"
               >
-                {mealPlans.map(plan => (
-                  <option key={plan._id} value={plan._id}>
-                    {plan.name} ({new Date(plan.startDate).toLocaleDateString()} - {new Date(plan.endDate).toLocaleDateString()})
-                  </option>
-                ))}
+                {mealPlans.map(plan => {
+                  // Parse UTC dates correctly for display
+                  const startDate = new Date(plan.startDate);
+                  const endDate = new Date(plan.endDate);
+                  const startStr = startDate.toLocaleDateString('en-US', { 
+                    month: 'numeric', 
+                    day: 'numeric', 
+                    year: 'numeric',
+                    timeZone: 'UTC'  // Force UTC interpretation
+                  });
+                  const endStr = endDate.toLocaleDateString('en-US', { 
+                    month: 'numeric', 
+                    day: 'numeric', 
+                    year: 'numeric',
+                    timeZone: 'UTC'  // Force UTC interpretation
+                  });
+                  
+                  return (
+                    <option key={plan._id} value={plan._id}>
+                      {plan.name} ({startStr} - {endStr})
+                    </option>
+                  );
+                })}
               </select>
             </div>
             {selectedPlan && (

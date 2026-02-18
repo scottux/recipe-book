@@ -1,5 +1,6 @@
 import MealPlan from '../models/MealPlan.js';
 import Recipe from '../models/Recipe.js';
+import { parseLocalDate } from '../utils/dateUtils.js';
 
 // Get all meal plans for the authenticated user
 export const getAllMealPlans = async (req, res) => {
@@ -52,8 +53,8 @@ export const createMealPlan = async (req, res) => {
     if (!isTemplate) {
       const overlapping = await MealPlan.findOverlapping(
         req.user._id,
-        new Date(startDate),
-        new Date(endDate)
+        parseLocalDate(startDate),
+        parseLocalDate(endDate)
       );
 
       if (overlapping.length > 0) {
@@ -71,8 +72,8 @@ export const createMealPlan = async (req, res) => {
 
     const mealPlan = new MealPlan({
       name,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+      startDate: parseLocalDate(startDate),
+      endDate: parseLocalDate(endDate),
       isTemplate: isTemplate || false,
       owner: req.user._id,
       meals: [],
@@ -104,9 +105,9 @@ export const updateMealPlan = async (req, res) => {
     // Check for overlapping plans if dates are being changed
     if ((startDate || endDate) && !isTemplate) {
       const newStartDate = startDate
-        ? new Date(startDate)
+        ? parseLocalDate(startDate)
         : mealPlan.startDate;
-      const newEndDate = endDate ? new Date(endDate) : mealPlan.endDate;
+      const newEndDate = endDate ? parseLocalDate(endDate) : mealPlan.endDate;
 
       const overlapping = await MealPlan.findOverlapping(
         req.user._id,
@@ -129,8 +130,8 @@ export const updateMealPlan = async (req, res) => {
     }
 
     if (name !== undefined) mealPlan.name = name;
-    if (startDate !== undefined) mealPlan.startDate = new Date(startDate);
-    if (endDate !== undefined) mealPlan.endDate = new Date(endDate);
+    if (startDate !== undefined) mealPlan.startDate = parseLocalDate(startDate);
+    if (endDate !== undefined) mealPlan.endDate = parseLocalDate(endDate);
     if (isTemplate !== undefined) mealPlan.isTemplate = isTemplate;
 
     await mealPlan.save();
