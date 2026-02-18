@@ -1,4 +1,5 @@
-import { useState } from 'prop-types';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 // Common timezones list (matches backend COMMON_TIMEZONES)
 const COMMON_TIMEZONES = [
@@ -130,11 +131,11 @@ function TimezoneSelector({ value, onChange, disabled, error, className }) {
 }
 
 TimezoneSelector.propTypes = {
-  value: String,
-  onChange: Function,
-  disabled: Boolean,
-  error: String,
-  className: String
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  className: PropTypes.string
 };
 
 TimezoneSelector.defaultProps = {

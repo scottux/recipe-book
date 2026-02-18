@@ -1,5 +1,4 @@
 {
-  "root": true,
   "env": {
     "browser": true,
     "es2021": true,
@@ -7,29 +6,45 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended"
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "plugins": [
+    "react",
+    "react-hooks"
+  ],
   "rules": {
-    "indent": ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "warn",
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "prefer-const": "error",
-    "no-var": "error",
-    "arrow-spacing": "error",
-    "comma-dangle": ["error", "never"],
-    "object-curly-spacing": ["error", "always"],
-    "array-bracket-spacing": ["error", "never"],
-    "space-before-function-paren": ["error", {
-      "anonymous": "always",
-      "named": "never",
-      "asyncArrow": "always"
+    
+    // Custom rules to prevent the bugs we just fixed
+    "no-restricted-imports": ["error", {
+      "patterns": [{
+        "group": ["prop-types"],
+        "importNames": ["useState", "useEffect", "useContext", "useMemo", "useCallback", "useRef", "useReducer"],
+        "message": "React hooks must be imported from 'react', not from other packages."
+      }]
     }]
-  }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*", "**/*.test.{js,jsx}", "**/*.spec.{js,jsx}"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
