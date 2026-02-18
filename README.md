@@ -2,7 +2,7 @@
 
 A clean, no-nonsense recipe management application. No ads, no life stories, just recipes.
 
-**Version 2.1.5** - Production-ready multi-user recipe platform with enterprise-grade infrastructure, authentication, collections, meal planning, shopping lists, and comprehensive export/import capabilities.
+**Version 2.3.1** - Production-ready multi-user recipe platform with enterprise-grade infrastructure, cloud backup integration, automatic scheduling, timezone support, and comprehensive UX enhancements.
 
 ## 💡 Vision
 
@@ -43,8 +43,10 @@ We're building a tool that respects you as a home chef. No gimmicks, no subscrip
 
 ### User Accounts & Security
 - **User Authentication** - Secure registration and login with JWT tokens
+- **Two-Factor Authentication** - TOTP-based 2FA with backup codes for enhanced security
+- **Email Verification** - Verify email ownership with automated verification flow
 - **Password Reset** - Email-based password recovery system
-- **Account Management** - Change password, delete account, view profile
+- **Account Management** - Change password, delete account, view profile, timezone settings
 - **Data Isolation** - Your recipes stay private to your account
 
 ### Collections & Organization
@@ -75,6 +77,8 @@ We're building a tool that respects you as a home chef. No gimmicks, no subscrip
 - **Collection Cookbooks** - Multi-page PDF cookbooks
 - **Full Backup** - Complete data export (recipes, collections, meal plans, shopping lists)
 - **Import from Backup** - Restore data from JSON backups
+- **Cloud Backup** - Automatic backups to Dropbox or Google Drive with scheduling
+- **Backup Preview** - Preview backup contents before restoring
 
 ## 🚀 Quick Start
 
@@ -151,26 +155,28 @@ Visit **http://localhost:3000**
 - **[CHANGELOG](CHANGELOG.md)** - Version history and release notes
 - **[ROADMAP](ROADMAP.md)** - Future features and plans
 
-## 🎯 Current Version: 2.1.5
+## 🎯 Current Version: 2.3.1
 
-### Latest Updates: Performance & Infrastructure Improvements ⚡
-- ✅ **Redis Caching** - Distributed caching for improved performance and scalability
-- ✅ **Structured Logging** - Winston-based JSON logging with request tracking and log rotation
-- ✅ **Advanced Rate Limiting** - Redis-backed distributed rate limiting with graceful degradation
-- ✅ **Health Checks** - Kubernetes-compatible health endpoints (liveness, readiness, startup)
-- ✅ **Request Tracing** - Unique request IDs for debugging and monitoring
-- ✅ **Response Compression** - Automatic gzip compression for faster API responses
-- ✅ **Graceful Shutdown** - Clean server shutdown handling for zero-downtime deployments
-- ✅ **Production Ready** - Enterprise infrastructure for scalability and reliability
+### Latest Updates: Cloud Backup UX Enhancements ☁️
+- ✅ **Timezone Support** - All backup times shown in user's local timezone with comprehensive timezone selector
+- ✅ **Enhanced Backup History** - Provider icons, backup type badges, statistics section, improved visual design
+- ✅ **Detailed Backup Preview** - See exactly what's in a backup before restoring (recipes, collections, meal plans, shopping lists)
+- ✅ **User-Friendly Error Messages** - Translated technical errors with helpful suggestions and retry guidance
+- ✅ **Automatic Backups** - Cron-based scheduling with smart retry logic and failure notifications
+- ✅ **Multi-Provider Support** - Dropbox and Google Drive integration with OAuth2 authentication
+- ✅ **100% Test Pass Rate** - All 213 tests passing after comprehensive test infrastructure improvements
 
 ### Recent Releases
-- **V2.1.5** (Feb 2026): Performance & infrastructure improvements
-- **V2.1.4** (Feb 2026): Production bug fixes + UI polish
-- **V2.1.3** (Feb 2026): Critical bug fixes (meal planner, shopping lists)
-- **V2.1.2** (Feb 2026): Import from backup + test infrastructure fix
-- **V2.1.1** (Feb 2026): Account management UI
-- **V2.1.0** (Feb 2026): Password reset system
-- **V2.0.0** (Feb 2026): Multi-user platform, authentication, collections, meal planning, shopping, exports
+- **V2.3.1** (Feb 2026): Cloud backup UX enhancements (timezone, preview, error messages)
+- **V2.3.0** (Feb 2026): Test infrastructure improvements (90% → 100% pass rate)
+- **V2.2.5** (Feb 2026): Import backup bug fixes
+- **V2.2.4** (Feb 2026): Test infrastructure improvements (82% → 93.5% pass rate)
+- **V2.2.3** (Feb 2026): Test infrastructure fixes (26% → 82% pass rate)
+- **V2.2.2** (Feb 2026): Documentation cleanup
+- **V2.2.1** (Feb 2026): Critical UI/UX bug fixes
+- **V2.2.0** (Feb 2026): Cloud backup integration (Dropbox + Google Drive)
+- **V2.1.7** (Feb 2026): Two-factor authentication (2FA)
+- **V2.1.6** (Feb 2026): Email verification
 
 See [CHANGELOG](CHANGELOG.md) for complete version history.
 
@@ -313,17 +319,19 @@ See [Getting Started Guide](docs/getting-started.md) for detailed deployment ins
 
 ## 🗺️ Roadmap
 
-### Upcoming Features (V2.1.x - Patch Releases)
-- Email verification on registration
-- Two-factor authentication (2FA)
-- Advanced recipe search filters
-- OpenTelemetry distributed tracing (optional)
-
-### Next Major Release (V2.2.0)
-- Cloud backup integration (Dropbox/Google Drive)
+### Upcoming Features (V2.4.0 - Next Minor Release)
 - Custom PDF export templates
 - Recipe versioning and history
+- Advanced recipe search filters
 - Nutrition tracking
+- XSS sanitization improvements
+- OpenTelemetry distributed tracing (optional)
+
+### Future Releases (V2.5.0+)
+- SMS-based 2FA as alternative to TOTP
+- WebAuthn/hardware security key support
+- Remember device option (30 days)
+- Recipe collaboration features
 
 ### Future Vision (V3.0.0)
 - Mobile application (React Native)
@@ -363,4 +371,4 @@ Contributions welcome!
 - 🐛 [Report a bug](https://github.com/yourusername/recipe-book/issues)
 - 💬 [Ask a question](https://github.com/yourusername/recipe-book/discussions)
 
-**Current Status:** ✅ Production Ready | Version 2.1.5 | Feb 2026
+**Current Status:** ✅ Production Ready | Version 2.3.1 | Feb 2026
