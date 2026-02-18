@@ -39,8 +39,8 @@ export default function MealPlanningPage() {
       // Ensure data is always an array
       setMealPlans(Array.isArray(plansResponse.data) ? plansResponse.data : []);
       
-      // Handle paginated recipe response - ensure data is always an array
-      const recipesData = recipesResponse.data;
+      // Handle paginated recipe response - extract recipes from data.data
+      const recipesData = recipesResponse.data?.data || recipesResponse.data;
       setRecipes(Array.isArray(recipesData) ? recipesData : []);
       
       // Select most recent plan by default
