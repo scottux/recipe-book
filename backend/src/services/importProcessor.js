@@ -32,6 +32,25 @@ export const processRecipes = async (userId, recipes, duplicates, session) => {
       typeof inst === 'string' ? inst : inst.description
     );
 
+    // Normalize dishType to match enum values
+    const normalizeDishType = (type) => {
+      if (!type) return 'Other';
+      const typeMap = {
+        'appetizer': 'Appetizer',
+        'main': 'Main Course',
+        'main course': 'Main Course',
+        'side': 'Side Dish',
+        'side dish': 'Side Dish',
+        'dessert': 'Dessert',
+        'beverage': 'Beverage',
+        'snack': 'Snack',
+        'breakfast': 'Breakfast',
+        'lunch': 'Lunch',
+        'dinner': 'Dinner',
+      };
+      return typeMap[type.toLowerCase()] || 'Other';
+    };
+
     // Create new recipe document
     const newRecipe = new Recipe({
       owner: userId,
@@ -42,7 +61,7 @@ export const processRecipes = async (userId, recipes, duplicates, session) => {
       prepTime: backupRecipe.prepTime,
       cookTime: backupRecipe.cookTime,
       servings: backupRecipe.servings,
-      dishType: backupRecipe.dishType,
+      dishType: normalizeDishType(backupRecipe.dishType),
       cuisine: backupRecipe.cuisine,
       difficulty: backupRecipe.difficulty,
       tags: backupRecipe.tags || [],
@@ -105,10 +124,9 @@ export const processCollections = async (
       owner: userId,
       name: backupCollection.name,
       description: backupCollection.description || '',
-      icon: backupCollection.icon || '📁',
+      icon: backupCollection.icon || '📚',
       isPublic: backupCollection.isPublic || false,
       recipes: remappedRecipeIds,
-      recipeCount: remappedRecipeIds.length,
     });
 
     if (session) {
@@ -148,7 +166,19 @@ export const processMealPlans = async (
       const mealType = meal.mealType || meal.type;
       const recipes = (meal.recipes || [])
         .map((recipe) => {
-          const oldRecipeId = recipe.recipeId || recipe.recipe?._id || recipe.recipe?.id;
+          // Handle multiple formats: recipeId, recipe._id, recipe.id, or recipe as string
+          let oldRecipeId;
+          if (recipe.recipeId) {
+            oldRecipeId = recipe.recipeId;
+          } else if (typeof recipe.recipe === 'string') {
+            oldRecipeId = recipe.recipe;
+          } else if (recipe.recipe?._id) {
+            oldRecipeId = recipe.recipe._id;
+          } else if (recipe.recipe?.id) {
+            oldRecipeId = recipe.recipe.id;
+          } else {
+            oldRecipeId = recipe.recipe;
+          }
           const newRecipeId = recipeIdMapping.get(oldRecipeId?.toString());
           
           if (!newRecipeId) return null; // Skip missing references

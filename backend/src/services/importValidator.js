@@ -145,7 +145,9 @@ function validateRecipe(recipe, index) {
         { index, ingredientIndex: i }
       );
     }
-    if (!ingredient.amount) {
+    // Amount can be empty string or missing (optional field)
+    // Only validate that if present, it's not null/undefined
+    if (ingredient.amount === null || ingredient.amount === undefined) {
       throw new ImportError(
         'INVALID_INGREDIENT',
         `Recipe '${recipe.title}' ingredient ${i} missing amount`,

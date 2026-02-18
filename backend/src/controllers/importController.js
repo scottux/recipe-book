@@ -41,11 +41,41 @@ const upload = multer({
 });
 
 /**
+ * Multer error handler middleware
+ */
+const handleMulterErrors = (err, req, res, next) => {
+  if (err instanceof ImportError && err.code === 'INVALID_FILE_TYPE') {
+    return res.status(400).json({
+      success: false,
+      error: err.message,
+      details: {
+        code: err.code,
+        message: err.message,
+      },
+    });
+  }
+  
+  if (err instanceof multer.MulterError || err.name === 'MulterError') {
+    return res.status(400).json({
+      success: false,
+      error: err.message || 'File upload error',
+      details: {
+        code: err.code || 'UPLOAD_ERROR',
+        message: err.message || 'File upload failed',
+      },
+    });
+  }
+  
+  next(err);
+};
+
+/**
  * Main import handler
  * POST /api/import/backup
  */
 export const importBackup = [
   upload.single('file'),
+  handleMulterErrors,
   async (req, res) => {
     const session = await mongoose.startSession();
 
@@ -80,9 +110,19 @@ export const importBackup = [
           );
         }
 
-        const user = await User.findById(req.user.userId).select('+password');
-        const isValid = await user.comparePassword(req.body.password);
+        const userId = String(req.user._id || req.user.id);
+        const user = await User.findById(userId).select('+password');
         
+        // Check if user exists
+        if (!user) {
+          throw new ImportError(
+            'INVALID_PASSWORD',
+            'Password verification failed'
+          );
+        }
+        
+        // Verify password
+        const isValid = await user.comparePassword(req.body.password);
         if (!isValid) {
           throw new ImportError(
             'INVALID_PASSWORD',
@@ -93,14 +133,15 @@ export const importBackup = [
 
       // 5. Detect duplicates (merge mode only)
       let duplicates = null;
+      const userId = String(req.user._id || req.user.id);
       if (mode === 'merge') {
-        duplicates = await detectDuplicates(req.user.userId, backupData);
+        duplicates = await detectDuplicates(userId, backupData);
       }
 
       // 6. Execute import in transaction
       const result = await executeImport(
         session,
-        req.user.userId,
+        userId,
         backupData,
         mode,
         duplicates
@@ -112,8 +153,23 @@ export const importBackup = [
         summary: result,
       });
     } catch (error) {
+      // Handle ImportError first (from fileFilter or validation)
       if (error instanceof ImportError) {
-        res.status(error.statusCode || 400).json({
+        // Check if it's a file type error from multer fileFilter
+        if (error.code === 'INVALID_FILE_TYPE') {
+          return res.status(400).json({
+            success: false,
+            error: error.message,
+            details: {
+              code: error.code,
+              message: error.message,
+              ...error.details,
+            },
+          });
+        }
+        
+        // Other ImportErrors
+        return res.status(error.statusCode || 400).json({
           success: false,
           error: error.message,
           details: {
@@ -122,8 +178,11 @@ export const importBackup = [
             ...error.details,
           },
         });
-      } else if (error instanceof SyntaxError) {
-        res.status(400).json({
+      }
+      
+      // Handle SyntaxError (invalid JSON)
+      if (error instanceof SyntaxError) {
+        return res.status(400).json({
           success: false,
           error: 'Invalid backup file',
           details: {
@@ -131,9 +190,11 @@ export const importBackup = [
             message: 'Backup file is not valid JSON',
           },
         });
-      } else if (error.name === 'MulterError' || error.code === 'LIMIT_FILE_SIZE') {
-        // Handle multer-specific errors
-        res.status(400).json({
+      }
+      
+      // Handle MulterError
+      if (error.name === 'MulterError' || error instanceof multer.MulterError) {
+        return res.status(400).json({
           success: false,
           error: error.message || 'File upload error',
           details: {
@@ -141,27 +202,33 @@ export const importBackup = [
             message: error.message || 'File upload failed',
           },
         });
-      } else if (error.name === 'ValidationError') {
-        // Handle Mongoose validation errors
-        res.status(422).json({
+      }
+      
+      // Handle Mongoose validation errors
+      if (error.name === 'ValidationError') {
+        console.error('Mongoose validation error:', error);
+        console.error('Validation details:', JSON.stringify(error.errors, null, 2));
+        return res.status(422).json({
           success: false,
           error: 'Validation failed',
           details: {
             code: 'VALIDATION_ERROR',
             message: error.message,
-          },
-        });
-      } else {
-        console.error('Import error:', error);
-        res.status(500).json({
-          success: false,
-          error: 'Import failed',
-          details: {
-            code: 'IMPORT_ERROR',
-            message: 'An error occurred during import',
+            errors: error.errors,
           },
         });
       }
+      
+      // Handle unknown errors
+      console.error('Import error:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Import failed',
+        details: {
+          code: 'IMPORT_ERROR',
+          message: 'An error occurred during import',
+        },
+      });
     } finally {
       session.endSession();
     }

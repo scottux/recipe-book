@@ -37,7 +37,7 @@ class ImportError extends Error {
 
       // Security errors
       RATE_LIMIT_EXCEEDED: 429,
-      INVALID_PASSWORD: 401,
+      INVALID_PASSWORD: 400, // Changed from 401 to 400 for import password validation
       MALICIOUS_CONTENT: 400,
       UNAUTHORIZED: 401,
 

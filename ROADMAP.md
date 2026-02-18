@@ -135,23 +135,42 @@ Major features:
 
 ### V2.2.5 - Import System Completion (PATCH)
 
-**Status**: 📋 Planned  
+**Status**: 🔄 IN PROGRESS  
 **Timeline**: 2-3 days  
 **Priority**: HIGH  
 **Type**: Patch (Bug fixes + small improvements)
 
-#### Scope
-- Fix remaining 12 import-backup tests
-- Complete import system refactoring
-- Improve error handling
+**Current Progress**: 12/21 tests passing (57%)
 
-#### Implementation
-- **Day 1-2**: Fix import test failures
-  - Multer file validation (1 test)
-  - Merge mode operations (3 tests)
-  - Replace mode validation (3 tests)
-  - ID remapping (3 tests)
-  - XSS sanitization (2 tests)
+#### Scope
+- Fix remaining 9 import-backup test failures
+- Complete import system refactoring
+- Improve error handling and validation
+
+#### Progress So Far (Feb 17, 2026)
+**Completed**:
+- ✅ Fixed Multer error handling (file type validation now returns 400)
+- ✅ Fixed password validation status codes (401 → 400)
+- ✅ Relaxed ingredient amount validation (allow empty strings)
+- ✅ 12/21 tests now passing (up from 11)
+
+**Remaining Work**:
+- [ ] Fix merge mode test failures (3 tests)
+- [ ] Fix replace mode validation (1 test)
+- [ ] Fix ID remapping logic (3 tests)
+- [ ] Fix XSS sanitization test (1 test - recipe is null)
+- [ ] Fix performance test (1 test)
+
+#### Implementation Plan
+- **Day 1**: Debug validation errors
+  - Add logging to identify exact validation failures
+  - Review meal plan and collection validation
+  - Fix merge mode logic
+  
+- **Day 2**: Fix ID remapping and replace mode
+  - Verify transaction handling
+  - Test XSS sanitization
+  - Performance improvements
   
 - **Day 3**: Polish & testing
   - Integration testing
@@ -162,8 +181,13 @@ Major features:
 - ✅ All import-backup tests passing (21/21)
 - ✅ Test pass rate: 95%+ (205/215 tests)
 - ✅ Import system fully functional
+- ✅ Import validation documented
 
 **Target**: Feb 20, 2026
+
+**See Also**:
+- [Retrospective V2.2.5](docs/retrospectives/RETROSPECTIVE-V2.2.5-FEB-2026.md)
+- [Action Items V2.2.5](docs/retrospectives/ACTION-ITEMS-V2.2.5.md)
 
 ---
 
