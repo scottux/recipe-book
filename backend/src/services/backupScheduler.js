@@ -12,6 +12,7 @@ import dropboxService from './cloudProviders/dropboxService.js';
 import googleDriveService from './cloudProviders/googleDrive.js';
 import { sendBackupFailureEmail } from './emailService.js';
 import logger from '../config/logger.js';
+import { calculateNextOccurrence } from '../utils/timezone.js';
 
 class BackupScheduler {
   constructor() {
@@ -136,7 +137,8 @@ class BackupScheduler {
       user.cloudBackup.schedule.failureCount = 0;
       user.cloudBackup.schedule.nextBackup = this.calculateNextBackupTime(
         user.cloudBackup.schedule.frequency,
-        user.cloudBackup.schedule.time
+        user.cloudBackup.schedule.time,
+        user.timezone
       );
       user.cloudBackup.stats.totalBackups++;
       user.cloudBackup.stats.autoBackups++;
@@ -197,30 +199,36 @@ class BackupScheduler {
   }
 
   /**
-   * Calculate next backup time based on frequency and time
+   * Calculate next backup time based on frequency, time, and user timezone
    * 
    * @param {string} frequency - 'daily', 'weekly', or 'monthly'
    * @param {string} time - HH:mm format (e.g., '02:00')
-   * @returns {Date} Next backup time
+   * @param {string} timezone - IANA timezone identifier (e.g., 'America/New_York')
+   * @returns {Date} Next backup time in UTC
    */
-  calculateNextBackupTime(frequency, time) {
-    const [hours, minutes] = time.split(':').map(Number);
+  calculateNextBackupTime(frequency, time, timezone = 'America/New_York') {
+    try {
+      // Use timezone utility to calculate next occurrence
+      return calculateNextOccurrence(time, timezone, frequency);
+    } catch (error) {
+      logger.error(`Error calculating next backup time: ${error.message}`);
+      // Fallback to simple calculation in server timezone
+      const [hours, minutes] = time.split(':').map(Number);
+      let next = new Date();
+      next.setHours(hours, minutes, 0, 0);
 
-    let next = new Date();
-    next.setHours(hours, minutes, 0, 0);
-
-    // If time has passed today, move to next occurrence
-    if (next <= new Date()) {
-      if (frequency === 'daily') {
-        next.setDate(next.getDate() + 1);
-      } else if (frequency === 'weekly') {
-        next.setDate(next.getDate() + 7);
-      } else if (frequency === 'monthly') {
-        next.setMonth(next.getMonth() + 1);
+      if (next <= new Date()) {
+        if (frequency === 'daily') {
+          next.setDate(next.getDate() + 1);
+        } else if (frequency === 'weekly') {
+          next.setDate(next.getDate() + 7);
+        } else if (frequency === 'monthly') {
+          next.setMonth(next.getMonth() + 1);
+        }
       }
-    }
 
-    return next;
+      return next;
+    }
   }
 
   /**

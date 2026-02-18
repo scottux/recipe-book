@@ -242,6 +242,9 @@ export const authAPI = {
   // Update user profile
   updateProfile: (data) => api.put('/auth/me', data),
   
+  // Update user timezone
+  updateTimezone: (timezone) => api.patch('/auth/me/timezone', { timezone }),
+  
   // Update password (while logged in)
   updatePassword: (currentPassword, newPassword) => 
     api.patch('/auth/password', { currentPassword, newPassword }),

@@ -42,6 +42,11 @@ const userSchema = new mongoose.Schema({
       default: 'auto'
     }
   },
+  timezone: {
+    type: String,
+    default: 'America/New_York',
+    required: true
+  },
   isVerified: {
     type: Boolean,
     default: false

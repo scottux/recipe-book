@@ -6,6 +6,7 @@ import {
   logout,
   getMe,
   updateProfile,
+  updateTimezone,
   updatePassword,
   deleteAccount,
   forgotPassword,
@@ -63,6 +64,7 @@ router.get('/2fa/status', authenticate, get2FAStatus); // Protected - checks 2FA
 router.post('/logout', authenticate, logout);
 router.get('/me', authenticate, getMe);
 router.put('/me', authenticate, updateProfile);
+router.patch('/me/timezone', authenticate, updateTimezone);
 router.patch('/password', authenticate, updatePassword);
 router.delete('/account', authenticate, deleteAccount);
 

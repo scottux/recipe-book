@@ -54,22 +54,44 @@ export async function parseBackup(filePath) {
 /**
  * Get backup preview (metadata only, without full parsing)
  * @param {string} filePath - Path to backup ZIP file
+ * @param {Object} options - Preview options
+ * @param {boolean} options.includeDetails - Include detailed content lists
+ * @param {number} options.maxRecipes - Max recipes to include in preview
+ * @param {number} options.maxCollectionRecipes - Max recipes to show per collection
  * @returns {Promise<Object>} Backup preview data
  */
-export async function getBackupPreview(filePath) {
-  logger.info(`Getting backup preview: ${filePath}`);
+export async function getBackupPreview(filePath, options = {}) {
+  const {
+    includeDetails = true,
+    maxRecipes = 100,
+    maxCollectionRecipes = 10
+  } = options;
+
+  logger.info(`Getting backup preview: ${filePath}`, { includeDetails });
 
   try {
     // Parse the full backup (we need to extract to get metadata)
     const data = await parseBackup(filePath);
 
-    // Return only preview information
-    return {
+    // Build preview with statistics
+    const preview = {
       version: data.version,
       exportDate: data.exportDate,
       type: data.type || 'manual',
       statistics: data.statistics || calculateStatistics(data)
     };
+
+    // Add detailed content if requested
+    if (includeDetails) {
+      preview.details = {
+        recipes: extractRecipePreview(data.recipes, maxRecipes),
+        collections: extractCollectionPreview(data.collections, maxCollectionRecipes),
+        mealPlans: extractMealPlanPreview(data.mealPlans),
+        shoppingLists: extractShoppingListPreview(data.shoppingLists)
+      };
+    }
+
+    return preview;
   } catch (error) {
     logger.error('Failed to get backup preview', {
       error: error.message,
@@ -184,6 +206,89 @@ function calculateStatistics(data) {
     mealPlanCount: data.mealPlans?.length || 0,
     shoppingListCount: data.shoppingLists?.length || 0
   };
+}
+
+/**
+ * Extract recipe preview list
+ * @param {Array} recipes - Full recipe array
+ * @param {number} max - Maximum recipes to include
+ * @returns {Array} Preview recipe objects
+ */
+function extractRecipePreview(recipes, max) {
+  if (!recipes || recipes.length === 0) return [];
+  
+  return recipes.slice(0, max).map(r => ({
+    title: r.title || 'Untitled Recipe',
+    id: r._id || r.id
+  }));
+}
+
+/**
+ * Extract collection preview list
+ * @param {Array} collections - Full collection array
+ * @param {number} maxRecipesPerCollection - Max recipes to show per collection
+ * @returns {Array} Preview collection objects
+ */
+function extractCollectionPreview(collections, maxRecipesPerCollection) {
+  if (!collections || collections.length === 0) return [];
+  
+  return collections.map(c => {
+    // Get recipe titles from the collection
+    let recipeNames = [];
+    if (c.recipes && Array.isArray(c.recipes)) {
+      recipeNames = c.recipes
+        .slice(0, maxRecipesPerCollection)
+        .map(r => {
+          // Handle both populated and reference-only recipes
+          if (typeof r === 'string') return r; // Just an ID
+          return r.title || r.name || 'Untitled Recipe';
+        });
+    }
+    
+    return {
+      name: c.name || 'Unnamed Collection',
+      recipeCount: c.recipes?.length || 0,
+      recipes: recipeNames
+    };
+  });
+}
+
+/**
+ * Extract meal plan preview list
+ * @param {Array} mealPlans - Full meal plan array
+ * @returns {Array} Preview meal plan objects
+ */
+function extractMealPlanPreview(mealPlans) {
+  if (!mealPlans || mealPlans.length === 0) return [];
+  
+  return mealPlans.map(mp => ({
+    name: mp.name || 'Unnamed Meal Plan',
+    startDate: mp.startDate,
+    endDate: mp.endDate,
+    mealCount: mp.meals?.length || 0
+  }));
+}
+
+/**
+ * Extract shopping list preview list
+ * @param {Array} shoppingLists - Full shopping list array
+ * @returns {Array} Preview shopping list objects
+ */
+function extractShoppingListPreview(shoppingLists) {
+  if (!shoppingLists || shoppingLists.length === 0) return [];
+  
+  return shoppingLists.map(sl => {
+    const created = sl.createdAt || sl.created;
+    const defaultName = created 
+      ? `Shopping List ${new Date(created).toLocaleDateString()}`
+      : 'Unnamed Shopping List';
+    
+    return {
+      name: sl.name || defaultName,
+      itemCount: sl.items?.length || 0,
+      created: created
+    };
+  });
 }
 
 /**

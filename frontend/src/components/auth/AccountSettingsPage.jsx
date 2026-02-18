@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { authAPI, exportAPI, twoFactorAPI } from '../../services/api';
+import TimezoneSelector from '../TimezoneSelector';
 
 function AccountSettingsPage() {
   const { user, logout } = useAuth();
@@ -33,6 +34,12 @@ function AccountSettingsPage() {
   const [showDisableModal, setShowDisableModal] = useState(false);
   const [disableError, setDisableError] = useState('');
   const [disableLoading, setDisableLoading] = useState(false);
+
+  // Timezone state
+  const [timezone, setTimezone] = useState(user?.timezone || 'America/New_York');
+  const [timezoneError, setTimezoneError] = useState('');
+  const [timezoneSuccess, setTimezoneSuccess] = useState('');
+  const [timezoneLoading, setTimezoneLoading] = useState(false);
 
   // Check 2FA status on mount
   useEffect(() => {
@@ -138,6 +145,28 @@ function AccountSettingsPage() {
       );
     } finally {
       setPasswordLoading(false);
+    }
+  };
+
+  const handleTimezoneUpdate = async () => {
+    setTimezoneError('');
+    setTimezoneSuccess('');
+    setTimezoneLoading(true);
+
+    try {
+      await authAPI.updateTimezone(timezone);
+      setTimezoneSuccess('Timezone updated successfully! Scheduled backups will now use your new timezone.');
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setTimezoneSuccess('');
+      }, 5000);
+    } catch (err) {
+      setTimezoneError(
+        err.response?.data?.error || 'Failed to update timezone. Please try again.'
+      );
+    } finally {
+      setTimezoneLoading(false);
     }
   };
 
@@ -322,6 +351,44 @@ function AccountSettingsPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Timezone Settings */}
+      <div className="bg-cookbook-paper rounded-lg shadow-lg border-2 border-cookbook-aged p-6 mb-6">
+        <h2 className="text-2xl font-display font-bold text-cookbook-darkbrown mb-4">
+          Timezone Preferences
+        </h2>
+        <p className="text-sm text-cookbook-brown font-body mb-4">
+          Set your timezone for accurate scheduling and time displays
+        </p>
+
+        {timezoneSuccess && (
+          <div className="mb-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+            <p className="text-green-800 text-sm font-body">{timezoneSuccess}</p>
+          </div>
+        )}
+
+        {timezoneError && (
+          <div className="mb-4 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+            <p className="text-red-800 text-sm font-body">{timezoneError}</p>
+          </div>
+        )}
+
+        <TimezoneSelector
+          value={timezone}
+          onChange={setTimezone}
+          disabled={timezoneLoading}
+          error={timezoneError}
+          className="mb-4"
+        />
+
+        <button
+          onClick={handleTimezoneUpdate}
+          disabled={timezoneLoading || timezone === user?.timezone}
+          className="bg-cookbook-accent text-white py-2 px-6 rounded-lg hover:bg-cookbook-brown transition-colors font-body font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {timezoneLoading ? 'Updating...' : 'Save Timezone'}
+        </button>
       </div>
 
       {/* Data Management */}

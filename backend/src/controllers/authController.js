@@ -6,6 +6,8 @@ import {
 } from '../middleware/auth.js';
 import { sendPasswordResetEmail, sendVerificationEmail } from '../services/emailService.js';
 import { validatePassword, randomDelay } from '../utils/passwordValidator.js';
+import { isValidTimezone } from '../utils/timezone.js';
+import backupScheduler from '../services/backupScheduler.js';
 
 // Register new user
 export const register = async (req, res) => {
@@ -341,6 +343,71 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to update profile.'
+    });
+  }
+};
+
+// Update user timezone
+export const updateTimezone = async (req, res) => {
+  try {
+    const { timezone } = req.body;
+
+    if (!timezone) {
+      return res.status(400).json({
+        success: false,
+        error: 'Timezone is required.'
+      });
+    }
+
+    // Validate timezone
+    if (!isValidTimezone(timezone)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid timezone. Please provide a valid IANA timezone identifier.'
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found.'
+      });
+    }
+
+    // Update timezone
+    user.timezone = timezone;
+
+    // If user has scheduled backups enabled, recalculate next backup time
+    if (user.cloudBackup?.schedule?.enabled) {
+      try {
+        user.cloudBackup.schedule.nextBackup = backupScheduler.calculateNextBackupTime(
+          user.cloudBackup.schedule.frequency,
+          user.cloudBackup.schedule.time,
+          timezone
+        );
+        console.log(`Recalculated next backup for user ${user._id} with new timezone: ${timezone}`);
+      } catch (error) {
+        console.error('Error recalculating next backup time:', error);
+        // Continue with timezone update even if backup calculation fails
+      }
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      data: {
+        user: user.toPublicProfile(),
+        message: 'Timezone updated successfully.'
+      }
+    });
+  } catch (error) {
+    console.error('Update timezone error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update timezone.'
     });
   }
 };
